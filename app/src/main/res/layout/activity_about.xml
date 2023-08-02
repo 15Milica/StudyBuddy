@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.AboutActivity">
+
+    <ImageView
+        android:id="@+id/imageViewAbout"
+        android:layout_width="693dp"
+        android:layout_height="127dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_rectangle_vectors" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="151dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonBackAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/secondary_color"
+            app:srcCompat="@drawable/ic_left_arrow" />
+
+        <TextView
+            android:id="@+id/backAbout"
+            android:layout_width="107dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/poppins_title"
+            android:text="@string/Back"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_18sdp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/About"
+        android:layout_width="270dp"
+        android:layout_height="52dp"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/About"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/_28sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/text1Verification"
+        android:layout_width="289dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins"
+        android:text="@string/AboutText"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/About" />
+
+    <ScrollView
+        android:layout_width="413dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1Verification"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewAboutText_2"
+                android:layout_width="354dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/AboutText2"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateProfileActivity">
+
+    <ImageView
+        android:id="@+id/imageViewVerification1"
+        android:layout_width="672dp"
+        android:layout_height="250dp"
+        android:contentDescription="@string/RegisterStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_register_vectors" />
+
+    <TextView
+        android:id="@+id/Profile"
+        android:layout_width="225dp"
+        android:layout_height="57dp"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/CreateProfile"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/_28sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.964"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.173" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
+        tools:layout_editor_absoluteX="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="188dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profilePhotoCreateProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_110sdp"
+                    android:src="@drawable/ic_create_profile_vectors_photo" />
+
+                <TextView
+                    android:id="@+id/textViewCreateProfile_text_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/CreateProfilePhoto"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editTextProfileFirstName"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileName"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_5sdp" />
+
+                <EditText
+                    android:id="@+id/editTextProfileLastName"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileLastName"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_5sdp" />
+
+                <EditText
+                    android:id="@+id/editTextDateProfile"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileBirthday"
+                    android:inputType="date"
+                    android:longClickable="false"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="360dp"
+            android:layout_height="214dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextMultiLineProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/poppins"
+                android:gravity="start|top"
+                android:hint="@string/CreateProfileText"
+                android:inputType="textMultiLine"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16sdp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonRegister"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/RegisterContinue"
+        android:fontFamily="@font/poppins_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

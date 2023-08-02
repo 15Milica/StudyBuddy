@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileFragment">
+
+    <ImageView
+        android:id="@+id/imageViewAbout"
+        android:layout_width="693dp"
+        android:layout_height="127dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_rectangle_vectors" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewProfile"
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_title"
+            android:text="@string/CreateProfile"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_28sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.964"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.173" />
+
+        <ImageView
+            android:id="@+id/imageViewProfileSave"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_profile_save" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="412dp"
+        android:layout_height="274dp"
+        android:layout_marginTop="268dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="188dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profilePhotoCreateProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_110sdp"
+                    android:src="@drawable/ic_create_profile_vectors_photo" />
+
+                <TextView
+                    android:id="@+id/textViewCreateProfile_text_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/ProfileChangePhoto"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editTextProfileFirstName"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileName"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/editTextProfileLastName"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6.50dp"
+                    android:background="@drawable/custom_border"
+                    android:ems="10"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileLastName"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/editTextDateProfile"
+                    android:layout_width="207dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6.50dp"
+                    android:background="@drawable/custom_border"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/CreateProfileBirthday"
+                    android:inputType="date"
+                    android:longClickable="false"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextMultiLineProfile"
+                android:layout_width="333dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/poppins"
+                android:gravity="start|top"
+                android:hint="@string/CreateProfileText"
+                android:inputType="textMultiLine"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16sdp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProfileStoryline"
+        android:layout_width="360dp"
+        android:layout_height="159dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="568dp"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/ProfileStorylineTitle"
+        android:textAlignment="center"
+        android:textColor="@color/primary_color"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

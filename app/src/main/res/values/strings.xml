@@ -1,0 +1,97 @@
+<resources>
+    <string name="app_name">StudyBuddy</string>
+
+    <!-- App Strings -->
+    <string name="todo">TODO</string>
+    <string name="Invite">INVITE</string>
+
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_settings">Podešavanje</string>
+    <string name="title_pages">Grupe</string>
+    <string name="title_inbox">Poruke</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
+    <!-- Register strings -->
+
+    <string name="RegisterStyle">RegisterStyle</string>
+    <string name="Welcome">Dobrodošli</string>
+    <string name="Register_text1">Unesite svoj broj telefona i uživajte u StudyBuddy!</string>
+    <string name="Register_text2">Ako nastavite, slažete se sa uslovima i odredbama, kao i sa privatnošću i politikom.</string>
+    <string name="RegisterContinue">Nastavi</string>
+
+    <!-- Verification strings -->
+
+    <string name="Verification">Verifikacija</string>
+    <string name="Verification_text1">Unesite kod koji ste dobili putem broja telefona</string>
+    <string name="VerificationContinue">NASTAVI</string>
+
+    <!-- CreateProfile strings -->
+    <string name="CreateProfile">PROFIL</string>
+    <string name="CreateProfileName">Ime</string>
+    <string name="CreateProfileLastName">Prezime</string>
+    <string name="CreateProfileBirthday">Datum rođenja</string>
+    <string name="CreateProfileText">Recite nešto više o sebi...</string>
+    <string name="CreateProfilePhoto">Fotografija</string>
+
+
+    <!-- About strings -->
+    <string name="Back">Nazad</string>
+    <string name="About">O aplikaciji</string>
+    <string name="AboutText">Naučite nešto o nama</string>
+    <string name="AboutText2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <!-- PrivacyTerms strings -->
+    <string name="PrivacyTerms">Privatnost i uslovi</string>
+    <string name="PrivacyTermsText">Poštujemo vašu privatnost.</string>
+
+    <!-- Settings strings -->
+    <string name="Settings">PODEŠAVANJE</string>
+    <string name="SettingsSwitchNotification">Obaveštenje</string>
+    <string name="SettingsSwitchActivity">Aktivnost</string>
+    <string name="SettingsPinnedMessage">Sačuvane poruke</string>
+
+
+    <!-- PinnedMessages strings -->
+    <string name="PinnedMessages">Sačuvane poruke</string>
+
+    <!-- Profile strings -->
+    <string name="ProfileChangePhoto">Promeni sliku</string>
+    <string name="ProfileStorylineTitle">OBJAVE</string>
+
+    <!-- Inbox strings -->
+    <string name="Inbox">PORUKE</string>
+    <string name="Search">Pretraga</string>
+
+    <!-- Groups strings -->
+    <string name="Groups">GRUPE</string>
+
+    <!-- PageDetails strings -->
+    <string name="PageDetails">Detalji</string>
+    <string name="PageDetailsName">Ime</string>
+    <string name="PageDetailsDescription">Opis</string>
+    <string name="PageDetailsMembers">Broj članova</string>
+    <string name="PageDetailsAdmins">Admins</string>
+
+    <!-- NewPage strings -->
+    <string name="NewPage">Kreiraj grupu</string>
+    <string name="NewPageName">Ime</string>
+    <string name="NewPageDescription">Opis</string>
+    <string name="NewPageButton">Kreiraj</string>
+
+    <!-- Page strings -->
+    <string name="PageNewPost">Nova objava</string>
+
+    <!-- CreateGroup strings -->
+    <string name="CreateGroup">Kreiraj</string>
+    <string name="CreateGroupText1">Komunikacija u timu je uvek zabavnija!</string>
+    <string name="CreateGroupName">Ime grupe</string>
+    <string name="CreateGroupText2">Postavi sliku (opciono)</string>
+
+    <!-- NewChat strings -->
+    <string name="NewChat">Započni razgovor sa prijateljima!</string>
+
+
+</resources>

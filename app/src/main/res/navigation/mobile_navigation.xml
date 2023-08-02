@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.studybuddy.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.studybuddy.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.studybuddy.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_pages"
+        android:name="com.example.studybuddy.ui.pages.PagesFragment"
+        android:label="@string/title_pages"
+        tools:layout="@layout/fragment_pages" />
+
+    <fragment
+        android:id="@+id/navigation_inbox"
+        android:name="com.example.studybuddy.ui.inbox.InboxFragment"
+        android:label="@string/title_inbox"
+        tools:layout="@layout/fragment_inbox" />
+
+</navigation>

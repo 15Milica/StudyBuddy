@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+    -->
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/gray"
+        app:fabCradleMargin="@dimen/_10sdp"
+        app:fabCradleRoundedCornerRadius="@dimen/_20sdp"
+        app:fabCradleVerticalOffset="@dimen/_2sdp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/color_transparent"
+            app:itemIconSize="@dimen/_24sdp"
+            app:itemIconTint="@drawable/custom_menu_item"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonHome"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:src="@drawable/menu_home"
+        android:backgroundTint="@drawable/custom_home_item"
+        app:tint="@android:color/white"
+        app:maxImageSize="@dimen/_30sdp"
+        app:fabCustomSize="@dimen/_50sdp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:borderWidth="0dp"/>
+
+    <fragment
+        android:id="@+id/nav_host_fragment_activity_navigation"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_50sdp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/mobile_navigation" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

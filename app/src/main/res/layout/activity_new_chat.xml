@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inbox.NewChatActivity">
+
+    <ImageView
+        android:id="@+id/imageViewNewChat"
+        android:layout_width="693dp"
+        android:layout_height="127dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.365"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_rectangle_vectors" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="151dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonBackNewChat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/secondary_color"
+            app:srcCompat="@drawable/ic_left_arrow" />
+
+        <TextView
+            android:id="@+id/backNewChat"
+            android:layout_width="107dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/poppins_title"
+            android:text="@string/Back"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_18sdp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonInvitePerson"
+        android:layout_width="57dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="72dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/secondary_color"
+        android:src="@drawable/ic_new_chat_invite_person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.911"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNewChat"
+        android:layout_width="369dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="186dp"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/NewChat"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:background="@drawable/custom_border"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNewChat">
+
+        <ImageView
+            android:id="@+id/imageViewInboxSearch"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search" />
+
+        <EditText
+            android:id="@+id/editTextNewChatSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:fontFamily="@font/poppins"
+            android:hint="@string/Search"
+            android:inputType="textPersonName"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUsers"
+        android:layout_width="369dp"
+        android:layout_height="556dp"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
