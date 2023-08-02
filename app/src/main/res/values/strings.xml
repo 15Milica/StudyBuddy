@@ -48,7 +48,7 @@
     <string name="PrivacyTermsText">Poštujemo vašu privatnost.</string>
 
     <!-- Settings strings -->
-    <string name="Settings">PODEŠAVANJE</string>
+    <string name="Settings">PODEŠAVANJA</string>
     <string name="SettingsSwitchNotification">Obaveštenje</string>
     <string name="SettingsSwitchActivity">Aktivnost</string>
     <string name="SettingsPinnedMessage">Sačuvane poruke</string>

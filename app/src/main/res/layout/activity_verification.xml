@@ -8,66 +8,55 @@
 
     <ImageView
         android:id="@+id/imageViewVerification1"
-        android:layout_width="672dp"
-        android:layout_height="250dp"
-        android:contentDescription="@string/RegisterStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_register_vectors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_register_vectors" />
+        app:layout_constraintTop_toTopOf="parent"  />
 
     <TextView
         android:id="@+id/textViewVerification"
-        android:layout_width="225dp"
-        android:layout_height="57dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:fontFamily="@font/poppins_title"
         android:text="@string/Verification"
         android:textColor="@color/text_color"
         android:textSize="@dimen/_28sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.964"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text1Verification"
-        android:layout_width="291dp"
-        android:layout_height="69dp"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:fontFamily="@font/poppins"
         android:text="@string/Verification_text1"
         android:textAlignment="viewEnd"
         android:textColor="@color/text_color"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewVerification" />
 
     <ImageView
         android:id="@+id/imageViewVerification2"
-        android:layout_width="549dp"
-        android:layout_height="254dp"
-        android:contentDescription="@string/RegisterStyle"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:background="@drawable/ic_verification_vectors"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_verification_vectors" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/VerificationTextButton"
-        android:layout_width="126dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:fontFamily="@font/poppins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:fontFamily="@font/poppins_title"
         android:text="@string/VerificationContinue"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -77,21 +66,20 @@
 
     <ImageButton
         android:id="@+id/imageButtonVerification"
-        android:layout_width="38dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="4dp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginEnd="@dimen/_50sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
         android:background="@null"
         app:layout_constraintBottom_toTopOf="@+id/VerificationTextButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_verification_vectors_button"
-        android:contentDescription="@string/todo"/>
+        app:srcCompat="@drawable/ic_verification_vectors_button"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginLeft="@dimen/_18sdp"
-        android:layout_marginRight="@dimen/_18sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
@@ -99,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1Verification"
-        app:layout_constraintVertical_bias="0.3">
+        app:layout_constraintVertical_bias="0.35">
 
         <EditText
             android:id="@+id/editTextNumberVerification1"

@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageViewInbox"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="@dimen/_40sdp"
         android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,24 +31,20 @@
         android:id="@+id/imageInboxNewChat"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_weight="1"
         android:backgroundTint="@color/secondary_color"
         android:src="@drawable/ic_inbox_vectors_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewInbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TitleStyle"
         android:id="@+id/textViewInbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_title"
         android:text="@string/Inbox"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewInbox" />
 

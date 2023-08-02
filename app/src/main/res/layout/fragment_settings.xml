@@ -7,180 +7,160 @@
     tools:context=".ui.settings.SettingsFragment">
 
     <ImageView
-        android:id="@+id/imageViewAbout"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:id="@+id/imageViewSettings"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TitleStyle"
         android:id="@+id/Settings"
-        android:layout_width="293dp"
-        android:layout_height="55dp"
-        android:fontFamily="@font/poppins_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
         android:text="@string/Settings"
-        android:textAlignment="center"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.211" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSettings"/>
 
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/ic_settings_vectors_notifications"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Settings"
-        app:layout_constraintVertical_bias="0.034">
-
-        <Switch
-            android:id="@+id/switchNotification"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:text="@string/SettingsSwitchNotification"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/_16sdp" />
-    </LinearLayout>
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/ic_settings_vectors_notifications"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Settings">
 
+            <Switch
+                android:id="@+id/switchNotification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@string/SettingsSwitchNotification"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_16sdp" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@drawable/ic_settings_vectors_notifications"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.028"
-        tools:layout_editor_absoluteX="26dp">
-
-        <Switch
-            android:id="@+id/switchActivity"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:text="@string/SettingsSwitchActivity"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/_16sdp" />
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/ic_settings_vectors_notifications"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-    </LinearLayout>
+            <Switch
+                android:id="@+id/switchActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@string/SettingsSwitchActivity"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_16sdp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutPinnedMessagesSettings"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_marginTop="96dp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.031"
-        tools:layout_editor_absoluteX="37dp">
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewSettingsPinnedMessage"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/SettingsPinnedMessage"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
+        <LinearLayout
+            android:id="@+id/linearLayoutPinnedMessagesSettings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <ImageView
-            android:id="@+id/imageButtonSettingsPinnedMessage"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/secondary_color"
-            android:src="@drawable/ic_settings_pinned_message" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewSettingsPinnedMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins"
+                android:text="@string/SettingsPinnedMessage"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16sdp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutAboutSettings"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_marginTop="96dp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutPinnedMessagesSettings"
-        app:layout_constraintVertical_bias="0.031"
-        tools:layout_editor_absoluteX="37dp">
+            <ImageView
+                android:id="@+id/imageButtonSettingsPinnedMessage"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/secondary_color"
+                android:src="@drawable/ic_settings_pinned_message" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewSettingsAbout"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/About"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
+        <LinearLayout
+            android:id="@+id/linearLayoutAboutSettings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutPinnedMessagesSettings">
 
-        <ImageView
-            android:id="@+id/imageButtonSettingsAbout"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/secondary_color"
-            android:src="@drawable/ic_settings_about" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewSettingsAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins"
+                android:text="@string/About"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16sdp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutPrivacyTermsSettings"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_marginTop="96dp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAboutSettings"
-        app:layout_constraintVertical_bias="0.031"
-        tools:layout_editor_absoluteX="37dp">
+            <ImageView
+                android:id="@+id/imageButtonSettingsAbout"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/secondary_color"
+                android:src="@drawable/ic_settings_about" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewSettingsPrivacyTerms"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/PrivacyTerms"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
+        <LinearLayout
+            android:id="@+id/linearLayoutPrivacyTermsSettings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutAboutSettings">
 
-        <ImageView
-            android:id="@+id/imageButtonSettingsPrivacyTerms"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/secondary_color"
-            android:src="@drawable/ic_settings_privacy_terms" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewSettingsPrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins"
+                android:text="@string/PrivacyTerms"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16sdp" />
 
+            <ImageView
+                android:id="@+id/imageButtonSettingsPrivacyTerms"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/secondary_color"
+                android:src="@drawable/ic_settings_privacy_terms" />
+        </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

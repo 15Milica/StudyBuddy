@@ -8,52 +8,47 @@
 
     <ImageView
         android:id="@+id/imageViewRegister"
-        android:layout_width="672dp"
-        android:layout_height="250dp"
-        android:contentDescription="@string/RegisterStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_register_vectors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_register_vectors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewWelcome"
-        android:layout_width="214dp"
-        android:layout_height="63dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:fontFamily="@font/poppins_title"
         android:text="@string/Welcome"
         android:textColor="@color/text_color"
         android:textSize="@dimen/_28sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.964"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text1Register"
-        android:layout_width="267dp"
-        android:layout_height="77dp"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:fontFamily="@font/poppins"
         android:text="@string/Register_text1"
         android:textAlignment="viewEnd"
         android:textColor="@color/text_color"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.763"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWelcome" />
 
     <TextView
         android:id="@+id/text2Register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_14sdp"
-        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
         android:text="@string/Register_text2"
         android:textSize="@dimen/_12sdp"
         android:textColor="@color/text_color"
@@ -67,29 +62,28 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="@dimen/_20sdp"
         android:text="@string/RegisterContinue"
+        android:fontFamily="@font/poppins_title"
         app:layout_constraintBottom_toTopOf="@+id/text2Register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="184dp"
         android:background="@drawable/custom_border"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewRegister"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/text1Register"
+        app:layout_constraintVertical_bias="0.15">
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/countryCodePickerRegister"
@@ -104,7 +98,7 @@
 
         <EditText
             android:id="@+id/editTextPhoneRegister"
-            android:layout_width="0dp"
+            android:layout_width="246dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"

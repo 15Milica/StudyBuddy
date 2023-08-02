@@ -8,56 +8,48 @@
 
     <ImageView
         android:id="@+id/imageViewPages"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.365"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButtonNewPage"
-        android:layout_width="47dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_weight="1"
         android:backgroundTint="@color/secondary_color"
         android:src="@drawable/ic_inbox_vectors_edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.917"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TitleStyle"
         android:id="@+id/textViewGroups"
-        android:layout_width="133dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/poppins_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/Groups"
-        android:textAlignment="center"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPages" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_16sdp"
         android:background="@drawable/custom_border"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPages">
+        app:layout_constraintTop_toBottomOf="@+id/textViewGroups">
 
         <ImageView
             android:id="@+id/imageViewGroupsSearch"
@@ -83,15 +75,17 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="359dp"
-        android:layout_height="415dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_180sdp"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <LinearLayout
             android:layout_width="match_parent"

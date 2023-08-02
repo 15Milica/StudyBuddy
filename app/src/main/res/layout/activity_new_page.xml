@@ -8,80 +8,62 @@
 
     <ImageView
         android:id="@+id/imageViewNewPage"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="151dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/imageButtonBackNewPage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/secondary_color"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <TextView
             android:id="@+id/backNewPage"
-            android:layout_width="107dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/poppins_title"
             android:text="@string/Back"
             android:textColor="@color/primary_color"
-            android:textSize="@dimen/_18sdp" />
+            android:textSize="@dimen/_14sdp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textViewNewPage"
-        android:layout_width="259dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/poppins_title"
+        style="@style/TitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/NewPage"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pagePhotoCreateGroup"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="@dimen/_120sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="128dp"
-        android:src="@drawable/ic_create_profile_vectors_photo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewNewPage" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
-        android:layout_marginLeft="@dimen/_14sdp"
-        android:layout_marginRight="@dimen/_14sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.702"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pagePhotoCreateGroup"
-        app:layout_constraintVertical_bias="0.117">
+        app:layout_constraintVertical_bias="0.15">
 
         <EditText
             android:id="@+id/editTextNewPageName"
@@ -99,7 +81,7 @@
             android:id="@+id/editTextNewPageDescription"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:background="@drawable/custom_border"
             android:ems="10"
             android:fontFamily="@font/poppins"
@@ -116,11 +98,21 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:text="@string/NewPageButton"
         android:fontFamily="@font/poppins_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/pagePhotoCreateGroup"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:src="@drawable/ic_create_profile_vectors_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNewPage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,91 +8,73 @@
 
     <ImageView
         android:id="@+id/imageViewDetails"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="151dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/imageButtonBackDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/secondary_color"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <TextView
             android:id="@+id/backDetails"
-            android:layout_width="107dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/poppins_title"
             android:text="@string/Back"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/_18sdp" />
-
-        <TextView
-            android:id="@+id/textViewPageDetailsName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_14sdp"
-            android:fontFamily="@font/poppins"
-            android:textAlignment="textEnd"
             android:textColor="@color/primary_color"
             android:textSize="@dimen/_14sdp" />
     </LinearLayout>
 
     <TextView
+        style="@style/TitleStyle"
         android:id="@+id/textViewPageDetails"
-        android:layout_width="136dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/poppins_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/PageDetails"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetails" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/pagePhotoDetails"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_120sdp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:src="@drawable/ic_create_profile_vectors_photo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDetails" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPageDetails" />
 
     <LinearLayout
         android:id="@+id/linearLayoutName"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="352dp"
         android:background="@drawable/custom_border"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pagePhotoDetails">
 
         <TextView
             android:layout_width="wrap_content"
@@ -119,14 +101,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutDescription"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="12dp"
+        android:layout_margin="@dimen/_15sdp"
         android:background="@drawable/custom_border"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutName">
 
@@ -140,9 +121,9 @@
 
         <EditText
             android:id="@+id/editTextPageDetailsDescription"
-            android:layout_width="281dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:enabled="false"
@@ -154,14 +135,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutMembers"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="20dp"
+        android:layout_margin="@dimen/_15sdp"
         android:background="@drawable/custom_border"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutDescription">
 
@@ -190,14 +170,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutAdmins"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="20dp"
+        android:layout_margin="@dimen/_15sdp"
         android:background="@drawable/custom_border"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutMembers">
 

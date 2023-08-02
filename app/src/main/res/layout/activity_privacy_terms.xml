@@ -8,65 +8,58 @@
 
     <ImageView
         android:id="@+id/imageViewPrivacyTerms"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="151dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/imageButtonBackPrivacyTerms"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/secondary_color"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <TextView
             android:id="@+id/backPrivacyTerms"
-            android:layout_width="107dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/poppins_title"
             android:text="@string/Back"
             android:textColor="@color/primary_color"
-            android:textSize="@dimen/_18sdp" />
+            android:textSize="@dimen/_14sdp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/PrivacyTerms"
-        android:layout_width="354dp"
-        android:layout_height="53dp"
-        android:fontFamily="@font/poppins_title"
+        style="@style/TitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/PrivacyTerms"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_28sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.211" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPrivacyTerms" />
 
     <TextView
         android:id="@+id/text1PrivacyTerms"
-        android:layout_width="249dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/poppins"
         android:text="@string/PrivacyTermsText"
         android:textColor="@color/text_color"
@@ -75,15 +68,13 @@
         app:layout_constraintTop_toBottomOf="@+id/PrivacyTerms" />
 
     <ScrollView
-        android:layout_width="410dp"
-        android:layout_height="584dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_130sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text1PrivacyTerms"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/text1PrivacyTerms">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,11 +83,11 @@
 
             <TextView
                 android:id="@+id/text2PrivacyTerms"
-                android:layout_width="354dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/poppins"
                 android:text="@string/AboutText2"
                 android:textColor="@color/text_color"

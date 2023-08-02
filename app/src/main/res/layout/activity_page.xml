@@ -8,70 +8,65 @@
 
     <ImageView
         android:id="@+id/imageViewPage"
-        android:layout_width="693dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.379"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_rectangle_vectors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewBackPage"
-        android:layout_width="106dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_20sdp"
         android:fontFamily="@font/poppins_title"
         android:text="@string/Back"
-        android:textAlignment="center"
         android:textColor="@color/primary_color"
         android:textSize="@dimen/_18sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewDetailsPage"
-        android:layout_width="104dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:fontFamily="@font/poppins_title"
         android:text="@string/PageDetails"
         android:textAlignment="center"
         android:textColor="@color/primary_color"
         android:textSize="@dimen/_18sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.947"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewPage" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonPageNewPost"
-        android:layout_width="98dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="55dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/button_default"
         android:fontFamily="@font/poppins_title"
         android:text="@string/PageNewPost"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toStartOf="@+id/textViewDetailsPage"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toEndOf="@+id/textViewBackPage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout9"
-        android:layout_width="353dp"
-        android:layout_height="56dp"
-        android:layout_marginLeft="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_14sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_15sdp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPageNewPost">
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPage">
 
         <TextView
             android:id="@+id/textViewPageName"
@@ -109,9 +104,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPage"
-        android:layout_width="407dp"
-        android:layout_height="547dp"
-        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_120sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
