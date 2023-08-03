@@ -24,6 +24,7 @@
         <item name="buttonStyle">@style/ButtonStyle</item>
     </style>
 
+
     <style name="Theme.StudyBuddy" parent="Base.Theme.StudyBuddy" />
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">

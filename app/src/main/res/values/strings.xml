@@ -93,5 +93,8 @@
     <!-- NewChat strings -->
     <string name="NewChat">Započni razgovor sa prijateljima!</string>
 
+    <!-- ChatSettings strings -->
+    <string name="ChatSettings">Podesite ćaskanje</string>
+    <string name="ChatSettingsMute">Utišaj</string>
 
 </resources>

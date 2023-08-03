@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".chat.ChatSettingsActivity">
+
+    <ImageView
+        android:id="@+id/imageViewChatSettings"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonBackChatSettings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondary_color"
+            app:srcCompat="@drawable/ic_left_arrow" />
+        <TextView
+            android:id="@+id/backChatSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:fontFamily="@font/poppins_title"
+            android:text="@string/Back"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_14sdp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ChatSettings"
+        style="@style/TitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ChatSettings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewChatSettings" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/ic_settings_vectors_notifications"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ChatSettings">
+
+        <Switch
+            android:id="@+id/switchNotification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:text="@string/ChatSettingsMute"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_16sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutPinnedMessagesSettings"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/custom_border"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/textViewChatSettingsPinnedMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins"
+            android:text="@string/SettingsPinnedMessage"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_16sdp" />
+
+        <ImageView
+            android:id="@+id/imageButtonChatSettingsPinnedMessage"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/secondary_color"
+            android:src="@drawable/ic_settings_pinned_message" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

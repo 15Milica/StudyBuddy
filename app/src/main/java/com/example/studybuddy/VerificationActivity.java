@@ -1,7 +1,9 @@
 package com.example.studybuddy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +11,20 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.security.Provider;
+import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -20,12 +36,24 @@ public class VerificationActivity extends AppCompatActivity {
     private EditText text5;
     private EditText text6;
 
+    private FirebaseAuth mAuth;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        String phone = getIntent().getStringExtra("PHONE");
+
+        progressDialog = new ProgressDialog(this);
 
         buttonVerification = (ImageButton) findViewById(R.id.imageButtonVerification);
 
@@ -131,22 +159,86 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
 
-
         buttonVerification.setOnClickListener(view -> onButtonClick());
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                progressDialog.dismiss();
+
+                Toast.makeText(getApplicationContext(), "Greska!" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                progressDialog.dismiss();
+
+                // Toast.makeText("Daa je kod poslat Stefiju!");
+
+                mVerificationId = verificationId;
+                mResendToken = token;
+            }
+        };
+
+        FirebaseAuth.getInstance().getFirebaseAuthSettings().forceRecaptchaFlowForTesting(false);
+
+        Verification(phone);
     }
 
-    private void onButtonClick()
-    {
-        final String textVerification = text1.getText().toString() +
+    private void Verification(String phoneNumber) {
+        progressDialog.setTitle("Verifikacija u toku");
+        progressDialog.setMessage("Molimo Vas sacekajte Stefija foo-a...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // (optional) Activity for callback binding
+                        // If no activity is passed, reCAPTCHA verification can not be used.
+                        .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
+
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Verification done", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getApplicationContext(), CreateProfileActivity.class);
+                        startActivity(intent);
+                        finishAffinity();
+                    } else {
+                        String e = task.getException().toString();
+                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void onButtonClick() {
+        final String verificationCode = text1.getText().toString() +
                                        text2.getText().toString() +
                                        text3.getText().toString() +
                                        text4.getText().toString() +
                                        text5.getText().toString() +
                                        text6.getText().toString();
-        if(textVerification.length() == 6){
-            Intent intent = new Intent(this, NavigationActivity.class);
-            startActivity(intent);
-        }else
-            Toast.makeText(getApplicationContext(), "Unesite kod!", Toast.LENGTH_LONG).show();
+
+
+        if(verificationCode.length() == 6) {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
+            signInWithPhoneAuthCredential(credential);
+        } else Toast.makeText(getApplicationContext(), "Unesite kod!", Toast.LENGTH_LONG).show();
     }
 }
