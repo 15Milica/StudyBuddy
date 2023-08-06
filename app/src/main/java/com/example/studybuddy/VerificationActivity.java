@@ -172,14 +172,12 @@ public class VerificationActivity extends AppCompatActivity {
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 progressDialog.dismiss();
 
-                Toast.makeText(getApplicationContext(), "Greska!" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Greška!" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 progressDialog.dismiss();
-
-                // Toast.makeText("Daa je kod poslat Stefiju!");
 
                 mVerificationId = verificationId;
                 mResendToken = token;
@@ -193,7 +191,7 @@ public class VerificationActivity extends AppCompatActivity {
 
     private void Verification(String phoneNumber) {
         progressDialog.setTitle("Verifikacija u toku");
-        progressDialog.setMessage("Molimo Vas sacekajte Stefija foo-a...");
+        progressDialog.setMessage("Molimo Vas sačekajte...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -215,14 +213,14 @@ public class VerificationActivity extends AppCompatActivity {
                     progressDialog.dismiss();
 
                     if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Verification done", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Uspešna verifikacija", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(getApplicationContext(), CreateProfileActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finishAffinity();
                     } else {
                         String e = task.getException().toString();
-                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Greška: " + e, Toast.LENGTH_LONG).show();
                     }
                 });
     }

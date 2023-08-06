@@ -142,7 +142,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonCreateProfile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginLeft="@dimen/_20sdp"
