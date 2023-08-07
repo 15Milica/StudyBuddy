@@ -90,7 +90,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 final String last_name = textLastName.getText().toString();
-                if(!Check.validLastName(last_name)) textLastName.setError("Unesite prezime");
+                if(!Check.validLastName(last_name)) textLastName.setError("Unesite prezime!");
             }
 
             @Override
@@ -112,19 +112,19 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
         boolean k = true;
         if(!Check.validFirstName(first_name)){
             k = false;
-            textFirstName.setError("Unesite ime");
+            textFirstName.setError("Unesite ime!");
         }
         if(!Check.validLastName(last_name)){
             k = false;
-            textLastName.setError("Unesite prezime");
+            textLastName.setError("Unesite prezime!");
         }
         if(!Check.validDate(birthday)){
             k = false;
-            textBirthday.setError("Unesite datum rođenja");
+            textBirthday.setError("Unesite datum rođenja!");
         }
         if(description.length() <= 10){
             k = false;
-            textDescription.setError("Recite nešto više o sebi");
+            textDescription.setError("Recite nešto više o sebi!");
         }
         if(!k) return;
         final String search =  first_name.toLowerCase() + " " + last_name.toLowerCase();
@@ -136,7 +136,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
 
     private void uploadImage(){
         progressDialog.setTitle("Otpremanje profilne slike");
-        progressDialog.setMessage("Molimo sačekaje...");
+        progressDialog.setMessage("Sačekajte...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -168,7 +168,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
     }
     private void createProfile(String first_name, String last_name, String birthaday, String description, String search) {
         progressDialog.setTitle("Kreiranje profila");
-        progressDialog.setMessage("Molimo sačekaje...");
+        progressDialog.setMessage("Sačekajte...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 

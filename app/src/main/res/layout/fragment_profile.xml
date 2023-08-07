@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageViewProfileSave"
+            android:id="@+id/imageViewUpdateProfileSave"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:gravity="center_vertical"
@@ -50,6 +50,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_14sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_profile_save" />
     </RelativeLayout>
 
@@ -79,7 +80,7 @@
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profilePhotoCreateProfile"
+                    android:id="@+id/updatePhoto"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_110sdp"
                     android:src="@drawable/ic_create_profile_vectors_photo" />
@@ -102,7 +103,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/editTextProfileFirstName"
+                    android:id="@+id/updateProfileFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_border"
@@ -114,7 +115,7 @@
                     android:textSize="@dimen/_14sdp" />
 
                 <EditText
-                    android:id="@+id/editTextProfileLastName"
+                    android:id="@+id/updateProfileLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
@@ -127,7 +128,7 @@
                     android:textSize="@dimen/_14sdp" />
 
                 <EditText
-                    android:id="@+id/editTextDateProfile"
+                    android:id="@+id/updateDateProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
@@ -155,7 +156,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextMultiLineProfile"
+                android:id="@+id/updateMultiLineProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -197,5 +198,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         app:layout_constraintVertical_bias="0.25" />
+
+    <ProgressBar
+        android:id="@+id/progressBarProfile"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

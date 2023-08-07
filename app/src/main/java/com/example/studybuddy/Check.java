@@ -2,8 +2,11 @@ package com.example.studybuddy;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.widget.EditText;
 
 import java.util.Calendar;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Check {
     public static boolean validFirstName(String first_name){
@@ -32,6 +35,15 @@ public class Check {
     public static boolean networkConnect(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static void enable (EditText first_name, EditText last_name, EditText birthday, EditText description, CircleImageView image, boolean b)
+    {
+        first_name.setEnabled(b);
+        last_name.setEnabled(b);
+        birthday.setEnabled(b);
+        description.setEnabled(b);
+        image.setEnabled(b);
     }
 
 }

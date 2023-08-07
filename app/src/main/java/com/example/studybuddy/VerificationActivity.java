@@ -191,7 +191,7 @@ public class VerificationActivity extends AppCompatActivity {
 
     private void Verification(String phoneNumber) {
         progressDialog.setTitle("Verifikacija u toku");
-        progressDialog.setMessage("Molimo Vas sačekajte...");
+        progressDialog.setMessage("Sačekajte...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
         progressDialog.show();
