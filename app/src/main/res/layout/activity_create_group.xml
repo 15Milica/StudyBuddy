@@ -15,6 +15,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonBackCreateGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondary_color"
+            app:srcCompat="@drawable/ic_left_arrow" />
+        <TextView
+            android:id="@+id/backCreateGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:fontFamily="@font/poppins_title"
+            android:text="@string/Back"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_14sdp"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textViewCreateGroup"
         style="@style/TitleStyle"

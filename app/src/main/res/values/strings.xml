@@ -41,11 +41,21 @@
     <string name="Back">Nazad</string>
     <string name="About">O aplikaciji</string>
     <string name="AboutText">Naučite nešto o nama</string>
-    <string name="AboutText2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="AboutText2">Aplikacija je posebno dizajnirana za studente, tako da je usmerena ka njihovim potrebama, interesima i izazovima. Osim uobičajenih funkcionalnosti društvenih mreža, kao što su deljenje fotografija i komunikacija sa prijateljima, implementiran je algoritam koji omogućuje prikazivanje najboljeg predloga na početnoj stranici korisnicima. Na taj način je prikazano ono što žele da vide, na osnovu njihovih lajkova, komentara i deljenja. Aplikacija ima sekciju sa grupama (studentskim zajednicama), gde studenti imaju priliku da koriste i dele sadržaj za učenje.</string>
 
     <!-- PrivacyTerms strings -->
     <string name="PrivacyTerms">Privatnost i uslovi</string>
     <string name="PrivacyTermsText">Poštujemo vašu privatnost.</string>
+    <string name="PrivacyTermsText2">Pružajući poseban fokus na studente, naša aplikacija je pažljivo oblikovana kako bi zadovoljila njihove potrebe, interese i izazove. No, osim pružanja korisnih i zabavnih funkcionalnosti, isto tako nam je izuzetno važna vaša privatnost i doživljaj sigurnosti tokom korišćenja.</string>
+    <string name="PrivacyTermsUsers">Privatnost Korisnika:</string>
+    <string name="PrivacyTermsUsersText">Vaši lični podaci su od suštinskog značaja i posvećujemo se njihovoj zaštiti. Bilo da je u pitanju vaša lična informacija, podaci o interesovanjima ili komunikacija s prijateljima, obezbeđujemo da se vaši podaci čuvaju i koriste isključivo u skladu s vašim odobrenjem i našim Pravilima o Privatnosti.</string>
+    <string name="PrivacyTermsPersonalize">Pametna Personalizacija:</string>
+    <string name="PrivacyTermsPersonalizeText">Aplikacija koristi inovativan algoritam kako bi vam prikazala sadržaj koji odražava vaše interesovanje. Ovaj algoritam uzima u obzir vaše lajkove, komentare i deljenja, kako bi se osiguralo da svaki put kada otvorite aplikaciju, budete okruženi sadržajem koji vas zaista zanima.</string>
+    <string name="PrivacyTermsStudy">Grupni Sadžaj i Učenje:</string>
+    <string name="PrivacyTermsStudyText">Naša aplikacija pruža mogućnost pridruživanja studentskim zajednicama, gde možete razmenjivati informacije i resurse za učenje. Ovde možete deliti i pronalaziti materijale koji su relevantni za vaše akademske ciljeve.</string>
+    <string name="Terms">Uslovi Korišćenja:</string>
+    <string name="TermsText">Koristeći našu aplikaciju, pristajete na naše Uslove Korišćenja. Ovi uslovi obezbeđuju smernice za korišćenje platforme i odgovornosti korisnika. Molimo vas da pažljivo pročitate ove uslove kako biste razumeli svoje prava i obaveze dok koristite našu aplikaciju. Sva pitanja ili nedoumice u vezi sa vašom privatnošću ili uslovima korišćenja su dobrodošli. Naša svrha je da pružimo kvalitetno iskustvo uz poštovanje vaše privatnosti i prava.</string>
+
 
     <!-- Settings strings -->
     <string name="Settings">PODEŠAVANJA</string>
@@ -96,5 +106,11 @@
     <!-- ChatSettings strings -->
     <string name="ChatSettings">Podesite ćaskanje</string>
     <string name="ChatSettingsMute">Utišaj</string>
+
+    <!-- UserProfile strings -->
+    <string name="UserProfile">PROFIL</string>
+
+    <!-- Invite strings -->
+    <string name="InviteFriends">Pozovi prijatelje</string>
 
 </resources>

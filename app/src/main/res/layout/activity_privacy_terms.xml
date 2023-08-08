@@ -60,9 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_title"
         android:text="@string/PrivacyTermsText"
-        android:textColor="@color/text_color"
+        android:textColor="@color/primary_color"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PrivacyTerms" />
@@ -89,9 +89,99 @@
                 android:layout_marginRight="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/poppins"
-                android:text="@string/AboutText2"
+                android:text="@string/PrivacyTermsText2"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text3PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_title"
+                android:text="@string/PrivacyTermsUsers"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text4PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/PrivacyTermsUsersText"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text5PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_title"
+                android:text="@string/PrivacyTermsPersonalize"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text6PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/PrivacyTermsPersonalizeText"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text7PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_title"
+                android:text="@string/PrivacyTermsStudy"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text8PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/PrivacyTermsStudyText"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text9PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_title"
+                android:text="@string/Terms"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/text10PrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/TermsText"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inbox.NewChatActivity">
+    tools:context=".ui.inbox.InviteActivity">
 
     <ImageView
-        android:id="@+id/imageViewNewChat"
+        android:id="@+id/imageViewInvite"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
@@ -26,14 +25,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButtonBackNewChat"
+            android:id="@+id/imageButtonBackInvite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/secondary_color"
             app:srcCompat="@drawable/ic_left_arrow" />
-
         <TextView
-            android:id="@+id/backNewChat"
+            android:id="@+id/backCreateGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -41,40 +39,24 @@
             android:fontFamily="@font/poppins_title"
             android:text="@string/Back"
             android:textColor="@color/primary_color"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_14sdp"/>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imageButtonInvitePerson"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/secondary_color"
-        android:src="@drawable/ic_new_chat_invite_person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/textViewNewChat"
+        android:id="@+id/textViewInviteFriends"
+        style="@style/TitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_title"
-        android:text="@string/NewChat"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_15sdp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/InviteFriends"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewNewChat" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewInvite" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_16sdp"
         android:background="@drawable/custom_border"
         android:focusable="true"
@@ -82,10 +64,10 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNewChat">
+        app:layout_constraintTop_toBottomOf="@+id/textViewInviteFriends">
 
         <ImageView
-            android:id="@+id/imageViewInboxSearch"
+            android:id="@+id/imageViewSearchInviteFriends"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -93,7 +75,7 @@
             android:src="@drawable/ic_search" />
 
         <EditText
-            android:id="@+id/editTextNewChatSearch"
+            android:id="@+id/editTextSearchInviteFriends"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_10sdp"
@@ -105,20 +87,20 @@
             android:inputType="textPersonName"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_14sdp" />
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUsers"
+        android:id="@+id/recyclerViewInvite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_150sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_160sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

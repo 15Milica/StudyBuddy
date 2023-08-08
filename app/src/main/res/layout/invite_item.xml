@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_16sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:background="@drawable/custom_border">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewInviteItem"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/ic_vectors_invite_friends"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/invite_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_20sdp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewInviteItem"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewInviteItem"
+            app:layout_constraintStart_toStartOf="@+id/imageViewInviteItem"
+            app:layout_constraintTop_toTopOf="@+id/imageViewInviteItem" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewInviteItem"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/invite_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/invite_name"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_title"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/_15sdp" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/invite_button"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:text="Pozovi"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

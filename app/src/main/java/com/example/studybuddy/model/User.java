@@ -40,4 +40,7 @@ public class User implements Serializable {
     public String getPhoto() { return photo; }
     public String getSearch() { return search; }
     public String getToken() { return token; }
+
+    public String getName() { return firstName + " " + lastName; }
+
 }

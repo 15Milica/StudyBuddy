@@ -6,32 +6,173 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.UserProfileActivity">
 
-
-    <androidx.core.widget.NestedScrollView
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/ic_rectangle_vectors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButtonBackUserProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondary_color"
+            app:srcCompat="@drawable/ic_left_arrow" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:fontFamily="@font/poppins_title"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_14sdp"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonOptionsUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:backgroundTint="@color/secondary_color"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:srcCompat="@drawable/ic_chat_vectors_options" />
+
+    <TextView
+        android:id="@+id/textViewUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/UserProfile"
+        android:textSize="@dimen/_28sdp"
+        android:textColor="@color/text_color"
+        android:fontFamily="@font/poppins_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserProfile">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+            
+           <de.hdodenhof.circleimageview.CircleImageView
+               android:id="@+id/imageViewUserProfilePhoto"
+               android:layout_width="@dimen/_130sdp"
+               android:layout_height="@dimen/_110sdp"
+               android:layout_marginLeft="@dimen/_5sdp"
+               android:src="@drawable/ic_create_profile_vectors_photo" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/_10sdp">
 
-            <ImageView
-                android:id="@+id/imageViewAbout"
-                android:layout_width="660dp"
-                android:layout_height="127dp"
-                app:srcCompat="@drawable/ic_rectangle_vectors" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewUserProfileFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:hint="@string/CreateProfileName"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewUserProfileLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:hint="@string/CreateProfileLastName"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_6sdp"/>
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewDateUserProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border"
+                    android:hint="@string/CreateProfileBirthday"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:longClickable="false"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_6sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewMultiLineUserProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/custom_border"
+            android:hint="@string/CreateProfileText"
+            android:fontFamily="@font/poppins"
+            android:gravity="start|top"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_6sdp"/>
     </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProfileStoryline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_350sdp"
+        android:layout_marginBottom="@dimen/_6sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/ProfileStorylineTitle"
+        android:textAlignment="center"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewProfileStoryline"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
