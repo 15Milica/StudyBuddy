@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.widget.EditText;
 
 import java.util.Calendar;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,5 +46,7 @@ public class Check {
         description.setEnabled(b);
         image.setEnabled(b);
     }
+    public static boolean isFollower(String followerId, List<String> listFollowers){ return  listFollowers.contains(followerId); }
+
 
 }

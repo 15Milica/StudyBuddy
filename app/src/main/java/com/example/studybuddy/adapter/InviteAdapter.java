@@ -45,8 +45,8 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
     private void onButtonInvite() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, "Stefan_FOO" + "App link");
-        context.startActivity(Intent.createChooser(i, "Posalji link"));
+        i.putExtra(Intent.EXTRA_TEXT, "Ćao! Pridruži se aplikaicji StudyBuddy!" + "App link");
+        context.startActivity(Intent.createChooser(i, "Pošalji link"));
     }
 
     @Override

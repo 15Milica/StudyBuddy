@@ -1,5 +1,6 @@
 package com.example.studybuddy.adapter;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.studybuddy.R;
 import com.example.studybuddy.chat.ChatActivity;
 import com.example.studybuddy.model.User;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -46,6 +50,29 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         if (!user.getPhoto().equals("default")) { Glide.with(context).load(user.getPhoto()).into(holder.profile_image); }
         else { holder.profile_image.setImageResource(R.drawable.ic_create_profile_vectors_photo); }
 
+        int color1 = ContextCompat.getColor(context, R.color.primary_color);
+        int color2 = ContextCompat.getColor(context, R.color.secondary_color);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user_status").child(userId);
+        databaseReference.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                String status = task.getResult().getValue(String.class);
+
+                if(status != null && status.equals("Online")) {
+                    holder.user_border.setBackgroundColor(color1);
+                    holder.status.setText("Online");
+                    holder.status.setTextColor(color1);
+                } else if(status != null && status.equals("Offline")){
+                    holder.user_border.setBackgroundColor(color2);
+                    holder.status.setText("Offline");
+                    holder.status.setTextColor(color2);
+                } else {
+                    holder.user_border.setBackgroundColor(color2);
+                    holder.status.setText("");
+                    holder.status.setTextColor(color2);
+                }
+            }
+        });
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ChatActivity.class);
@@ -59,7 +86,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public int getItemCount() {
         return users.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView user_name;
         public ImageView profile_image;

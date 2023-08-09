@@ -98,8 +98,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/pagePhotoCreateGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_create_profile_vectors_photo"
@@ -127,7 +127,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_330sdp"
+        android:layout_marginTop="@dimen/_350sdp"
         android:layout_marginBottom="@dimen/_80sdp"
         android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@+id/buttonCreateGroup"
@@ -139,8 +139,8 @@
             android:id="@+id/recyclerViewCreateGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp" />
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp" />
     </androidx.core.widget.NestedScrollView>
 
 
@@ -156,5 +156,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBarCreateGroup"
+        style="?android:attr/progressBarStyle"
+        android:indeterminateTint="@color/primary_color"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
