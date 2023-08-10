@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_16sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,8 +15,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_photo"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
             android:src="@drawable/ic_create_profile_vectors_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,14 +29,14 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/poppins_title"
             android:textColor="@color/primary_color"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_13sdp"
             app:layout_constraintStart_toEndOf="@+id/chat_photo"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/chat_last_message"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="@dimen/_165sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/poppins"
             android:textColor="@color/text_color"

@@ -23,9 +23,8 @@ public class PagesFragment extends Fragment {
         newPageButton.setOnClickListener(view->onNewPageClick());
         return root;
     }
-    private void onNewPageClick()
-    {
-        Intent intent =new Intent(getActivity(), PageActivity.class);
+    private void onNewPageClick() {
+        Intent intent = new Intent(getContext(), NewPageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
