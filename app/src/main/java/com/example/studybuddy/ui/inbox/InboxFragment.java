@@ -1,7 +1,6 @@
 package com.example.studybuddy.ui.inbox;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,9 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.InboxAdapter;
 import com.example.studybuddy.model.ChatItem;
@@ -255,12 +254,15 @@ public class InboxFragment extends Fragment {
     }
     private void onDeleteChat(ChatItem item, int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog_delete, null);
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog, null);
 
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
-        Button buttonConfirm = dialogView.findViewById(R.id.delete_button);
+        Button buttonConfirm = dialogView.findViewById(R.id.confirm_button);
         Button buttonCancel = dialogView.findViewById(R.id.cancel_button);
+        TextView text = dialogView.findViewById(R.id.textViewAlertDialog);
+        text.setText("Želite li da obrišete konverzaciju?");
+        buttonConfirm.setText("Obriši");
 
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

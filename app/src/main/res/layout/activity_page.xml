@@ -73,11 +73,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_title"
-            android:maxWidth="@dimen/_200sdp"
-            android:maxLines="1"
+            android:maxWidth="@dimen/_230sdp"
+            android:maxLines="3"
             android:textAllCaps="true"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/_26sdp" />
+            android:textSize="@dimen/_18sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
         android:id="@+id/recyclerViewPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_110sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

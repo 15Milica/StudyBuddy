@@ -29,7 +29,7 @@
 
     <TextView
         style="@style/TitleStyle"
-        android:id="@+id/textViewGroups"
+        android:id="@+id/textViewPages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Groups"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_16sdp"
         android:background="@drawable/custom_border"
         android:focusable="true"
@@ -49,10 +49,10 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGroups">
+        app:layout_constraintTop_toBottomOf="@+id/textViewPages">
 
         <ImageView
-            android:id="@+id/imageViewGroupsSearch"
+            android:id="@+id/imageViewPagesSearch"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -60,7 +60,7 @@
             android:src="@drawable/ic_search" />
 
         <EditText
-            android:id="@+id/editTextGroupsSearch"
+            android:id="@+id/editTextPagesSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_10sdp"
@@ -77,10 +77,10 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_155sdp"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,12 +92,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-            app:layout_constraintVertical_bias="0.138"
-            tools:layout_editor_absoluteX="0dp">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <com.tsuryo.swipeablerv.SwipeableRecyclerView
-                android:id="@+id/recyclerViewInbox"
+                android:id="@+id/recyclerViewPages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -105,5 +103,16 @@
                 android:layout_marginBottom="@dimen/_5sdp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBarPages"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

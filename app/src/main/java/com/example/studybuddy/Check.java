@@ -48,5 +48,4 @@ public class Check {
     }
     public static boolean isFollower(String followerId, List<String> listFollowers){ return  listFollowers.contains(followerId); }
 
-
 }

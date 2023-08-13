@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.pages.PageDetailsActivity">
 
+
     <ImageView
         android:id="@+id/imageViewDetails"
         android:layout_width="match_parent"
@@ -43,164 +44,220 @@
             android:textColor="@color/primary_color"
             android:textSize="@dimen/_14sdp" />
     </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:focusable="true"
+        android:layout_marginTop="@dimen/_40sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetails">
 
-    <TextView
-        style="@style/TitleStyle"
-        android:id="@+id/textViewPageDetails"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="@style/TitleStyle"
+                android:id="@+id/textViewPageDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/PageDetails"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewDetails" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/pagePhotoDetails"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_create_profile_vectors_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPageDetails" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/custom_border"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pagePhotoDetails">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/PageDetailsName"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/editTextPageDetailsName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_title"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_16sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/custom_border"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutName">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/PageDetailsDescription"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/editTextPageDetailsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_title"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_16sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/custom_border"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDescription">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/PageDetailsMembers"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/textViewPageDetailsMembers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_title"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_16sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutAdmins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/custom_border"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutMembers">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/PageDetailsAdmins"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/textViewPageDetailsAdmins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_title"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_16sdp" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonPageDetailsSave"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Sačuvaj"
+                android:textSize="@dimen/_18sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutAdmins"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonPageDetailsLeave"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Napusti"
+                android:textSize="@dimen/_18sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+   `     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBarPageDetails"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/PageDetails"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDetails" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pagePhotoDetails"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="@dimen/_120sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:src="@drawable/ic_create_profile_vectors_photo"
+        android:indeterminateTint="@color/primary_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPageDetails" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_15sdp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pagePhotoDetails">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/PageDetailsName"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14sdp" />
-
-        <EditText
-            android:id="@+id/editTextPageDetailsName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/poppins_title"
-            android:inputType="textPersonName"
-            android:textAlignment="textEnd"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/_15sdp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutName">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/PageDetailsDescription"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14sdp" />
-
-        <EditText
-            android:id="@+id/editTextPageDetailsDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/poppins_title"
-            android:inputType="textMultiLine"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutMembers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/_15sdp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDescription">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/PageDetailsMembers"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14sdp" />
-
-        <EditText
-            android:id="@+id/textViewPageDetailsMembers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/poppins_title"
-            android:inputType="textPersonName"
-            android:textAlignment="textEnd"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutAdmins"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/_15sdp"
-        android:background="@drawable/custom_border"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutMembers">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/PageDetailsAdmins"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14sdp" />
-
-        <EditText
-            android:id="@+id/linearLayoutPageDetailsAdmins"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:enabled="false"
-            android:fontFamily="@font/poppins_title"
-            android:inputType="textPersonName"
-            android:textAlignment="textEnd"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_16sdp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,7 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="@dimen/_45sdp"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/gray"
         app:fabCradleMargin="@dimen/_10sdp"
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="16dp"
             android:background="@drawable/color_transparent"
-            app:itemIconSize="@dimen/_24sdp"
+            app:itemIconSize="@dimen/_20sdp"
             app:itemIconTint="@drawable/custom_menu_item"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu" />
@@ -50,7 +50,7 @@
         android:src="@drawable/menu_home"
         android:backgroundTint="@drawable/custom_home_item"
         app:tint="@android:color/white"
-        app:maxImageSize="@dimen/_30sdp"
+        app:maxImageSize="@dimen/_25sdp"
         app:fabCustomSize="@dimen/_50sdp"
         app:layout_anchor="@id/bottomAppBar"
         app:borderWidth="0dp"/>
@@ -60,7 +60,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/_50sdp"
+        android:layout_marginBottom="@dimen/_45sdp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/mobile_navigation" />
 
