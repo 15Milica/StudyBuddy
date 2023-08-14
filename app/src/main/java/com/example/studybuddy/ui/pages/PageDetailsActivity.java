@@ -39,6 +39,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,7 +88,6 @@ public class PageDetailsActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(view -> onBackPressed());
 
         photoGroup = (CircleImageView) findViewById(R.id.pagePhotoDetails);
-        photoGroup.setOnClickListener(view -> onClickPhoto());
 
         pageName = (EditText) findViewById(R.id.editTextPageDetailsName);
         pageName.addTextChangedListener(new TextWatcher() {
@@ -128,40 +129,49 @@ public class PageDetailsActivity extends AppCompatActivity {
         refDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressBar.setVisibility(View.GONE);
+
                 Page page = snapshot.getValue(Page.class);
+                if(page != null) {
+                    pageName.setText(page.getPageName());
+                    pageDescription.setText(page.getPageDescription());
 
-                pageName.setText(page.getPageName());
-                pageDescription.setText(page.getPageDescription());
+                    if (page.getPagePhoto().equals("default"))
+                        photoGroup.setImageResource(R.drawable.ic_create_profile_vectors_photo);
+                    else
+                        Glide.with(getApplicationContext()).load(page.getPagePhoto()).into(photoGroup);
 
-                if(page.getPagePhoto().equals("default")) photoGroup.setImageResource(R.drawable.ic_create_profile_vectors_photo);
-                else Glide.with(getApplicationContext()).load(page.getPagePhoto()).into(photoGroup);
+                    Map<String, String> members = page.getMembers();
 
-                if(page.getMembers().get(user.getUid()).equals("member")){
-                    buttonLeave.setVisibility(View.VISIBLE);
-                    buttonSave.setVisibility(View.GONE);
-                    pageName.setEnabled(false);
-                    pageDescription.setEnabled(false);
-                    photoGroup.setEnabled(false);
-                } else {
-                    buttonLeave.setVisibility(View.GONE);
-                    buttonSave.setVisibility(View.GONE);
-                    pageName.setEnabled(true);
-                    pageDescription.setEnabled(true);
-                    photoGroup.setEnabled(true);
+                    final String level = members.get(user.getUid());
+
+                    if (Objects.equals(level, "admin")) {
+                        buttonLeave.setVisibility(View.GONE);
+                        buttonSave.setVisibility(View.VISIBLE);
+
+                        pageName.setEnabled(true);
+                        pageDescription.setEnabled(true);
+                        photoGroup.setOnClickListener(view -> onClickPhoto());
+
+                    } else {
+                        buttonLeave.setVisibility(View.VISIBLE);
+                        buttonSave.setVisibility(View.GONE);
+
+                        pageName.setEnabled(false);
+                        pageDescription.setEnabled(false);
+                    }
+
+                    int number_of_members = Collections.frequency(page.getMembers().values(), "member");
+                    int number_of_admins = Collections.frequency(page.getMembers().values(), "admin");
+
+                    pageMembers.setText(String.valueOf(number_of_members));
+                    pageAdmins.setText(String.valueOf(number_of_admins));
                 }
 
-                int number_of_members = Collections.frequency(page.getMembers().values(), "member");
-                int number_of_admins = Collections.frequency(page.getMembers().values(), "admin");
-
-                pageMembers.setText(String.valueOf(number_of_members));
-                pageAdmins.setText(String.valueOf(number_of_admins));
-
-                progressBar.setVisibility(View.GONE);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {progressBar.setVisibility(View.GONE);}
         });
-
     }
     private void onClickSave(){
         if(!Check.networkConnect(getApplicationContext())) {

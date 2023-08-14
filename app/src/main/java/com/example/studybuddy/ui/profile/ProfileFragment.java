@@ -14,17 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.adapter.ProfileStorylineAdapter;
+import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
@@ -34,13 +37,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,16 +59,19 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
     private EditText textDescription;
     private CircleImageView updatePhoto;
     private ImageView buttonSave;
+    private RecyclerView recyclerView;
+    private List<Post> posts;
     private Uri imageUri;
     private FirebaseUser user;
     private DatabaseReference refDatabase;
     private StorageReference refStorage;
     ProgressDialog progressDialog;
-
     ProgressBar progressBar;
+    private ProfileStorylineAdapter profileStorylineAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        posts = new ArrayList<>();
 
         progressDialog = new ProgressDialog(getContext());
         progressBar = (ProgressBar) root.findViewById(R.id.progressBarProfile);
@@ -78,7 +88,6 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
         textDescription = (EditText) root.findViewById(R.id.updateMultiLineProfile);
 
         buttonSave = (ImageView) root.findViewById(R.id.imageViewUpdateProfileSave);
-
 
         textFirstName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,6 +127,11 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
         updatePhoto.setOnClickListener(view -> onClickUpdateImage());
 
         buttonSave.setOnClickListener(view -> onClickButtonSave());
+
+        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerViewProfileStoryline);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        setStoryline();
+
         return root;
     }
     private void setUserDetails(){
@@ -274,6 +288,29 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
                 refDatabase.child("users").child(user.getUid()).updateChildren(map);
                 imageUri = null;
             });
+        });
+    }
+    private void setStoryline(){
+        Query query = FirebaseDatabase.getInstance().getReference("posts").orderByChild("user")
+                .startAt(user.getUid())
+                .endAt(user.getUid()+"\uf8ff");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                posts.clear();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Post post = dataSnapshot.getValue(Post.class);
+                    posts.add(post);
+                }
+
+                Collections.reverse(posts);
+                profileStorylineAdapter = new ProfileStorylineAdapter(getContext(), getActivity(), posts);
+                recyclerView.setAdapter(profileStorylineAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 }

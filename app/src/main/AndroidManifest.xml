@@ -19,6 +19,9 @@
         android:theme="@style/Theme.StudyBuddy"
         tools:targetApi="31">
         <activity
+            android:name=".ui.home.NewPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.inbox.InviteActivity"
             android:exported="false" />
         <activity

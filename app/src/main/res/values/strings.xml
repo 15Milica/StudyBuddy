@@ -113,4 +113,14 @@
     <!-- Invite strings -->
     <string name="InviteFriends">Pozovi prijatelje</string>
 
+    <!-- NewPost strings -->
+    <string name="NewPost">Nova objava</string>
+    <string name="NewPostInputText">Unesite tekst...</string>
+    <string name="NewPostPostDescription">Dodajte opis...</string>
+    <string name="NewPostText1">Dodaj lokaciju, hashtags</string>
+    <string name="NewPostText2">Napredne opcije</string>
+    <string name="NewPostShare">Deli</string>
+    <string name="NewPostComments">Komentari</string>
+    <string name="NewPostButton">Objavi</string>
+
 </resources>

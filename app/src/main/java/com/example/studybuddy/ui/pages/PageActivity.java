@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.studybuddy.R;
 import com.example.studybuddy.model.Page;
+import com.example.studybuddy.ui.home.NewPostActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +45,6 @@ public class PageActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         page = (Page) getIntent().getSerializableExtra("page");
-        UserIsMember(user.getUid());
 
         textViewBack = (TextView) findViewById(R.id.textViewBackPage);
         textViewBack.setOnClickListener(view -> onBackPressed());
@@ -71,7 +71,10 @@ public class PageActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_DETAILS);
     }
     private void onClickNewPost(){
-
+        Intent intent = new Intent(this, NewPostActivity.class);
+        intent.putExtra("pageId", page.getPageId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -79,16 +82,6 @@ public class PageActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_DETAILS && resultCode == RESULT_OK) finish();
     }
-    private void UserIsMember(String userId){
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("pages").child(page.getPageId());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Page p = snapshot.getValue(Page.class);
-                if(!p.getMembers().containsKey(userId)) onBackPressed();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
+
+
 }
