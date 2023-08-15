@@ -2,13 +2,16 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_350sdp"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/_5sdp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/_10sdp">
 
     <LinearLayout
         android:id="@+id/pae_post_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/page_post_user_photo"
@@ -36,7 +39,7 @@
                     android:textSize="@dimen/_13sdp"
                     android:fontFamily="@font/poppins_title"
                     android:textColor="@color/text_color"/>
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/page_post_admin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:textSize="@dimen/_8sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/poppins"/>
         </LinearLayout>
@@ -78,7 +81,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_40sdp"
         android:layout_marginBottom="@dimen/_40sdp"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/page_post_text"
@@ -106,7 +110,151 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:auto_show="false"
-            app:show_buffering="when_playing" />
+            app:show_buffering="when_playing"
+            app:controller_layout_id="@layout/custom_controller"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="bottom"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:background="@color/gray">
+
+        <LinearLayout
+            android:layout_width="@dimen/_58sdp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/page_post_like"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonLikePagePost"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/ic_vector_like"/>
+                <TextView
+                    android:id="@+id/textViewLikePagePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/page_post_comment"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonCommentPagePost"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_21sdp"
+                    android:background="@drawable/ic_vector_comment"/>
+                <TextView
+                    android:id="@+id/textViewCommentPagePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/page_post_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:textAlignment="center"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_10sdp"
+            android:maxLines="2"
+            android:visibility="visible"
+            tools:ignore="RtlCompat" />
+
+    <LinearLayout
+        android:id="@+id/lin_share_page_post"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:visibility="invisible"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/page_post_share"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSharePagePost"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_vector_share"/>
+
+            <TextView
+                android:id="@+id/textViewSharePagePost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:text="Deli"
+                android:textSize="@dimen/_7sdp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/text_color"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/page_post_send"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSendPagePost"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_vector_save" />
+
+            <TextView
+                android:id="@+id/textViewSendPagePost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_7sdp"
+                android:text="Sačuvaj"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
