@@ -111,7 +111,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewCreateGroup);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        showContacts();
+        showFollowers();
     }
 
     @Override
@@ -168,21 +168,23 @@ public class CreateGroupActivity extends AppCompatActivity {
             finish();
         });
     }
-    private void showContacts(){
-        DatabaseReference refFollow = FirebaseDatabase.getInstance().getReference("followers");
-        refFollow.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mFollowers.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                    mFollowers.add(dataSnapshot.getKey());
-                readUsers();
-            }
+    private void showFollowers(){
+        DatabaseReference refFollowers = FirebaseDatabase.getInstance().getReference("followers");
+        refFollowers.child(userCreator.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        mFollowers.clear();
+                        for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                            mFollowers.add(dataSnapshot.getKey());
+                        readUsers();
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
     }
+
     private void readUsers() {
         progressBar.setVisibility(View.VISIBLE);
         DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("users");
@@ -194,7 +196,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     User u = dataSnapshot.getValue(User.class);
                     assert u != null;
                     assert userCreator != null;
-                    if(!userCreator.getUid().equals(u.getUserId()) /*&& Check.isFollower(u.getUserId(), mFollowers)*/) users.add(u);
+                    if (!userCreator.getUid().equals(u.getUserId()) && Check.isFollower(u.getUserId(), mFollowers)) { users.add(u); }
                 }
                 groupAdapter = new GroupAdapter(CreateGroupActivity.this, users);
                 recyclerView.setAdapter(groupAdapter);

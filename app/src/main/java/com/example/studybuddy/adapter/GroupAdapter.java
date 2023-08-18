@@ -57,7 +57,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 } else {
                     checkedUsers.remove(user);
                 }
-
                 if (checkedUsers.size() < 2) buttonCreate.setEnabled(false);
                 else buttonCreate.setEnabled(true);
         });

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_350sdp"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/page_post_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_page_post_admin" />
             </LinearLayout>
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/page_post_user_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:backgroundTint="@color/white"
-            android:visibility="gone"
             app:srcCompat="@drawable/ic_chat_vectors_options"/>
     </LinearLayout>
 
@@ -117,11 +116,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/_350sdp"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
-        android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
         android:orientation="horizontal"
         android:background="@color/gray">
 
@@ -143,7 +142,7 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/ic_vector_like"/>
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewLikePagePost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -168,7 +167,7 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_21sdp"
                     android:background="@drawable/ic_vector_comment"/>
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewCommentPagePost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -195,6 +194,23 @@
             android:visibility="visible"
             tools:ignore="RtlCompat" />
 
+        <LinearLayout
+            android:id="@+id/linearLayoutPagePostHide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center_horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonHidePagePost"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_vector_hide"/>
+
+        </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lin_share_page_post"
         android:layout_width="@dimen/_65sdp"
@@ -217,7 +233,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ic_vector_share"/>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewSharePagePost"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -241,7 +257,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ic_vector_save" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewSendPagePost"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -250,11 +266,292 @@
                 android:fontFamily="@font/poppins"
                 android:textSize="@dimen/_7sdp"
                 android:text="Sačuvaj"/>
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout_page_post_description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:visibility="gone"
+        android:background="@color/secondary_color">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/page_post_full_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/primary_color"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_12sdp" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout_page_post_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:background="@color/gray"
+        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/linearLayoutPostCurrentUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutHideNumberLike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_vector_hide_like"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Sakrijte broj sviđanja"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutNumberLike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_vector_post_like"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Otkrij broj sviđanja"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutHideComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_vector_no_comment"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Isključi komentarisanje"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutDeletePost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_95sdp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_vector_bin"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="Izbriši objavu"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFollow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@drawable/ic_vector_follower"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="Prati"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutNoFollow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@drawable/ic_vector_no_follower"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="Ne prati više"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consPagePostComments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
+        android:background="@color/gray"
+        android:padding="@dimen/_6sdp"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/commentsTitlePagePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Komentari"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/commentsNumberPagePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recCommentsPagePost"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/editTextCommentsPagePost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentsTitlePagePost"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageViewPagePost"
+            android:layout_width="@dimen/_220sdp"
+            android:layout_height="0.6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/primary_color"/>
+
+        <android.widget.EditText
+            android:id="@+id/editTextCommentsPagePost"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:background="@drawable/color_transparent"
+            android:fontFamily="@font/poppins"
+            android:hint="Dodaj komentar..."
+            android:textCursorDrawable="@null"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/primary_color"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatImageViewPagePost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewCommentsPagePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:fontFamily="@font/poppins"
+            android:text="DODAJ"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/_8sdp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:translationZ="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextCommentsPagePost"
+            app:layout_constraintStart_toEndOf="@+id/editTextCommentsPagePost" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

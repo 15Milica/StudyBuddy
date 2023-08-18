@@ -167,18 +167,15 @@ public class NewChatActivity extends AppCompatActivity {
                     users.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         User u = dataSnapshot.getValue(User.class);
-
                         assert u != null;
                         assert firebaseUser != null;
-
-                        if (!firebaseUser.getUid().equals(u.getUserId()) /*&& Check.isFollower(u.getUserId(), mFollowers)*/) { users.add(u); }
+                        if (!firebaseUser.getUid().equals(u.getUserId()) && Check.isFollower(u.getUserId(), mFollowers)) { users.add(u); }
                     }
                     userAdapter = new UserAdapter(NewChatActivity.this, users);
                     recyclerView.setAdapter(userAdapter);
                 }
                 progressBar.setVisibility(View.GONE);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) { progressBar.setVisibility(View.GONE); }
         });

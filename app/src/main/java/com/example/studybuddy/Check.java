@@ -3,6 +3,7 @@ package com.example.studybuddy;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.Calendar;
 import java.util.List;
