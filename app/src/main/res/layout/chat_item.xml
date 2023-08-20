@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray">>
+        android:background="@color/gray">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_photo"

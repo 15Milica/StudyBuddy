@@ -13,6 +13,7 @@ public class Post {
     public String description;
     public boolean optionShare;
     public boolean optionComments;
+    public boolean optionLike;
 
     public static final String POST_TYPE_TEXT = "text";
     public static final String POST_TYPE_VIDEO = "video";
@@ -20,7 +21,7 @@ public class Post {
 
     public Post() { hashtags = new ArrayList<>(); }
 
-    public Post(String id, String user, String type, String post, String location, List<String> hashtags, String description, boolean optionShare, boolean optionComments) {
+    public Post(String id, String user, String type, String post, String location, List<String> hashtags, String description, boolean optionShare, boolean optionComments, boolean optionLike) {
         this.id = id;
         this.user = user;
         this.type = type;
@@ -30,6 +31,7 @@ public class Post {
         this.description = description;
         this.optionShare = optionShare;
         this.optionComments = optionComments;
+        this.optionLike = optionLike;
     }
 
     public String getId() { return id; }
@@ -42,4 +44,5 @@ public class Post {
     public String getDescription() { return description; }
     public boolean isOptionShare() { return optionShare; }
     public boolean isOptionComments() { return optionComments; }
+    public boolean isOptionLike() { return optionLike; }
 }

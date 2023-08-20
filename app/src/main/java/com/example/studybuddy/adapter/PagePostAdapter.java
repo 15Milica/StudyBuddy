@@ -2,9 +2,10 @@ package com.example.studybuddy.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.compose.ui.layout.HorizontalAlignmentLine;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -30,7 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
-import com.example.studybuddy.model.Like;
+import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Page;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
@@ -38,7 +37,6 @@ import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.gms.common.api.Api;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -98,24 +96,10 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             holder.linearLayoutPostCurrentUser.setVisibility(View.GONE);
             holder.linearLayoutDeletePost.setVisibility(View.GONE);
         }
-        holder.linearLayoutDeletePost.setOnClickListener(view -> onClickDeletePost(post.getId()));
-        holder.linearLayoutNoComments.setOnClickListener(view -> {holder.linearLayoutComment.setVisibility(View.GONE);});
-
-        setLike(holder, post.getId(), post.getUser(), post.getHashtags());
-        holder.linearLayoutHideLike.setOnClickListener(view->{
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("visibility", false);
-            DatabaseReference ref= FirebaseDatabase.getInstance().getReference("likes");
-            ref.child(post.getId()).updateChildren(map);
-        });
-        holder.linearLayoutLike.setOnClickListener(view -> {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("visibility", true);
-            DatabaseReference ref= FirebaseDatabase.getInstance().getReference("likes");
-            ref.child(post.getId()).updateChildren(map);
-        });
-
         setUserInfo(holder, post.getUser());
+        setLike(holder, post.getId(), post.getUser(), post.getHashtags());
+        setVisibilityLike(post.isOptionLike(), post.getId(), holder);
+        setVisibilityComments(post, holder);
 
         holder.linearLayoutFollow.setOnClickListener(view -> {
             DatabaseReference fRef = FirebaseDatabase.getInstance().getReference("followers");
@@ -132,26 +116,21 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             holder.textViewDescription.setOnClickListener(view-> onClickDescription(holder, post));
         }
 
-        holder.textViewDescription.setVisibility(View.VISIBLE);
-        holder.linearLayoutHide.setVisibility(View.GONE);
-        holder.coordinatorLayoutComments.setVisibility(View.GONE);
-        holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
-        holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
+        Check.settingsPagePost(holder.textViewDescription, holder.linearLayoutHide, holder.coordinatorLayoutFullDescription, holder.coordinatorLayoutSettingPost, holder.constraintLayoutComments, holder.options);
+        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
 
         holder.coordinatorLayoutSettingPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
+                holder.options.setActivated(false);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
             }
         });
 
         String isAdmin = page.getMembers().get(post.getUser());
-
         if(Objects.equals(isAdmin, "admin")) {holder.imageViewAdmin.setVisibility(View.VISIBLE);
         } else { holder.imageViewAdmin.setVisibility(View.GONE); }
-
-        if(post.isOptionComments()) setComment(holder, post.getId(), post.getUser(), post.getHashtags());
-        else holder.linearLayoutComment.setVisibility(View.GONE);
 
         if(post.isOptionShare()) holder.linearLayoutShare.setVisibility(View.VISIBLE);
         else holder.linearLayoutShare.setVisibility(View.GONE);
@@ -188,22 +167,163 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             }
         }
         holder.userPhoto.setOnClickListener(view->onClickPhoto(post));
+        holder.linearLayoutDeletePost.setOnClickListener(view -> onClickDeletePost(post.getId()));
         holder.options.setOnClickListener(view -> {
-            holder.coordinatorLayoutSettingPost.setVisibility(View.VISIBLE);
+            if(holder.options.isActivated()){
+                holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
+                holder.options.setActivated(false);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
+            }else {
+                holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
+                holder.constraintLayoutComments.setVisibility(View.GONE);
+                holder.coordinatorLayoutSettingPost.setVisibility(View.VISIBLE);
+                holder.options.setActivated(true);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, false);
+            }
+        });
+        holder.buttonHide.setOnClickListener(view -> {
+            holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
+            holder.constraintLayoutComments.setVisibility(View.GONE);
+            holder.linearLayoutHide.setVisibility(View.GONE);
+            holder.textViewDescription.setVisibility(View.VISIBLE);
+            holder.options.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void setUserInfo(ViewHolder holder, String userId){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                holder.userName.setText(user.getName());
+
+                if(user.getPhoto().equals("deafult")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
+                else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
+                if(!firebaseUser.getUid().equals(user.getUserId())) {
+                    setFollowUnfollow(holder, user.getUserId());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    private void setVisibilityComments(Post post, ViewHolder holder){
+        if(post.isOptionComments()) {
+            setComment(holder, post.getId(), post.getUser(), post.getHashtags());
+            holder.linearLayoutNoComments.setVisibility(View.VISIBLE);
+            holder.linearLayoutVisibilityComment.setVisibility(View.GONE);
+            holder.linearLayoutComment.setVisibility(View.VISIBLE);
+        } else {
+            holder.linearLayoutComment.setVisibility(View.GONE);
+            holder.linearLayoutVisibilityComment.setVisibility(View.VISIBLE);
+            holder.linearLayoutNoComments.setVisibility(View.GONE);
+            holder.linearLayoutComment.setVisibility(View.GONE);
+        }
+        holder.linearLayoutNoComments.setOnClickListener(view -> {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionComments", false);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages_posts");
+            ref.child(page.getPageId()).child(post.getId()).updateChildren(map);
+        });
+        holder.linearLayoutVisibilityComment.setOnClickListener(view -> {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionComments", true);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages_posts");
+            ref.child(page.getPageId()).child(post.getId()).updateChildren(map);
         });
     }
     private void setComment(ViewHolder holder, String postId, String postUser, List<String> hashtags){
-        holder.linearLayoutComment.setVisibility(View.VISIBLE);
         holder.recyclerViewComments.setLayoutManager(new LinearLayoutManager(context));
 
         DatabaseReference refComments = FirebaseDatabase.getInstance().getReference("comments");
+        refComments.child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Comment> comments = new ArrayList<>();
+                boolean b = false;
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Comment comment = dataSnapshot.getValue(Comment.class);
+                    comments.add(comment);
+                    if(comment.getUser().equals(firebaseUser.getUid())) b=true;
+                }
+                holder.textViewComment.setText(String.valueOf(comments.size()));
+                holder.commentsNumber.setText(String.valueOf(comments.size()));
 
+                if(b){
+                    holder.textViewComment.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                    holder.comment.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_comment_active));
+                    holder.comment.setActivated(true);
+                }else {
+                    holder.textViewComment.setTextColor(ContextCompat.getColor(context, R.color.text_color));
+                    holder.comment.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_comment));
+                    holder.comment.setActivated(false);
+                }
+                CommentAdapter commentAdapter = new CommentAdapter(context, comments, postId, page.getPageId());
+                holder.recyclerViewComments.setAdapter(commentAdapter);
+                holder.recyclerViewComments.addOnItemTouchListener(mScrollTouchListener);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        holder.editTextComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!holder.editTextComment.getText().toString().trim().isEmpty()) { holder.addComment.setVisibility(View.VISIBLE); }
+                else { holder.addComment.setVisibility(View.GONE); }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+        holder.addComment.setOnClickListener(view -> {
+            postComment(postId, holder.editTextComment.getText().toString().trim(), postUser, hashtags);
+            holder.editTextComment.setText("");
+        });
 
         holder.comment.setOnClickListener(view -> {
-            holder.coordinatorLayoutComments.setVisibility(View.VISIBLE);
-            holder.buttonHide.setVisibility(View.VISIBLE);
+            holder.constraintLayoutComments.setVisibility(View.VISIBLE);
+            holder.linearLayoutHide.setVisibility(View.VISIBLE);
             holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
             holder.textViewDescription.setVisibility(View.GONE);
+            holder.options.setVisibility(View.GONE);
+        });
+    }
+    private void postComment(String postId, String textComment, String postUser, List<String> hashtags){
+        if(!Check.networkConnect(context)){
+            Toast.makeText(context, "Greška: nema mreže!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DatabaseReference refComments = FirebaseDatabase.getInstance().getReference("comments");
+        final String commentId = refComments.child(postId).push().getKey();
+        Comment comment = new Comment(commentId, firebaseUser.getUid(), textComment);
+        refComments.child(postId).child(commentId).setValue(comment).addOnCompleteListener(task->{
+          //notifikacija
+        });
+        //algoritam
+    }
+    private void setVisibilityLike(boolean visibility, String postId, ViewHolder holder){
+        if(visibility){
+            holder.linearLayoutHideLike.setVisibility(View.VISIBLE);
+            holder.linearLayoutLike.setVisibility(View.GONE);
+            holder.textViewLike.setVisibility(View.VISIBLE);
+        }else {
+            holder.linearLayoutHideLike.setVisibility(View.GONE);
+            holder.linearLayoutLike.setVisibility(View.VISIBLE);
+            holder.textViewLike.setVisibility(View.GONE);
+        }
+        holder.linearLayoutHideLike.setOnClickListener(view->{
+            HashMap<String, Object> map= new HashMap<>();
+            map.put("optionLike", false);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pages_posts");
+            reference.child(page.getPageId()).child(postId).updateChildren(map);
+        });
+        holder.linearLayoutLike.setOnClickListener(view -> {
+            HashMap<String, Object> map= new HashMap<>();
+            map.put("optionLike", true);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pages_posts");
+            reference.child(page.getPageId()).child(postId).updateChildren(map);
         });
     }
     private void setLike(ViewHolder holder, String postId, String userId, List<String> hashtags){
@@ -213,38 +333,22 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                     @SuppressLint("ResourceAsColor")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Like like = snapshot.getValue(Like.class);
-                        if(like == null){
-                            Map<String, String> users = new HashMap<>();
-                            Like like1 = new Like(postId, users, true);
-                            refLike.child(postId).setValue(like1).addOnSuccessListener(aVoid->{
-                                holder.textViewLike.setText(String.valueOf(0));
-                                holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.text_color));
-                                holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like));
-                                holder.like.setActivated(false);
-                            }).addOnFailureListener(e->{
-                                Toast.makeText(context, "Greška: "+ e.getMessage(),Toast.LENGTH_LONG).show();
-                            });
+                        List<String> likes = new ArrayList<>();
+
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            final String like = dataSnapshot.getValue(String.class);
+                            likes.add(like);
+                        }
+
+                        holder.textViewLike.setText(String.valueOf(likes.size()));
+                        if(likes.contains(firebaseUser.getUid())){
+                            holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                            holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like_primary));
+                            holder.like.setActivated(true);
                         }else {
-                            holder.textViewLike.setText(String.valueOf(like.getUsers().size()));
-                            if(like.getUsers().containsValue(firebaseUser.getUid())){
-                                holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
-                                holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like_primary));
-                                holder.like.setActivated(true);
-                            }else {
-                                holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.text_color));
-                                holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like));
-                                holder.like.setActivated(false);
-                            }
-                            if(like.isVisibility()){
-                                holder.linearLayoutHideLike.setVisibility(View.VISIBLE);
-                                holder.textViewLike.setVisibility(View.VISIBLE);
-                                holder.linearLayoutLike.setVisibility(View.GONE);
-                            }else {
-                                holder.linearLayoutHideLike.setVisibility(View.GONE);
-                                holder.textViewLike.setVisibility(View.GONE);
-                                holder.linearLayoutLike.setVisibility(View.VISIBLE);
-                            }
+                            holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.text_color));
+                            holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like));
+                            holder.like.setActivated(false);
                         }
                     }
                     @Override
@@ -253,10 +357,10 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         holder.like.setOnClickListener(view ->{
             if(holder.like.isActivated()){
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
-                ref.child(postId).child("users").child(firebaseUser.getUid()).removeValue();
+                ref.child(postId).child(firebaseUser.getUid()).removeValue();
             } else {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
-                ref.child(postId).child("users").child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
+                ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
             }
         });
     }
@@ -302,9 +406,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             stopPlayer();
         }
     }
-    public void stopPlayer() {
-        if(player != null) player.pause();
-    }
+    public void stopPlayer() { if(player != null) player.pause(); }
     private void onClickPhoto(Post post){
         Intent intent = new Intent(context, UserProfileActivity.class);
         intent.putExtra("userId", post.getUser());
@@ -317,12 +419,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             holder.textViewDescription.setVisibility(View.GONE);
             holder.linearLayoutHide.setVisibility(View.VISIBLE);
             holder.textViewFullDescription.setText(post.getDescription());
-
-            holder.buttonHide.setOnClickListener(view -> {
-                holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
-                holder.linearLayoutHide.setVisibility(View.GONE);
-                holder.textViewDescription.setVisibility(View.VISIBLE);
-            });
+            holder.options.setVisibility(View.GONE);
         }
     }
     private void onClickDeletePost(String postId){
@@ -339,25 +436,6 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                     }
                     else Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 });
-    }
-
-    private void setUserInfo(ViewHolder holder, String userId){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                holder.userName.setText(user.getName());
-
-                if(user.getPhoto().equals("deafult")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
-                else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
-                if(!firebaseUser.getUid().equals(user.getUserId())) {
-                    setFollowUnfollow(holder, user.getUserId());
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
     }
 
     private void setFollowUnfollow(ViewHolder holder, String userId){
@@ -378,7 +456,6 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-
     @Override
     public int getItemCount() { return posts.size(); }
 
@@ -395,6 +472,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         public LinearLayout linearLayoutHideLike;
         public LinearLayout linearLayoutLike;
         public LinearLayout linearLayoutNoComments;
+        public LinearLayout linearLayoutVisibilityComment;
         public LinearLayout linearLayoutDeletePost;
         public ImageView imagePost;
         public LinearLayout linearLayoutTextPost;
@@ -404,7 +482,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         public Button like;
         public TextView textViewLike;
         public LinearLayout linearLayoutComment;
-        public ConstraintLayout coordinatorLayoutComments;
+        public ConstraintLayout constraintLayoutComments;
         public TextView commentsNumber;
         public RecyclerView recyclerViewComments;
         public EditText editTextComment;
@@ -435,6 +513,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             linearLayoutHideLike = itemView.findViewById(R.id.linearLayoutHideNumberLike);
             linearLayoutLike = itemView.findViewById(R.id.linearLayoutNumberLike);
             linearLayoutNoComments = itemView.findViewById(R.id.linearLayoutHideComment);
+            linearLayoutVisibilityComment = itemView.findViewById(R.id.linearLayoutVisibilityComment);
             linearLayoutFollow = itemView.findViewById(R.id.linearLayoutFollow);
             linearLayoutNoFollow = itemView.findViewById(R.id.linearLayoutNoFollow);
             linearLayoutDeletePost = itemView.findViewById(R.id.linearLayoutDeletePost);
@@ -449,7 +528,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             textViewLike = itemView.findViewById(R.id.textViewLikePagePost);
             linearLayoutComment = itemView.findViewById(R.id.page_post_comment);
 
-            coordinatorLayoutComments = itemView.findViewById(R.id.consPagePostComments);
+            constraintLayoutComments = itemView.findViewById(R.id.consPagePostComments);
             commentsNumber = itemView.findViewById(R.id.commentsNumberPagePost);
             recyclerViewComments = itemView.findViewById(R.id.recCommentsPagePost);
             editTextComment = itemView.findViewById(R.id.editTextCommentsPagePost);
@@ -469,4 +548,21 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             save = itemView.findViewById(R.id.buttonSendPagePost);
         }
     }
+    RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            int action = e.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_MOVE:
+                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) { }
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) { }
+    };
 }

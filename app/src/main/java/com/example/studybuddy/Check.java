@@ -2,8 +2,15 @@ package com.example.studybuddy;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import java.util.Calendar;
 import java.util.List;
@@ -48,5 +55,19 @@ public class Check {
         image.setEnabled(b);
     }
     public static boolean isFollower(String followerId, List<String> listFollowers){ return  listFollowers.contains(followerId); }
-
+    public static void enableButtonPagePost(Button like, Button comment, Button share, Button send, TextView description, boolean b) {
+        like.setEnabled(b);
+        comment.setEnabled(b);
+        share.setEnabled(b);
+        send.setEnabled(b);
+        description.setEnabled(b);
+    }
+    public static void settingsPagePost(TextView description, LinearLayout hide, CoordinatorLayout coordinatorLayoutFullDescription, CoordinatorLayout coordinatorLayoutSettings, ConstraintLayout constraintLayoutComments, ImageButton option){
+        description.setVisibility(View.VISIBLE);
+        hide.setVisibility(View.GONE);
+        constraintLayoutComments.setVisibility(View.GONE);
+        coordinatorLayoutSettings.setVisibility(View.GONE);
+        coordinatorLayoutFullDescription.setVisibility(View.GONE);
+        option.setActivated(false);
+    }
 }

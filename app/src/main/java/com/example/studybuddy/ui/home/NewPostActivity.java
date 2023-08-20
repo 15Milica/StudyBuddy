@@ -128,7 +128,7 @@ public class NewPostActivity extends AppCompatActivity {
                 return;
             }
             final String postId = refDatabase.push().getKey();
-            Post post = new Post(postId, user.getUid(), type, text, location, hashtags, description, share, comments);
+            Post post = new Post(postId, user.getUid(), type, text, location, hashtags, description, share, comments, true);
             refDatabase.child(postId).setValue(post)
                     .addOnCompleteListener(task -> {
                         progressDialog.dismiss();
@@ -155,7 +155,7 @@ public class NewPostActivity extends AppCompatActivity {
             task.addOnSuccessListener(uri->{
                 final String postLink = uri.toString();
                 final String postId = refDatabase.push().getKey();
-                Post post = new Post(postId, user.getUid(),type, postLink, location, hashtags, description, share, comments);
+                Post post = new Post(postId, user.getUid(),type, postLink, location, hashtags, description, share, comments, true);
 
                 refDatabase.child(postId).setValue(post)
                         .addOnCompleteListener(task1 -> {
