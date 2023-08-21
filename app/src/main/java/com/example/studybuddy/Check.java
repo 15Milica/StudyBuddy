@@ -1,6 +1,8 @@
 package com.example.studybuddy;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 
 import java.util.Calendar;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Check {
+
     public static boolean validFirstName(String first_name){
         if(first_name.length() == 0) return false;
         return first_name.matches("^[A-Z][a-z]+$");

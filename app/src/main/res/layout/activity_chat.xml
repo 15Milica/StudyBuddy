@@ -88,11 +88,13 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_65sdp"
         android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_83sdp"
+        android:layout_marginBottom="@dimen/_92sdp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLine" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLine"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -150,5 +152,55 @@
             android:padding="@dimen/_5sdp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_chat_vectors_send" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_reply"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/ic_settings_vectors_notifications"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/chat_reply_message_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_6sdp" />
+
+            <TextView
+                android:id="@+id/chat_reply_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:fontFamily="@font/poppins"
+                android:maxLines="1"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_8sdp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imageButtonCancelReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-30dp"
+            android:backgroundTint="#1582DDF0"
+            app:srcCompat="@drawable/ic_vector_send_replay_msg" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

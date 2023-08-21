@@ -109,9 +109,9 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
                         if (message.getType().equals("text"))
                             textMessage = message.getMessage();
                         else if (message.getType().equals("audio"))
-                            textMessage = "Zvučna poruka";
+                            textMessage = "Glasovna poruka";
                         else if (message.getType().equals("image"))
-                            textMessage = "Slikovna poruke";
+                            textMessage = "Slikovna poruka";
                         else if (message.getType().equals("file"))
                             textMessage = "Datoteka";
                         else
@@ -143,9 +143,9 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
                         if (message.getType().equals("text"))
                             textMessage = message.getMessage();
                         else if (message.getType().equals("audio"))
-                            textMessage = "Zvučna poruka";
+                            textMessage = "Glasovna poruka";
                         else if (message.getType().equals("image"))
-                            textMessage = "Slikovna poruke";
+                            textMessage = "Slikovna poruka";
                         else if (message.getType().equals("file"))
                             textMessage = "Datoteka";
                         else
