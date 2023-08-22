@@ -336,7 +336,7 @@ public class ChatActivity extends AppCompatActivity {
                     Message message = dataSnapshot.getValue(Message.class);
                     messages.add(message);
                 }
-                messageAdapter = new MessageAdapter(ChatActivity.this, messages);
+                messageAdapter = new MessageAdapter(ChatActivity.this, messages, userId, "user");
                 recyclerView.setAdapter(messageAdapter);
             }
 

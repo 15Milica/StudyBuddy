@@ -123,4 +123,9 @@
     <string name="NewPostComments">Komentari</string>
     <string name="NewPostButton">Objavi</string>
 
+    <!-- ForwardMessage strings -->
+    <string name="ForwardMessage">Prosledi poruku</string>
+    <string name="ForwardMessageText">Prosledi poruku ostalim četovima!</string>
+    <string name="ForwardMessageButton">Prosledi</string>
+
 </resources>

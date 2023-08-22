@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,8 +29,10 @@ import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.ImageViewFullscreenActivity;
 import com.example.studybuddy.R;
+import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
+import com.example.studybuddy.model.PinnedMessage;
 import com.example.studybuddy.model.User;
 import com.google.android.gms.common.api.Api;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,13 +53,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_RIGHT = 1;
     private Context context;
     private List<Message> messages;
+    private String chatId;
     private FirebaseUser firebaseUser;
     private MediaPlayer mediaPlayer;
+    private LinearLayout linearLayoutReply;
+    private TextView replyName;
+    private TextView textViewReplyMessage;
+    private EditText editTextSendMessage;
 
-    public MessageAdapter(Context context, List<Message> messages) {
+    public MessageAdapter(Context context, List<Message> messages, String chatId, String chatType) {
         this.context = context;
         this.messages = messages;
+        this.chatId = chatId;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(chatType.equals("user")) {
+            linearLayoutReply = ((Activity) context).findViewById(R.id.chat_reply);
+            replyName = ((Activity) context).findViewById(R.id.chat_reply_message_name);
+            textViewReplyMessage = ((Activity) context).findViewById(R.id.chat_reply_message);
+            editTextSendMessage = ((Activity) context).findViewById(R.id.editTextSendMessageChat);
+        }
     }
 
     @NonNull
@@ -152,62 +168,106 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.show_image.setOnClickListener(view -> onClickImage(message.getMessage()));
 
         holder.show_message.setOnLongClickListener(view -> {
-            if(message.getSender().equals(firebaseUser.getUid())){
-                CharSequence options[] = new CharSequence[] {
-                        addIconToText("  Odgovori", R.drawable.ic_vector_replay_arrow, holder),
-                        addIconToText("  Prosledi", R.drawable.ic_vector_forward, holder),
-                        addIconToText("  Sačuvaj poruku", R.drawable.ic_settings_pinned_message, holder),
-                        addIconToText("  Obriši", R.drawable.ic_vector_bin, holder)
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                builder.setCancelable(true);
-
-                builder.setItems(options, (dialog, which) -> {
-                    if(which == 0) {
-                        onDelete(message);
-                    } else if(which == 1) {
-                        onPin(message);
-                    } else if(which == 2) {
-                        onForward(message);
-                    } else if(which == 3) {
-                        onReply(message);
-                    }
-                });
-
-                builder.show();
-            }else {
-                CharSequence options[] = new CharSequence[]{
-                        addIconToText("  Odgovori", R.drawable.ic_vector_replay_arrow, holder),
-                        addIconToText("  Prosledi", R.drawable.ic_vector_forward, holder),
-                        addIconToText("  Sačuvaj poruku", R.drawable.ic_settings_pinned_message, holder)
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                builder.setCancelable(true);
-
-                builder.setItems(options, (dialog, which) -> {
-                    if(which == 0) {
-                        onPin(message);
-                    } else if(which == 1) {
-                        onForward(message);
-                    } else if(which == 2) {
-                        onReply(message);
-                    }
-                });
-                builder.show();
-            }
+            longClick(message, holder);
             return true;
         });
+        holder.show_image.setOnLongClickListener(view -> {
+            longClick(message, holder);
+            return true;
+        });
+        holder.show_message.setOnClickListener(v -> {
+            if(message.getType().equals("text") && (message.getMessage().startsWith("https://") || message.getMessage().startsWith("http://"))) {
+                Uri uri = Uri.parse(message.getMessage());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            } else if(!message.getType().equals("audio") && !message.getType().equals("text")) {
+               /* Intent intent = new Intent(mContext, PostActivity.class);
+                intent.putExtra("postId", message.getMessage());
+                intent.putExtra("type", message.getType());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);*/
+            }
+        });
+    }
+    private void longClick(Message message, ViewHolder holder){
+        if(message.getSender().equals(firebaseUser.getUid())){
+            CharSequence options[] = new CharSequence[] {
+                    addIconToText("  Odgovori", R.drawable.ic_vector_replay_arrow, holder),
+                    addIconToText("  Prosledi", R.drawable.ic_vector_forward, holder),
+                    addIconToText("  Sačuvaj poruku", R.drawable.ic_settings_pinned_message, holder),
+                    addIconToText("  Obriši", R.drawable.ic_vector_bin, holder)
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+            builder.setCancelable(true);
+
+            builder.setItems(options, (dialog, which) -> {
+                if(which == 0) {
+                    onReply(message);
+                } else if(which == 1) {
+                    onForward(message);
+                } else if(which == 2) {
+                    onPin(message);
+                } else if(which == 3) {
+                    onDelete(message);
+                }
+            });
+
+            builder.show();
+        }else {
+            CharSequence options[] = new CharSequence[]{
+                    addIconToText("  Odgovori", R.drawable.ic_vector_replay_arrow, holder),
+                    addIconToText("  Prosledi", R.drawable.ic_vector_forward, holder),
+                    addIconToText("  Sačuvaj poruku", R.drawable.ic_settings_pinned_message, holder)
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+            builder.setCancelable(true);
+
+            builder.setItems(options, (dialog, which) -> {
+                if(which == 0) {
+                    onReply(message);
+                } else if(which == 1) {
+                    onForward(message);
+                } else if(which == 2) {
+                    onPin(message);
+                }
+            });
+            builder.show();
+        }
     }
     private void onDelete(Message message){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("chats");
+        ref.child(firebaseUser.getUid()).child(chatId).child(message.getId()).removeValue();
 
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("chats");
+        ref1.child(chatId).child(firebaseUser.getUid()).child(message.getId()).removeValue();
     }
     private void  onPin(Message message){
+        if(message.getType().equals("text")){
+            final String sender = message.getSender();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pinned_messages")
+                    .child(firebaseUser.getUid());
+            final String id = ref.push().getKey();
+            final String text = message.getMessage();
+            final String date = message.getSendingTime().getDate();
+            final String time = message.getSendingTime().getTime();
 
+            PinnedMessage pinnedMessage = new PinnedMessage(id,sender, chatId, text, time, date);
+            ref.child(id).setValue(pinnedMessage).addOnCompleteListener(task->{
+                if(task.isSuccessful()){
+                    Toast.makeText(context, "Uspešno sačuvana poruka", Toast.LENGTH_LONG).show();
+                }else Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+            });
+
+        }else Toast.makeText(context, "Možete sačuvati samo tekstualne poruke", Toast.LENGTH_LONG).show();
     }
     private void onForward(Message message){
-
+        Intent intent = new Intent(context, ForwardMessageActivity.class);
+        intent.putExtra("chatId", chatId);
+        intent.putExtra("message", message.getMessage());
+        intent.putExtra("messageType", message.getType());
+        context.startActivity(intent);
     }
     private void onReply(Message message){
 
