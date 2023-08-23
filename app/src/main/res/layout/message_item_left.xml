@@ -101,7 +101,7 @@
             android:textSize="@dimen/_8sdp" />
 
         <LinearLayout
-            android:id="@+id/layout_message_replay"
+            android:id="@+id/layout_message_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"

@@ -33,10 +33,12 @@ import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.PinnedMessage;
+import com.example.studybuddy.model.ReplyMessage;
 import com.example.studybuddy.model.User;
 import com.google.android.gms.common.api.Api;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,6 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private TextView replyName;
     private TextView textViewReplyMessage;
     private EditText editTextSendMessage;
+    private Message replyMessage;
 
     public MessageAdapter(Context context, List<Message> messages, String chatId, String chatType) {
         this.context = context;
@@ -188,7 +191,48 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 context.startActivity(intent);*/
             }
         });
+        if(message.getReplyMessage()!=null){
+            ReplyMessage reply_msg = message.getReplyMessage();
+
+            final String sender = reply_msg.getSender();
+            final String type = reply_msg.getType();
+            final String msg = reply_msg.getMessage();
+
+            if(firebaseUser.getUid().equals(sender)){
+                setTextReplayMessage("Moja poruka", msg, type, holder);
+            }else {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+                ref.child(sender).get().addOnCompleteListener(task->{
+                    if(task.isSuccessful()){
+                        DataSnapshot dataSnapshot = task.getResult();
+                        User user = dataSnapshot.getValue(User.class);
+                        final String name = user.getName();
+                        setTextReplayMessage(name, msg, type, holder);
+                    }
+                });
+            }
+        }else holder.layout_reply.setVisibility(View.GONE);
     }
+    private void setTextReplayMessage(String name, String msg, String type, ViewHolder holder){
+        if(type.equals("text")){
+            holder.reply_message.setText(name + "\n" + msg);
+            holder.reply_message.setVisibility(View.VISIBLE);
+            holder.layout_reply.setVisibility(View.VISIBLE);
+        }else if(type.equals("audio")){
+            holder.reply_message.setText(name + "\n" + "Glasovna poruka");
+            holder.reply_message.setVisibility(View.VISIBLE);
+            holder.layout_reply.setVisibility(View.VISIBLE);
+        } else if(type.equals("image")){
+            holder.reply_message.setText(name + "\n" + "Slikovna poruka");
+            holder.reply_message.setVisibility(View.VISIBLE);
+            holder.layout_reply.setVisibility(View.VISIBLE);
+        }else {
+            holder.reply_message.setText(name + "\n" + "Objava");
+            holder.reply_message.setVisibility(View.VISIBLE);
+            holder.layout_reply.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void longClick(Message message, ViewHolder holder){
         if(message.getSender().equals(firebaseUser.getUid())){
             CharSequence options[] = new CharSequence[] {
@@ -270,9 +314,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         context.startActivity(intent);
     }
     private void onReply(Message message){
+        editTextSendMessage.setMaxLines(2);
+        editTextSendMessage.setText("");
 
+        if(message.getType().equals("text")){
+            textViewReplyMessage.setText(message.getMessage());
+        }else if(message.getType().equals("audio")){
+            textViewReplyMessage.setText("Glasovna poruka");
+        }else if(message.getType().equals("image")){
+            textViewReplyMessage.setText("Slikovna poruka");
+        }else textViewReplyMessage.setText("Objava");
+
+        if(firebaseUser.getUid().equals(message.getSender())){
+            replyName.setText("Moja poruka");
+            linearLayoutReply.setVisibility(View.VISIBLE);
+        }else {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+            ref.child(message.getSender()).get().addOnCompleteListener(task->{
+                if(task.isSuccessful()){
+                    DataSnapshot dataSnapshot = task.getResult();
+                    User user = dataSnapshot.getValue(User.class);
+                    replyName.setText(user.getName());
+                    linearLayoutReply.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+        setReplayMessage(message);
     }
-
+    public void setReplayMessage(Message message){ this.replyMessage = message; }
+    public Message getReplyMessage() { return replyMessage; }
     private CharSequence addIconToText(String text, int iconResId, ViewHolder holder) {
         Drawable icon = ContextCompat.getDrawable(holder.itemView.getContext(), iconResId);
         if (icon != null) {
@@ -346,7 +416,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             show_image = itemView.findViewById(R.id.image_message);
             sender_photo = (CircleImageView) itemView.findViewById(R.id.sender_photo);
 
-            layout_reply = itemView.findViewById(R.id.layout_message_replay);
+            layout_reply = itemView.findViewById(R.id.layout_message_reply);
             reply_message = itemView.findViewById(R.id.show_reply_message);
         }
     }

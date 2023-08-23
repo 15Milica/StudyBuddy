@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.MessageAdapter;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
+import com.example.studybuddy.model.ReplyMessage;
 import com.example.studybuddy.model.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
@@ -71,6 +74,8 @@ public class ChatActivity extends AppCompatActivity {
     private ImageButton buttonMic;
     private ImageButton buttonSend;
     private RecyclerView recyclerView;
+    private LinearLayout linearLayoutReply;
+    private ImageButton buttonCancel;
     private Intent intent;
     private String userId;
     private FirebaseUser firebaseUser;
@@ -144,6 +149,13 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        linearLayoutReply = (LinearLayout) findViewById(R.id.chat_reply);
+        buttonCancel = (ImageButton) findViewById(R.id.imageButtonCancelReply);
+        buttonCancel.setOnClickListener(view -> {
+            linearLayoutReply.setVisibility(View.GONE);
+            editTextMessage.setMaxLines(3);
+        });
     }
     private void setProfileDetails(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
@@ -293,8 +305,20 @@ public class ChatActivity extends AppCompatActivity {
         map.put("message", message);
         map.put("sendingTime", messageTime);
 
-        refSender.child(msg_id).setValue(map);
+        if(linearLayoutReply.getVisibility() == View.VISIBLE) {
+            Message replyMessage = messageAdapter.getReplyMessage();
 
+            final String r_sender = replyMessage.getSender();
+            final String r_message = replyMessage.getMessage();
+            final String r_type = replyMessage.getType();
+
+            ReplyMessage rMessage = new ReplyMessage(r_sender,r_type, r_message);
+            map.put("replyMessage", rMessage);
+
+            linearLayoutReply.setVisibility(View.GONE);
+            editTextMessage.setMaxLines(3);
+        }
+        refSender.child(msg_id).setValue(map);
         DatabaseReference refReceiver = FirebaseDatabase.getInstance().getReference("chats")
                 .child(userId)
                 .child(firebaseUser.getUid());
