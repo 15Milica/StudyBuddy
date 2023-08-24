@@ -198,7 +198,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                 User user = snapshot.getValue(User.class);
                 holder.userName.setText(user.getName());
 
-                if(user.getPhoto().equals("deafult")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
+                if(user.getPhoto().equals("default")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
                 else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
                 if(!firebaseUser.getUid().equals(user.getUserId())) {
                     setFollowUnfollow(holder, user.getUserId());

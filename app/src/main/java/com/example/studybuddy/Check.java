@@ -74,4 +74,5 @@ public class Check {
         coordinatorLayoutFullDescription.setVisibility(View.GONE);
         option.setActivated(false);
     }
+    public static boolean isEmpty(EditText editText){ return editText.getText().toString().trim().length() == 0; }
 }

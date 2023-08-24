@@ -4,87 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".chat.GroupChatActivity">
+    tools:context=".chat.ChannelChatActivity">
+
     <LinearLayout
-        android:id="@+id/linearLayout7"
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/channelChatGroupName"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/_8sdp">
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_13sdp" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/groupChatPhoto"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_create_profile_vectors_photo" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_7sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/groupChatName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_title"
-                    android:textColor="@color/text_color"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/_16sdp" />
-            </LinearLayout>
-        </LinearLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/imageButtonOptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@color/gray"
-                android:paddingLeft="@dimen/_3sdp"
-                android:paddingRight="@dimen/_10sdp"
-                app:srcCompat="@drawable/ic_chat_vectors_options" />
-
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/channelChatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_16sdp" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageViewLine"
+        android:id="@+id/imageViewLineChatTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_line_chat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewChat"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_65sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_93sdp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLine" />
-
+        android:layout_height="@dimen/_3sdp"
+        android:background="@color/primary_color"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"/>
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
@@ -100,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/groupChatSendMessage"
+            android:id="@+id/channelChatSendMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -114,7 +71,7 @@
             android:textColor="@color/text_color"/>
 
         <ImageButton
-            android:id="@+id/imageButtonSendPhotoChat"
+            android:id="@+id/channelChatSendPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -124,7 +81,7 @@
             app:srcCompat="@drawable/ic_chat_vectors_camera" />
 
         <ImageButton
-            android:id="@+id/imageButtonSendSoundChat"
+            android:id="@+id/channelChatSendSound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -133,7 +90,7 @@
             app:srcCompat="@drawable/ic_chat_vectors_microphone" />
 
         <ImageButton
-            android:id="@+id/imageButtonSendMessage"
+            android:id="@+id/channelChatSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -142,13 +99,26 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_chat_vectors_send" />
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChannelChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_72sdp"
+        android:layout_marginRight="@dimen/_7sdp"
+        android:layout_marginBottom="@dimen/_93sdp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewLineChatTop" />
+
     <LinearLayout
-        android:id="@+id/group_chat_reply"
+        android:id="@+id/channel_chat_reply"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/ic_settings_vectors_notifications"
         android:orientation="horizontal"
         android:visibility="gone"
@@ -164,7 +134,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/group_chat_reply_message_name"
+                android:id="@+id/channel_chat_reply_message_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
@@ -173,7 +143,7 @@
                 android:textSize="@dimen/_6sdp" />
 
             <TextView
-                android:id="@+id/group_chat_reply_message"
+                android:id="@+id/channel_chat_reply_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
@@ -184,14 +154,13 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/group_imageButtonCancelReply"
+            android:id="@+id/channel_imageButtonCancelReply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="-30dp"
             android:layout_gravity="center"
             android:background="@drawable/color_transparent"
             app:srcCompat="@drawable/ic_vector_x" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

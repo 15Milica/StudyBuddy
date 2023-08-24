@@ -25,19 +25,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:background="@drawable/chat_message_left">
 
                 <ImageView
                     android:id="@+id/imageViewMessageReply"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_vertical"
                     app:srcCompat="@drawable/ic_vector_replay_arrow" />
 
                 <TextView
                     android:id="@+id/show_reply_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/chat_message_left"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:fontFamily="@font/poppins"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/_10sdp"

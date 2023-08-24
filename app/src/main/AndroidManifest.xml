@@ -23,6 +23,9 @@
         android:theme="@style/Theme.StudyBuddy"
         tools:targetApi="31">
         <activity
+            android:name=".chat.ChannelChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".chat.ForwardMessageActivity"
             android:exported="false" />
         <activity

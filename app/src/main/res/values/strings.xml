@@ -63,7 +63,6 @@
     <string name="SettingsSwitchActivity">Aktivnost</string>
     <string name="SettingsPinnedMessage">Sačuvane poruke</string>
 
-
     <!-- PinnedMessages strings -->
     <string name="PinnedMessages">Sačuvane poruke</string>
 
@@ -106,6 +105,8 @@
     <!-- ChatSettings strings -->
     <string name="ChatSettings">Podesite ćaskanje</string>
     <string name="ChatSettingsMute">Utišaj</string>
+    <string name="ChatSettingsChannel">Podgrupe</string>
+    <string name="ChatSettingsChannelName">Ime podgrupe</string>
 
     <!-- UserProfile strings -->
     <string name="UserProfile">PROFIL</string>

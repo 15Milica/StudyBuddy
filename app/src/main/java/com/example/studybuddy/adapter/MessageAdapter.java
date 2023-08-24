@@ -1,5 +1,6 @@
 package com.example.studybuddy.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,7 +11,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private Context context;
     private List<Message> messages;
     private String chatId;
+    private String chatType;
     private FirebaseUser firebaseUser;
     private MediaPlayer mediaPlayer;
     private LinearLayout linearLayoutReply;
@@ -68,12 +73,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         this.context = context;
         this.messages = messages;
         this.chatId = chatId;
+        this.chatType = chatType;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(chatType.equals("user")) {
             linearLayoutReply = ((Activity) context).findViewById(R.id.chat_reply);
             replyName = ((Activity) context).findViewById(R.id.chat_reply_message_name);
             textViewReplyMessage = ((Activity) context).findViewById(R.id.chat_reply_message);
             editTextSendMessage = ((Activity) context).findViewById(R.id.editTextSendMessageChat);
+        }else if(chatType.equals("group")) {
+            linearLayoutReply = ((Activity) context).findViewById(R.id.group_chat_reply);
+            replyName = ((Activity) context).findViewById(R.id.group_chat_reply_message_name);
+            textViewReplyMessage = ((Activity) context).findViewById(R.id.group_chat_reply_message);
+            editTextSendMessage = ((Activity) context).findViewById(R.id.groupChatSendMessage);
+        }else if(chatType.equals("channel")){
+            linearLayoutReply = ((Activity) context).findViewById(R.id.channel_chat_reply);
+            replyName = ((Activity) context).findViewById(R.id.channel_chat_reply_message_name);
+            textViewReplyMessage = ((Activity) context).findViewById(R.id.channel_chat_reply_message);
+            editTextSendMessage = ((Activity) context).findViewById(R.id.channelChatSendMessage);
         }
     }
 
@@ -96,14 +112,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if(message.getType().equals("text")){
             holder.show_message.setVisibility(View.VISIBLE);
             holder.show_message.setText(message.getMessage());
-
             holder.buttonPlay.setVisibility(View.GONE);
             holder.buttonPause.setVisibility(View.GONE);
             holder.show_image.setVisibility(View.GONE);
         }else if(message.getType().equals("audio")){
             holder.show_message.setVisibility(View.VISIBLE);
             holder.show_message.setText("Glasovna poruka");
-
             holder.buttonPlay.setVisibility(View.VISIBLE);
             holder.buttonPause.setVisibility(View.GONE);
             holder.show_image.setVisibility(View.GONE);
@@ -151,13 +165,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 Message message1 = messages.get(position-1);
                 if(message1.getSender().equals(message.getSender())){
                     holder.sender_photo.setVisibility(View.GONE);
-                }else setSender(message.getSender(), holder);
+                }else setSender(message, holder);
             }else {
                 holder.sender_photo.setVisibility(View.VISIBLE);
-                setSender(message.getSender(), holder);
+                setSender(message, holder);
             }
         }
-
         holder.buttonPlay.setOnClickListener(view -> {
             if(Check.networkConnect(context)) {
                 try {
@@ -281,11 +294,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
     }
     private void onDelete(Message message){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("chats");
-        ref.child(firebaseUser.getUid()).child(chatId).child(message.getId()).removeValue();
+        if(chatType.equals("group")) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group_messages").child(chatId);
+            reference.child(message.getId()).removeValue();
+        } else if(chatType.equals("user")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("chats");
+            ref.child(firebaseUser.getUid()).child(chatId).child(message.getId()).removeValue();
 
-        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("chats");
-        ref1.child(chatId).child(firebaseUser.getUid()).child(message.getId()).removeValue();
+            DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("chats");
+            ref1.child(chatId).child(firebaseUser.getUid()).child(message.getId()).removeValue();
+        }else if(chatType.equals("channel")) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("channel_messages").child(chatId);
+            reference.child(message.getId()).removeValue();
+        }
     }
     private void  onPin(Message message){
         if(message.getType().equals("text")){
@@ -381,18 +402,46 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         mediaPlayer.release();
         mediaPlayer = null;
     }
-    private void setSender(String userId, ViewHolder holder){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId);
+
+    @SuppressLint("ResourceAsColor")
+    private void setSender(Message message, ViewHolder holder){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(message.getSender());
         ref.get().addOnCompleteListener(task->{
             if(task.isSuccessful()) {
                 User user = task.getResult().getValue(User.class);
                 if(user.getPhoto().equals("default")){
                     holder.sender_photo.setImageResource(R.drawable.ic_create_profile_vectors_photo);
                 }else Glide.with(context).load(user.getPhoto()).into(holder.sender_photo);
+                if(chatType.equals("group") ||  chatType.equals("channel")) {
+                    String name = "";
+                    if (message.getType().equals("text")) {
+                        holder.show_message.setVisibility(View.VISIBLE);
+                        name = user.getName() + "\n"+message.getMessage();
+                    } else if (message.getType().equals("audio")) {
+                        holder.show_message.setVisibility(View.VISIBLE);
+                        name = user.getName() + "\n"+"Glasovna poruka";
+                    } else if (message.getType().equals("image")) {
+                        holder.show_message.setVisibility(View.GONE);
+                    } else {
+                        holder.show_message.setVisibility(View.VISIBLE);
+                        name = user.getName() + "\n"+"Post";
+                    }
+                    if(!name.equals("")) {
+                        SpannableString spannableString = new SpannableString(name);
+                        int redStart = name.indexOf(user.getName());
+                        int redEnd = redStart + user.getName().length();
+                        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.primary_color)), redStart, redEnd, 0);
+                        spannableString.setSpan(new RelativeSizeSpan(0.8f), redStart, redEnd, 0);
+
+                        int greenStart = name.indexOf(message.getMessage());
+                        int greenEnd = greenStart + message.getMessage().length();
+                        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.text_color)), greenStart, greenEnd, 0);
+                        holder.show_message.setText(spannableString);
+                    }
+                }
             }
         });
     }
-
     @Override
     public int getItemCount() { return messages.size(); }
 

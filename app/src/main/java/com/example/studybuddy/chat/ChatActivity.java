@@ -79,7 +79,6 @@ public class ChatActivity extends AppCompatActivity {
     private Intent intent;
     private String userId;
     private FirebaseUser firebaseUser;
-    private StorageReference refStorage;
     private User user;
     private List<Message> messages;
     private MessageAdapter messageAdapter;
@@ -96,7 +95,6 @@ public class ChatActivity extends AppCompatActivity {
         soundFile = null;
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        refStorage = FirebaseStorage.getInstance().getReference();
         intent = getIntent();
         userId = intent.getStringExtra("userId");
 
@@ -129,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!isEmpty())
+                if(!Check.isEmpty(editTextMessage))
                 {
                     buttonCamera.setVisibility(View.GONE);
                     buttonMic.setVisibility(View.GONE);
@@ -372,6 +370,7 @@ public class ChatActivity extends AppCompatActivity {
     private void onClickOptions() {
         buttonOptions.setEnabled(false);
         Intent intent = new Intent(this, ChatSettingsActivity.class);
+        intent.putExtra("user", userId);
         startActivity(intent);
     }
 
@@ -400,9 +399,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmpty() {
-        return editTextMessage.getText().toString().trim().length() == 0;
-    }
     @Override
     protected void onResume() {
         super.onResume();

@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:backgroundTint="@color/gray"
+            android:background="@color/gray"
             android:paddingLeft="@dimen/_3sdp"
             android:paddingRight="@dimen/_10sdp"
             app:srcCompat="@drawable/ic_chat_vectors_options" />
@@ -201,7 +201,8 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/_10sdp"
             android:layout_marginLeft="-35dp"
-            android:backgroundTint="#1582DDF0"
+            android:layout_gravity="center"
+            android:background="@drawable/color_transparent"
             app:srcCompat="@drawable/ic_vector_x" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,10 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.MessageAdapter;
+import com.example.studybuddy.model.Channel;
 import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
@@ -56,126 +56,88 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class GroupChatActivity extends AppCompatActivity {
-    private static int PERMISSION_CODE_AUDIO = 21;
+public class ChannelChatActivity extends AppCompatActivity {
     private static String recordPermission = Manifest.permission.RECORD_AUDIO;
-    private CircleImageView groupPhoto;
-    private TextView groupName;
-    private ImageButton buttonOptions;
-    private ImageButton buttonCamera;
+    private static int PERMISSION_CODE_AUDIO = 21;
+    private TextView nameGroup;
+    private TextView nameChannel;
+    private EditText editTextSendMessage;
     private ImageButton buttonMic;
+    private ImageButton buttonCamera;
     private ImageButton buttonSend;
-    private EditText editTextMessage;
-    private RecyclerView recyclerView;
-    private LinearLayout linearLayoutReplyMessage;
     private ImageButton buttonCancel;
-    private String groupId;
-    private FirebaseUser firebaseUser;
+    private RecyclerView recyclerView;
+    private LinearLayout linearLayoutChatReplyMessage;
     private MessageAdapter messageAdapter;
     private List<Message> messages;
-    private boolean isRecording;
+    private FirebaseUser firebaseUser;
+    private String channelId;
     private MediaRecorder mediaRecorder;
+    private boolean isRecording;
     private String soundFile;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_chat);
+        setContentView(R.layout.activity_channel_chat);
 
         messages = new ArrayList<>();
         isRecording = false;
         soundFile = null;
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        groupId = getIntent().getStringExtra("groupId");
 
-        groupPhoto = (CircleImageView) findViewById(R.id.groupChatPhoto);
-        groupName = (TextView) findViewById(R.id.groupChatName);
-        setGroupDetails();
+        channelId = getIntent().getStringExtra("channelId");
 
-        buttonCamera = (ImageButton) findViewById(R.id.imageButtonSendPhotoChat);
-        buttonCamera.setOnClickListener(view -> onClickCamera());
+        nameGroup = (TextView) findViewById(R.id.channelChatGroupName);
+        nameChannel = (TextView) findViewById(R.id.channelChatName);
+        setDetailsChannel();
 
-        buttonMic = (ImageButton) findViewById(R.id.imageButtonSendSoundChat);
-        buttonMic.setOnClickListener(view -> onClickMic());
-
-        buttonOptions = (ImageButton) findViewById(R.id.imageButtonOptions);
-        buttonOptions.setOnClickListener(view -> onClickOptions());
-
-        buttonSend = (ImageButton) findViewById(R.id.imageButtonSendMessage);
-        buttonSend.setOnClickListener(view -> {
-            String msg = editTextMessage.getText().toString().trim();
-            onClickSend( msg, "text");
-            editTextMessage.setText("");
-        });
-
-        editTextMessage = (EditText) findViewById(R.id.groupChatSendMessage);
-        editTextMessage.addTextChangedListener(new TextWatcher() {
+        editTextSendMessage = (EditText) findViewById(R.id.channelChatSendMessage);
+        editTextSendMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!Check.isEmpty(editTextMessage))
-                {
-                    buttonCamera.setVisibility(View.GONE);
-                    buttonMic.setVisibility(View.GONE);
+                if(!Check.isEmpty(editTextSendMessage)){
                     buttonSend.setVisibility(View.VISIBLE);
-                }else{
-                    buttonCamera.setVisibility(View.VISIBLE);
-                    buttonMic.setVisibility(View.VISIBLE);
+                    buttonMic.setVisibility(View.GONE);
+                    buttonCamera.setVisibility(View.GONE);
+                }else {
                     buttonSend.setVisibility(View.GONE);
+                    buttonMic.setVisibility(View.VISIBLE);
+                    buttonCamera.setVisibility(View.VISIBLE);
                 }
             }
             @Override
             public void afterTextChanged(Editable editable) {}
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewChat);
-        recyclerView.setLayoutManager(new LinearLayoutManager(GroupChatActivity.this));
+        buttonCamera = (ImageButton) findViewById(R.id.channelChatSendPhoto);
+        buttonCamera.setOnClickListener(view-> onClickCamera());
 
-        linearLayoutReplyMessage = (LinearLayout) findViewById(R.id.group_chat_reply);
-        buttonCancel = (ImageButton) findViewById(R.id.group_imageButtonCancelReply);
-        buttonCancel.setOnClickListener(view -> linearLayoutReplyMessage.setVisibility(View.GONE));
+        buttonMic = (ImageButton) findViewById(R.id.channelChatSendSound);
+        buttonMic.setOnClickListener(view -> onClickMic());
+
+        buttonSend = (ImageButton) findViewById(R.id.channelChatSend);
+        buttonSend.setOnClickListener(view -> {
+            String text = editTextSendMessage.getText().toString().trim();
+            onClickSend(text, "text");
+            editTextSendMessage.setText("");
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewChannelChat);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ChannelChatActivity.this));
+
+        linearLayoutChatReplyMessage = (LinearLayout) findViewById(R.id.channel_chat_reply);
+        buttonCancel = (ImageButton) findViewById(R.id.channel_imageButtonCancelReply);
+        buttonCancel.setOnClickListener(view -> linearLayoutChatReplyMessage.setVisibility(View.GONE));
         readMessages();
-    }
-    private void readMessages(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("group_messages").child(groupId);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                messages.clear();
-                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    messages.add(dataSnapshot.getValue(Message.class));
-                }
-                messageAdapter = new MessageAdapter(GroupChatActivity.this, messages, groupId, "group");
-                recyclerView.setAdapter(messageAdapter);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
-    private void setGroupDetails(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("groups");
-        ref.child(groupId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Group group = snapshot.getValue(Group.class);
-                groupName.setText(group.getGroupName());
-                if(group.getGroupPhoto().equals("default")) groupPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
-                else Glide.with(getApplicationContext()).load(group.getGroupPhoto()).into(groupPhoto);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
     }
     private void onClickCamera(){
         ImagePicker.with(this)
                 .crop()
                 .compress(1024)
-                .maxResultSize(1080,1080)
+                .maxResultSize(1080, 1080)
                 .start();
     }
     @SuppressLint("ResourceAsColor")
@@ -183,16 +145,16 @@ public class GroupChatActivity extends AppCompatActivity {
         if(isRecording){
             stopRecording();
             buttonMic.setImageResource(R.drawable.ic_chat_vectors_microphone);
-            editTextMessage.setEnabled(true);
-            editTextMessage.setHint("");
+            editTextSendMessage.setEnabled(true);
+            editTextSendMessage.setHint("");
             isRecording = false;
         }else {
             if(checkPermission()) {
                 startRecording();
                 buttonMic.setImageResource(R.drawable.ic_chat_vectors_microphone_stop);
-                editTextMessage.setEnabled(false);
-                editTextMessage.setHint("Snimanje...");
-                editTextMessage.setTextColor(R.color.text_color);
+                editTextSendMessage.setEnabled(false);
+                editTextSendMessage.setHint("Snimanje...");
+                editTextSendMessage.setTextColor(R.color.text_color);
                 isRecording = true;
             }
         }
@@ -204,7 +166,6 @@ public class GroupChatActivity extends AppCompatActivity {
         String recordFile = "Recording_" + simpleDateFormat.format(now) + ".3gp";
 
         soundFile = recordPath + "/" + recordFile;
-        mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(soundFile);
@@ -215,6 +176,7 @@ public class GroupChatActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         mediaRecorder.start();
     }
     private void stopRecording(){
@@ -227,8 +189,8 @@ public class GroupChatActivity extends AppCompatActivity {
         }else if(soundFile == null){
             Toast.makeText(this, "Greška: pokušaj ponovo!", Toast.LENGTH_SHORT).show();
         }else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(GroupChatActivity.this);
-            View dialogView = LayoutInflater.from(GroupChatActivity.this).inflate(R.layout.alert_dialog, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ChannelChatActivity.this);
+            View dialogView = LayoutInflater.from(ChannelChatActivity.this).inflate(R.layout.alert_dialog, null);
 
             builder.setView(dialogView);
             final AlertDialog dialog = builder.create();
@@ -249,14 +211,15 @@ public class GroupChatActivity extends AppCompatActivity {
     }
     private void uploadVideo(){
         Uri uri = Uri.fromFile(new File(soundFile));
-        StorageReference ref = FirebaseStorage.getInstance().getReference().child("audio/" + uri.getLastPathSegment());
+        StorageReference ref = FirebaseStorage.getInstance().getReference("audio/"+uri.getLastPathSegment());
         UploadTask uploadTask = ref.putFile(uri);
+
         uploadTask.addOnFailureListener(e->{
             Toast.makeText(this, "Greška: "+e, Toast.LENGTH_SHORT).show();
             soundFile = null;
         }).addOnSuccessListener(taskSnapshot -> {
             Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-            task.addOnCompleteListener(task1->{
+            task.addOnCompleteListener(task1 -> {
                 if(task1.isSuccessful()){
                     Uri uri1 = task1.getResult();
                     String audioUrl = uri1.toString();
@@ -267,45 +230,80 @@ public class GroupChatActivity extends AppCompatActivity {
         });
     }
     private void onClickSend(String message, String type){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("group_messages").child(groupId);
-        String id = ref.push().getKey();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("channel_messages").child(channelId);
+        String key = reference.push().getKey();
 
         Calendar calendar = Calendar.getInstance();
+
         SimpleDateFormat dateFormatD = new SimpleDateFormat("MM/dd/yyyy");
         SimpleDateFormat dateFormatT = new SimpleDateFormat("HH:mm");
 
         String date = dateFormatD.format(calendar.getTime());
         String time = dateFormatT.format(calendar.getTime());
+
         MessageTime messageTime = new MessageTime(date, time);
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("type", type);
+
+        map.put("id", key);
         map.put("sender", firebaseUser.getUid());
-        map.put("receiver", groupId);
+        map.put("receiver", channelId);
+        map.put("type", type);
         map.put("message", message);
         map.put("sendingTime", messageTime);
 
-        if(linearLayoutReplyMessage.getVisibility() == View.VISIBLE) {
+        if(linearLayoutChatReplyMessage.getVisibility() == View.VISIBLE) {
             Message replyMessage = messageAdapter.getReplyMessage();
 
             final String r_sender = replyMessage.getSender();
             final String r_message = replyMessage.getMessage();
             final String r_type = replyMessage.getType();
 
-            ReplyMessage rMessage = new ReplyMessage(r_sender,r_type, r_message);
+            ReplyMessage rMessage = new ReplyMessage(r_sender, r_message, r_type);
+
             map.put("replyMessage", rMessage);
 
-            linearLayoutReplyMessage.setVisibility(View.GONE);
-            editTextMessage.setMaxLines(3);
+            linearLayoutChatReplyMessage.setVisibility(View.GONE);
+            editTextSendMessage.setMaxLines(3);
         }
-        ref.child(id).setValue(map);
+        reference.child(key).setValue(map);
     }
-    private void onClickOptions(){
-        buttonOptions.setEnabled(false);
-        Intent intent = new Intent(this, ChatSettingsActivity.class);
-        intent.putExtra("group", groupId);
-        startActivity(intent);
+    private void readMessages(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("channel_messages").child(channelId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messages.clear();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    messages.add(dataSnapshot.getValue(Message.class));
+                }
+                messageAdapter = new MessageAdapter(ChannelChatActivity.this, messages, channelId, "channel");
+                recyclerView.setAdapter(messageAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    private void setDetailsChannel(){
+        DatabaseReference refGroups = FirebaseDatabase.getInstance().getReference("groups");
+
+        DatabaseReference refChannel = FirebaseDatabase.getInstance().getReference("channels");
+        refChannel.child(channelId).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DataSnapshot dataSnapshot = task.getResult();
+                Channel channel = dataSnapshot.getValue(Channel.class);
+                nameChannel.setText(channel.getChannelName());
+
+                String groupId = channel.getGroupId();
+                refGroups.child(groupId).get().addOnCompleteListener(task1 -> {
+                    if(task1.isSuccessful()){
+                        DataSnapshot dataSnapshot1 = task1.getResult();
+                        Group group = dataSnapshot1.getValue(Group.class);
+                        nameGroup.setText(group.getGroupName());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -314,18 +312,19 @@ public class GroupChatActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK){
             Uri uri = data.getData();
             if(Check.networkConnect(getApplicationContext())){
-                StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + uri.getLastPathSegment());
-                UploadTask uploadTask = ref.putFile(uri);
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                        .child("images/" + uri.getLastPathSegment());
+                UploadTask uploadTask = storageReference.putFile(uri);
                 uploadTask.addOnFailureListener(e->{
                     Toast.makeText(this, "Greška " + e, Toast.LENGTH_SHORT).show();
                 }).addOnSuccessListener(taskSnapshot -> {
                     Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                     task.addOnCompleteListener(task1 -> {
-                       if(task1.isSuccessful()){
-                           Uri uri1 = task1.getResult();
-                           String imageURL = uri1.toString();
-                           onClickSend(imageURL, "image");
-                       }
+                        if(task1.isSuccessful()){
+                            Uri uri1 = task1.getResult();
+                            String imageUrl = uri1.toString();
+                            onClickSend(imageUrl, "image");
+                        }
                     });
                 });
             }else Toast.makeText(this, "Nema mreže!", Toast.LENGTH_SHORT).show();
@@ -335,14 +334,8 @@ public class GroupChatActivity extends AppCompatActivity {
         if(ActivityCompat.checkSelfPermission(getApplicationContext(), recordPermission) == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
-            ActivityCompat.requestPermissions(GroupChatActivity.this, new String[]{recordPermission}, PERMISSION_CODE_AUDIO);
+            ActivityCompat.requestPermissions(ChannelChatActivity.this, new String[]{recordPermission}, PERMISSION_CODE_AUDIO);
             return false;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        buttonOptions.setEnabled(true);
     }
 }
