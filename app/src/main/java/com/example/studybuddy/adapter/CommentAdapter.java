@@ -123,19 +123,31 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages_posts");
-        ref.child(pageId).child(postId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Post post = snapshot.getValue(Post.class);
-                if(post.getUser().equals(firebaseUser.getUid())){
+        if(pageId != null) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages_posts");
+            ref.child(pageId).child(postId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Post post = snapshot.getValue(Post.class);
+                    if (post.getUser().equals(firebaseUser.getUid())) {
+                        deleteComment(holder, comment.getId());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }else {
+            DatabaseReference refPosts = FirebaseDatabase.getInstance().getReference("posts");
+            refPosts.child(postId).get().addOnSuccessListener(dataSnapshot -> {
+                Post post = dataSnapshot.getValue(Post.class);
+                final String userId = post.getUser();
+                if(firebaseUser.getUid().equals(userId)){
                     deleteComment(holder, comment.getId());
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
+            });
+        }
     }
     private void deleteComment(ViewHolder holder, String commentId){
         holder.cardViewComment.setOnLongClickListener(v->{

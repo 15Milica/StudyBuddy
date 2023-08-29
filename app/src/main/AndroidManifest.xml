@@ -23,6 +23,12 @@
         android:theme="@style/Theme.StudyBuddy"
         tools:targetApi="31">
         <activity
+            android:name=".ui.home.StorylineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".chat.ChannelChatActivity"
             android:exported="false" />
         <activity

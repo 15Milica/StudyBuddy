@@ -87,7 +87,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         DataSnapshot snapshot = task.getResult();
                         User u = snapshot.getValue(User.class);
 
-                        textTitle.setText(u.getSearch());
+                        textTitle.setText(u.getName());
                         textFirstName.setText(u.getFirstName());
                         textLastName.setText(u.getLastName());
                         textBirthday.setText(u.getBirthday());

@@ -2,6 +2,7 @@ package com.example.studybuddy.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.R;
 import com.example.studybuddy.model.Post;
+import com.example.studybuddy.ui.home.StorylineActivity;
 
 import org.w3c.dom.Text;
 
@@ -70,8 +72,14 @@ public class ProfileStorylineAdapter extends RecyclerView.Adapter<ProfileStoryli
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .into(holder.imageViewPostPhoto);
         }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, StorylineActivity.class);
+            intent.putExtra("userId", post.getUser());
+            intent.putExtra("postId", post.getId());
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activity.startActivity(intent);
+        });
     }
-
     @Override
     public int getItemCount() { return posts.size(); }
 

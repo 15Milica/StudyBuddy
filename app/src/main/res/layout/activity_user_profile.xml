@@ -169,10 +169,10 @@
         android:textAlignment="center"
         android:textColor="@color/primary_color"
         android:textSize="@dimen/_20sdp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewProfileStoryline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-        app:layout_constraintVertical_bias="0.25"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewProfileStoryline"/>
+        app:layout_constraintVertical_bias="0.25"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

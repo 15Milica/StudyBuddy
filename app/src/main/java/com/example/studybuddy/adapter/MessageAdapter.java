@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.ImageViewFullscreenActivity;
+import com.example.studybuddy.PostActivity;
 import com.example.studybuddy.R;
 import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Message;
@@ -197,11 +198,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
             } else if(!message.getType().equals("audio") && !message.getType().equals("text")) {
-               /* Intent intent = new Intent(mContext, PostActivity.class);
+                Intent intent = new Intent(context, PostActivity.class);
                 intent.putExtra("postId", message.getMessage());
                 intent.putExtra("type", message.getType());
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);*/
+                context.startActivity(intent);
             }
         });
         if(message.getReplyMessage()!=null){

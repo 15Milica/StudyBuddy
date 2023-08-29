@@ -115,6 +115,16 @@ public class PageActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(pagePostAdapter != null) pagePostAdapter.stopPlayer();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(pagePostAdapter != null) pagePostAdapter.stopPlayer();
+    }
 
 }

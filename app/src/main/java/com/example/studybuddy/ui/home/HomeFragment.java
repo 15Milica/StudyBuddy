@@ -9,12 +9,20 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.studybuddy.NavigationActivity;
 import com.example.studybuddy.R;
+import com.example.studybuddy.adapter.PostAdapter;
+
 
 public class HomeFragment extends Fragment {
     private ImageButton btnNewPost;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -22,7 +30,24 @@ public class HomeFragment extends Fragment {
         btnNewPost = (ImageButton) root.findViewById(R.id.buttonHomeNewPost);
         btnNewPost.setOnClickListener(view -> onClickNewPost());
 
+        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerViewHome);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeRefreshLayoutHome);
+        swipeRefreshLayout.setRefreshing(true);
+
+        swipeRefreshLayout.setOnRefreshListener(this::SetPosts);
+        SetPosts();
+
         return root;
+    }
+    private void SetPosts(){
+        swipeRefreshLayout.setRefreshing(false);
+
+       // postAdapter = new PostAdapter(getContext(), getActivity(), posts);
+        recyclerView.clearOnScrollListeners();
+
+        recyclerView.setAdapter(postAdapter);
     }
 
     @Override
