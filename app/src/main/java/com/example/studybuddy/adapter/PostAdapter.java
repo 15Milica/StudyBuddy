@@ -2,7 +2,12 @@ package com.example.studybuddy.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,18 +16,39 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
+import com.example.studybuddy.model.User;
+import com.example.studybuddy.ui.profile.UserProfileActivity;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.common.api.Api;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,13 +57,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Context context;
     private Activity activity;
     private List<Post> posts;
-
+    private Map<String, ViewHolder> mHolders;
+    private SimpleExoPlayer player;
+    private FirebaseUser firebaseUser;
     public PostAdapter(Context context, Activity activity, List<Post> posts) {
         this.context = context;
         this.activity = activity;
         this.posts = posts;
+        mHolders = new HashMap<>();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
-
     @NonNull
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,12 +76,244 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
+        Post post = posts.get(position);
+        mHolders.put(post.getId(), holder);
+        if(post.getLocation() != null) holder.location.setText(post.getLocation());
+        setUserDetails(post.getUser(), holder);
 
+        Check.settingsPagePost(holder.textViewDescription, holder.linearLayoutHide, holder.coordinatorLayoutFullDescription, holder.coordinatorLayoutSettingPost, holder.constraintLayoutComments, holder.options);
+        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
+
+        if(post.getType().equals(Post.POST_TYPE_TEXT)){
+            holder.linearLayoutTextPost.setVisibility(View.VISIBLE);
+            holder.textPost.setText(post.getPost());
+            holder.imagePost.setVisibility(View.GONE);
+            holder.linearLayoutVideoPost.setVisibility(View.GONE);
+        }else if(post.getType().equals(Post.POST_TYPE_IMAGE)){
+            holder.linearLayoutVideoPost.setVisibility(View.GONE);
+            holder.linearLayoutTextPost.setVisibility(View.GONE);
+            holder.imagePost.setVisibility(View.VISIBLE);
+            if(post.getPost() != null)
+                Glide.with(context)
+                        .load(post.getPost())
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .into(holder.imagePost);
+        }else if(post.getType().equals(Post.POST_TYPE_VIDEO)){
+            holder.imagePost.setVisibility(View.GONE);
+            holder.linearLayoutTextPost.setVisibility(View.GONE);
+            holder.linearLayoutVideoPost.setVisibility(View.VISIBLE);
+            if(post.getPost() != null){
+                holder.simpleExoPlayer = new SimpleExoPlayer.Builder(context).build();
+                holder.videoPost.setPlayer(holder.simpleExoPlayer);
+
+                MediaItem mediaItem = MediaItem.fromUri(post.getPost());
+                holder.simpleExoPlayer.setMediaItem(mediaItem);
+                holder.simpleExoPlayer.prepare();
+            }
+        }
+        if(post.getDescription() != null) holder.textViewDescription.setText(post.getDescription());
+        holder.textViewDescription.setOnClickListener(view -> {
+            if(!post.getDescription().isEmpty()) {
+                holder.coordinatorLayoutFullDescription.setVisibility(View.VISIBLE);
+                holder.textViewFullDescription.setText(post.getDescription());
+                holder.linearLayoutHide.setVisibility(View.VISIBLE);
+                holder.textViewDescription.setVisibility(View.GONE);
+                holder.options.setVisibility(View.GONE);
+                holder.constraintLayoutComments.setVisibility(View.GONE);
+            }
+        });
+
+        holder.buttonHide.setOnClickListener(view -> {
+            holder.linearLayoutHide.setVisibility(View.GONE);
+            holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
+            holder.constraintLayoutComments.setVisibility(View.GONE);
+            holder.textViewDescription.setVisibility(View.VISIBLE);
+            holder.options.setVisibility(View.VISIBLE);
+        });
+        if(post.isOptionShare()) holder.linearLayoutShare.setVisibility(View.VISIBLE);
+        else holder.linearLayoutShare.setVisibility(View.GONE);
+
+        if(post.isOptionComments()) setComment(holder, post.getId(), post.getUser(), post.getHashtags());
+        else holder.linearLayoutComment.setVisibility(View.GONE);
+
+        setLike(holder, post.getId(), post.getUser(), post.getHashtags());
+
+        holder.userPhoto.setOnClickListener(view -> {
+            Intent intent = new Intent(context, UserProfileActivity.class);
+            intent.putExtra("userId", post.getUser());
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(intent);
+        });
+
+        holder.textViewFullDescription.setOnClickListener(view -> {
+            if(post.getDescription().startsWith("https://") || post.getDescription().startsWith("http://")) {
+                Uri uri = Uri.parse(post.getDescription());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            }
+        });
+
+    }
+    private void setLike(ViewHolder holder, String postId, String usrId, List<String> hashtags){
+        DatabaseReference refLikes = FirebaseDatabase.getInstance().getReference("likes");
+        refLikes.child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> likes = new ArrayList<>();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    likes.add(dataSnapshot.getValue(String.class));
+                }
+                holder.textViewLike.setText(String.valueOf(likes.size()));
+
+                if(likes.contains(firebaseUser.getUid())){
+                    holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                    holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like_primary));
+                    holder.like.setActivated(true);
+                }else {
+                    holder.textViewLike.setTextColor(ContextCompat.getColor(context, R.color.text_color));
+                    holder.like.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_like));
+                    holder.like.setActivated(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        holder.like.setOnClickListener(view -> {
+            if(holder.like.isActivated()){
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
+                ref.child(postId).child(firebaseUser.getUid()).removeValue();
+            }else {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
+                ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
+
+                //notifikacija
+                //algoritam
+            }
+        });
+    }
+    private void setComment(ViewHolder holder, String postId, String userId, List<String> hashtags){
+        holder.linearLayoutComment.setVisibility(View.VISIBLE);
+        holder.recyclerViewComments.setLayoutManager(new LinearLayoutManager(context));
+
+        DatabaseReference refComment = FirebaseDatabase.getInstance().getReference("comments");
+        refComment.child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Comment> comments = new ArrayList<>();
+                boolean b = false;
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Comment comment = dataSnapshot.getValue(Comment.class);
+                    if(comment.getUser().equals(firebaseUser.getUid())) b=true;
+                }
+                holder.textViewComment.setText(String.valueOf(comments.size()));
+                holder.commentsNumber.setText(String.valueOf(comments.size()));
+                if(b){
+                    holder.comment.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_comment_active));
+                    holder.comment.setActivated(true);
+                    holder.textViewComment.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                }else {
+                    holder.comment.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_vector_comment));
+                    holder.comment.setActivated(false);
+                    holder.textViewComment.setTextColor(ContextCompat.getColor(context, R.color.text_color));
+                }
+                CommentAdapter commentAdapter = new CommentAdapter(context, comments, postId, null);
+                holder.recyclerViewComments.setAdapter(commentAdapter);
+                holder.recyclerViewComments.addOnItemTouchListener(mScrollTouchListener);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        holder.comment.setOnClickListener(view -> {
+            holder.textViewDescription.setVisibility(View.GONE);
+            holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
+            holder.options.setVisibility(View.GONE);
+            holder.linearLayoutHide.setVisibility(View.VISIBLE);
+            holder.constraintLayoutComments.setVisibility(View.VISIBLE);
+        });
+        holder.editTextComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!holder.editTextComment.getText().toString().trim().isEmpty()) holder.addComment.setVisibility(View.VISIBLE);
+                else holder.addComment.setVisibility(View.GONE);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+        holder.addComment.setOnClickListener(view -> {
+            postComment(postId, holder.editTextComment.getText().toString().trim(), userId, hashtags);
+            holder.editTextComment.setText("");
+        });
+    }
+    private void postComment(String postId, String text, String userId, List<String> hashtags){
+        if(!Check.networkConnect(context)){
+            Toast.makeText(context, "Greška: nema mreže!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("comments");
+        final String commentId = ref.child(postId).push().getKey();
+        Comment comment = new Comment(commentId, firebaseUser.getUid(), text);
+        ref.child(postId).child(commentId).setValue(comment).addOnCompleteListener(view->{
+            //notifikacija
+        });
+        //algoritam
+    }
+    private void setUserDetails(String userId, ViewHolder holder){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        ref.child(userId).get().addOnSuccessListener(dataSnapshot -> {
+           User user = dataSnapshot.getValue(User.class);
+           holder.userName.setText(user.getName());
+           if(user.getPhoto().equals("default")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
+           else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
+        });
     }
 
     @Override
-    public int getItemCount() { return posts.size(); }
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
 
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+        if (layoutManager instanceof LinearLayoutManager && getItemCount() > 0) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int itemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+
+                    if (itemPosition > -1) checkItem(itemPosition);
+                }
+            });
+        }
+    }
+    private void checkItem(int position) {
+        Post post = posts.get(position);
+
+        if (post.getType().equals(Post.POST_TYPE_VIDEO)) {
+            ViewHolder viewHolder = mHolders.get(post.getId());
+
+            if (viewHolder.simpleExoPlayer == player) {
+                if (player != null && !player.isPlaying()) player.play();
+            } else {
+                stopPlayer();
+                viewHolder.simpleExoPlayer.play();
+                player = viewHolder.simpleExoPlayer;
+            }
+        } else {
+            stopPlayer();
+        }
+    }
+    public void stopPlayer() { if(player != null) player.pause(); }
+    @Override
+    public int getItemCount() { return posts.size(); }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public CircleImageView userPhoto;
@@ -141,4 +402,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             save = itemView.findViewById(R.id.buttonSendPost);
         }
     }
+    RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            int action = e.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_MOVE:
+                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) { }
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) { }
+    };
 }

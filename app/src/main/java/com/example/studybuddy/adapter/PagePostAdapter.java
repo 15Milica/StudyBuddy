@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Page;
 import com.example.studybuddy.model.Post;
@@ -187,6 +189,21 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             holder.linearLayoutHide.setVisibility(View.GONE);
             holder.textViewDescription.setVisibility(View.VISIBLE);
             holder.options.setVisibility(View.VISIBLE);
+        });
+        holder.textViewFullDescription.setOnClickListener(view -> {
+            if(post.getDescription().startsWith("https://") || post.getDescription().startsWith("http://")) {
+                Uri uri = Uri.parse(post.getDescription());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            }
+        });
+        holder.save.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, ForwardMessageActivity.class);
+            intent.putExtra("chatId", "");
+            intent.putExtra("message", post.getId());
+            intent.putExtra("messageType", page.getPageId());
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activity.startActivity(intent);
         });
     }
 

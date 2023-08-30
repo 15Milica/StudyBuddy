@@ -180,12 +180,12 @@ public class ForwardMessageActivity extends AppCompatActivity {
     private void onClickForward(){
         List<ChatItem> checkedItems = forwardAdapter.getCheckedItems();
         for(ChatItem chatItem:checkedItems){
-            String chatId = chatItem.getChatId();
+            String id = chatItem.getChatId();
             String chatType = chatItem.getChatType();
 
             if(chatType.equals("user")){
-                sendMessageToUser(firebaseUser.getUid(), chatId);
-            }else sendMessageToGroup(firebaseUser.getUid(), chatId);
+                sendMessageToUser(firebaseUser.getUid(), id);
+            }else sendMessageToGroup(firebaseUser.getUid(), id);
         }
         if(!message_type.equals("post_home") && !message_type.equals("post_page")) {
             Toast.makeText(ForwardMessageActivity.this, "Uspešno prosleđena objava", Toast.LENGTH_SHORT).show();
