@@ -34,6 +34,7 @@ import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.ReplyMessage;
+import com.example.studybuddy.notification.Notification;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,6 +76,8 @@ public class ChannelChatActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private boolean isRecording;
     private String soundFile;
+    private Channel channel;
+    private Group group;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +125,7 @@ public class ChannelChatActivity extends AppCompatActivity {
         buttonSend.setOnClickListener(view -> {
             String text = editTextSendMessage.getText().toString().trim();
             onClickSend(text, "text");
+            Notification.SendToChannel(text, group, channel);
             editTextSendMessage.setText("");
         });
 
@@ -166,6 +170,7 @@ public class ChannelChatActivity extends AppCompatActivity {
         String recordFile = "Recording_" + simpleDateFormat.format(now) + ".3gp";
 
         soundFile = recordPath + "/" + recordFile;
+        mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(soundFile);
@@ -176,7 +181,6 @@ public class ChannelChatActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         mediaRecorder.start();
     }
     private void stopRecording(){
@@ -224,6 +228,7 @@ public class ChannelChatActivity extends AppCompatActivity {
                     Uri uri1 = task1.getResult();
                     String audioUrl = uri1.toString();
                     onClickSend(audioUrl, "audio");
+                    Notification.SendToChannel("Glasovna poruka", group, channel);
                 }
             });
             soundFile = null;
@@ -291,14 +296,14 @@ public class ChannelChatActivity extends AppCompatActivity {
         refChannel.child(channelId).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 DataSnapshot dataSnapshot = task.getResult();
-                Channel channel = dataSnapshot.getValue(Channel.class);
+                channel = dataSnapshot.getValue(Channel.class);
                 nameChannel.setText(channel.getChannelName());
 
                 String groupId = channel.getGroupId();
                 refGroups.child(groupId).get().addOnCompleteListener(task1 -> {
                     if(task1.isSuccessful()){
                         DataSnapshot dataSnapshot1 = task1.getResult();
-                        Group group = dataSnapshot1.getValue(Group.class);
+                        group = dataSnapshot1.getValue(Group.class);
                         nameGroup.setText(group.getGroupName());
                     }
                 });
@@ -324,6 +329,7 @@ public class ChannelChatActivity extends AppCompatActivity {
                             Uri uri1 = task1.getResult();
                             String imageUrl = uri1.toString();
                             onClickSend(imageUrl, "image");
+                            Notification.SendToChannel("Slikovna poruka", group, channel);
                         }
                     });
                 });

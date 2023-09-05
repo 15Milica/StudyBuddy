@@ -34,6 +34,7 @@ import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.ReplyMessage;
+import com.example.studybuddy.notification.Notification;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +79,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private boolean isRecording;
     private MediaRecorder mediaRecorder;
     private String soundFile;
-
+    private Group group;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +108,7 @@ public class GroupChatActivity extends AppCompatActivity {
         buttonSend = (ImageButton) findViewById(R.id.imageButtonSendMessage);
         buttonSend.setOnClickListener(view -> {
             String msg = editTextMessage.getText().toString().trim();
+            Notification.SendToGroup(msg, group);
             onClickSend( msg, "text");
             editTextMessage.setText("");
         });
@@ -162,7 +164,7 @@ public class GroupChatActivity extends AppCompatActivity {
         ref.child(groupId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Group group = snapshot.getValue(Group.class);
+                group = snapshot.getValue(Group.class);
                 groupName.setText(group.getGroupName());
                 if(group.getGroupPhoto().equals("default")) groupPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
                 else Glide.with(getApplicationContext()).load(group.getGroupPhoto()).into(groupPhoto);
@@ -260,6 +262,7 @@ public class GroupChatActivity extends AppCompatActivity {
                 if(task1.isSuccessful()){
                     Uri uri1 = task1.getResult();
                     String audioUrl = uri1.toString();
+                    Notification.SendToGroup("Glasovna poruka", group);
                     onClickSend(audioUrl, "audio");
                 }
             });
@@ -324,6 +327,7 @@ public class GroupChatActivity extends AppCompatActivity {
                        if(task1.isSuccessful()){
                            Uri uri1 = task1.getResult();
                            String imageURL = uri1.toString();
+                           Notification.SendToGroup("Slikovna poruka", group);
                            onClickSend(imageURL, "image");
                        }
                     });

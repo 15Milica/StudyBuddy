@@ -40,6 +40,7 @@ import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.PinnedMessage;
 import com.example.studybuddy.model.ReplyMessage;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.google.android.gms.common.api.Api;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -113,12 +114,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if(message.getType().equals("text")){
             holder.show_message.setVisibility(View.VISIBLE);
             holder.show_message.setText(message.getMessage());
+            holder.show_message.setTextColor(ContextCompat.getColor(context, R.color.text_color));
             holder.buttonPlay.setVisibility(View.GONE);
             holder.buttonPause.setVisibility(View.GONE);
             holder.show_image.setVisibility(View.GONE);
         }else if(message.getType().equals("audio")){
             holder.show_message.setVisibility(View.VISIBLE);
             holder.show_message.setText("Glasovna poruka");
+            holder.show_message.setTextColor(ContextCompat.getColor(context, R.color.text_color));
             holder.buttonPlay.setVisibility(View.VISIBLE);
             holder.buttonPause.setVisibility(View.GONE);
             holder.show_image.setVisibility(View.GONE);
@@ -132,7 +135,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             }
         }else {
             holder.show_message.setVisibility(View.VISIBLE);
-            holder.show_message.setText("Post");
+            holder.show_message.setText("Objava");
+            holder.show_message.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
             holder.buttonPlay.setVisibility(View.GONE);
             holder.buttonPause.setVisibility(View.GONE);
             holder.show_image.setVisibility(View.GONE);
@@ -413,19 +417,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 if(user.getPhoto().equals("default")){
                     holder.sender_photo.setImageResource(R.drawable.ic_create_profile_vectors_photo);
                 }else Glide.with(context).load(user.getPhoto()).into(holder.sender_photo);
+                holder.sender_photo.setOnClickListener(view -> {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("userId", user.getUserId());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    context.startActivity(intent);
+                });
+
                 if(chatType.equals("group") ||  chatType.equals("channel")) {
                     String name = "";
+                    String msg = "";
                     if (message.getType().equals("text")) {
                         holder.show_message.setVisibility(View.VISIBLE);
+                        msg = message.getMessage();
                         name = user.getName() + "\n"+message.getMessage();
                     } else if (message.getType().equals("audio")) {
                         holder.show_message.setVisibility(View.VISIBLE);
+                        msg = "Glasovna poruka";
                         name = user.getName() + "\n"+"Glasovna poruka";
                     } else if (message.getType().equals("image")) {
                         holder.show_message.setVisibility(View.GONE);
                     } else {
                         holder.show_message.setVisibility(View.VISIBLE);
-                        name = user.getName() + "\n"+"Post";
+                        msg = "Objava";
+                        name = user.getName() + "\n"+"Objava";
                     }
                     if(!name.equals("")) {
                         SpannableString spannableString = new SpannableString(name);
@@ -434,8 +449,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                         spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.primary_color)), redStart, redEnd, 0);
                         spannableString.setSpan(new RelativeSizeSpan(0.8f), redStart, redEnd, 0);
 
-                        int greenStart = name.indexOf(message.getMessage());
-                        int greenEnd = greenStart + message.getMessage().length();
+                        int greenStart = name.indexOf(msg);
+                        int greenEnd = greenStart + msg.length();
                         spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.text_color)), greenStart, greenEnd, 0);
                         holder.show_message.setText(spannableString);
                     }

@@ -43,32 +43,45 @@
             android:textSize="@dimen/_14sdp"/>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imageButtonOptionsUserProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:backgroundTint="@color/secondary_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_chat_vectors_options" />
-
     <TextView
+        style="@style/TitleStyle"
         android:id="@+id/textViewUserProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/UserProfile"
-        android:textSize="@dimen/_28sdp"
-        android:textColor="@color/text_color"
-        android:fontFamily="@font/poppins_title"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonUserProfileFollow"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/button_default"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/UserProfileFollow"
+        android:textSize="@dimen/_13sdp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonUserProfileUnFollow"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/button_default"
+        android:fontFamily="@font/poppins_title"
+        android:text="@string/UserProfileUnFollow"
+        android:textSize="@dimen/_10sdp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"

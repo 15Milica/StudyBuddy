@@ -48,6 +48,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
     private String numberPhone;
     private DatabaseReference refDatabase;
     private StorageReference refStorage;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
         setContentView(R.layout.activity_create_profile);
 
         progressDialog = new ProgressDialog(this);
+        sessionManager = new SessionManager(getApplicationContext());
 
         refDatabase = FirebaseDatabase.getInstance().getReference();
         refStorage = FirebaseStorage.getInstance().getReference();
@@ -180,6 +182,7 @@ public class CreateProfileActivity extends AppCompatActivity implements DatePick
                 })
                 .addOnSuccessListener(aVoid ->{
                     progressDialog.dismiss();
+                    sessionManager.createSession();
                     if(imageUri != null) uploadImage();
                     else startMainActivity();
                 });

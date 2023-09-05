@@ -62,10 +62,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonJoin"
-            android:layout_width="@dimen/_80sdp"
+            android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:text="Pridruži se"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/page_description"

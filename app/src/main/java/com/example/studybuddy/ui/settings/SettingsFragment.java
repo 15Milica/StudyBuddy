@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.studybuddy.PinnedMessagesActivity;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 
 public class SettingsFragment extends Fragment {
 
@@ -21,14 +22,27 @@ public class SettingsFragment extends Fragment {
     private LinearLayout linearLayoutPinnedMessages;
     private LinearLayout linearLayoutAbout;
     private LinearLayout linearLayoutPrivacyTerms;
+    private SessionManager sessionManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
+        sessionManager = new SessionManager(getContext());
+
+        notification = root.findViewById(R.id.switchNotificationSettings);
+        status = root.findViewById(R.id.switchActivitySettings);
+
+        boolean n =  sessionManager.getNotification();
+        boolean s = sessionManager.getActivityStatus();
+        notification.setChecked(n);
+        status.setChecked(s);
+
+        notification.setOnClickListener(view -> {
+            boolean b = sessionManager.getNotification();
+        });
 
         linearLayoutPinnedMessages = root.findViewById((R.id.linearLayoutPinnedMessagesSettings));
         linearLayoutAbout = root.findViewById(R.id.linearLayoutAboutSettings);
         linearLayoutPrivacyTerms = root.findViewById(R.id.linearLayoutPrivacyTermsSettings);
-
 
         linearLayoutPinnedMessages.setOnClickListener((view -> onPinnedMessage()));
         linearLayoutAbout.setOnClickListener(view -> onAbout());

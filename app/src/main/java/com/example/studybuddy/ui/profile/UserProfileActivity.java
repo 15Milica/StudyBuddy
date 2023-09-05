@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -43,7 +45,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView textDescription;
     private CircleImageView imagePhoto;
     private TextView textTitle;
-    private ImageButton buttonSettings;
+    private Button buttonFollow;
+    private Button buttonUnfollow;
     private ImageButton imageButtonBack;
     private RecyclerView recyclerView;
     private ProfileStorylineAdapter profileStorylineAdapter;
@@ -51,7 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private DatabaseReference refDatabase;
     private String userId;
     private Activity activity;
-
+    private FirebaseUser firebaseUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
         posts = new ArrayList<>();
         activity = this;
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         refDatabase = FirebaseDatabase.getInstance().getReference();
         userId = getIntent().getStringExtra("userId");
 
@@ -69,9 +73,19 @@ public class UserProfileActivity extends AppCompatActivity {
         textDescription = (TextView) findViewById(R.id.textViewMultiLineUserProfile);
         imagePhoto = (CircleImageView) findViewById(R.id.imageViewUserProfilePhoto);
 
-        buttonSettings = (ImageButton) findViewById(R.id.imageButtonOptionsUserProfile);
-        imageButtonBack =(ImageButton) findViewById(R.id.imageButtonBackUserProfile);
+        buttonFollow = (Button) findViewById(R.id.buttonUserProfileFollow);
+        buttonFollow.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("followers");
+            ref.child(firebaseUser.getUid()).child(userId).setValue("following");
+        });
 
+        buttonUnfollow = (Button) findViewById(R.id.buttonUserProfileUnFollow);
+        buttonUnfollow.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("followers");
+            ref.child(firebaseUser.getUid()).child(userId).removeValue();
+        });
+
+        imageButtonBack =(ImageButton) findViewById(R.id.imageButtonBackUserProfile);
         imageButtonBack.setOnClickListener(view -> onBackPressed());
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewProfileStoryline);
@@ -79,6 +93,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setDetailsUserProfile();
         setProfileStoryline();
+        setFollow();
     }
     private void setDetailsUserProfile(){
         refDatabase.child("users").child(userId).get()
@@ -122,6 +137,24 @@ public class UserProfileActivity extends AppCompatActivity {
                 recyclerView.setAdapter(profileStorylineAdapter);
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    private void setFollow(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("followers");
+        ref.child(firebaseUser.getUid()).child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String s = snapshot.getValue(String.class);
+                if(s != null){
+                    buttonUnfollow.setVisibility(View.VISIBLE);
+                    buttonFollow.setVisibility(View.GONE);
+                }else {
+                    buttonUnfollow.setVisibility(View.GONE);
+                    buttonFollow.setVisibility(View.VISIBLE);
+                }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });

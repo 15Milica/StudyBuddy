@@ -65,8 +65,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder> {
         } else {
             holder.member.setVisibility(View.GONE);
             holder.join.setVisibility(View.VISIBLE);
-            holder.join.setOnClickListener(view -> onClickJoin(p));
-            holder.itemView.setOnClickListener(view -> onClickGroup(p));
+            holder.join.setOnClickListener(view -> onClickJoin(p, holder));
         }
     }
     private void onClickGroup(Page page){
@@ -75,7 +74,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder> {
         intent.putExtra("page", page);
         context.startActivity(intent);
     }
-    private void onClickJoin(Page page){
+    private void onClickJoin(Page page, ViewHolder holder){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.alert_dialog, null);
 
@@ -88,22 +87,19 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder> {
         text.setText("Želite li da se pridružite grupi?");
         buttonJoin.setText("Pridruži se");
 
-        buttonJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages").child(page.getPageId());
-                ref.child("members").child(user.getUid()).setValue("member")
-                        .addOnCompleteListener(task ->{
-                            if(task.isSuccessful()){
+        buttonJoin.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("pages").child(page.getPageId());
+            ref.child("members").child(user.getUid()).setValue("member")
+                    .addOnCompleteListener(task ->{
+                        if(task.isSuccessful()){
+                            holder.itemView.setOnClickListener(view1 -> onClickGroup(page));
+                            Toast.makeText(context, "Uspešno ste priključeni grupi!",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
 
-                                Toast.makeText(context, "Uspešno ste priključeni grupi!",Toast.LENGTH_SHORT).show();
-                            }else {
-                                Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-
-                            dialog.dismiss();
-                        });
-            }
+                        dialog.dismiss();
+                    });
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override

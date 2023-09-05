@@ -38,7 +38,9 @@ import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class InboxFragment extends Fragment {
 
@@ -161,6 +163,14 @@ public class InboxFragment extends Fragment {
                         ChatItem item = new ChatItem(chatId, chatName, chatType, chatPhoto);
                         chatItems.add(item);
                     }
+                    for (Group g : groups) {
+                        final String chatId = g.getGroupId();
+                        final String chatType = "group";
+                        final String chatName = g.getGroupName();
+                        final String chatPhoto = g.getGroupPhoto();
+                        ChatItem item = new ChatItem(chatId, chatName, chatType, chatPhoto);
+                        chatItems.add(item);
+                    }
                 }
             }
             @Override
@@ -172,11 +182,21 @@ public class InboxFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (search.getText().toString().isEmpty()) {
+                    chatItems.clear();
                     groups.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Group g = dataSnapshot.getValue(Group.class);
                         for (ChatList chatList : chatsList)
                             if (g.getGroupId().equals(chatList.getId())) groups.add(g);
+                    }
+                    for(User u:users)
+                    {
+                        final String chatId = u.getUserId();
+                        final String chatType = "user";
+                        final String chatName = u.getName();
+                        final String chatPhoto = u.getPhoto();
+                        ChatItem item = new ChatItem(chatId, chatName, chatType, chatPhoto);
+                        chatItems.add(item);
                     }
                     for (Group g : groups) {
                         final String chatId = g.getGroupId();
@@ -219,6 +239,14 @@ public class InboxFragment extends Fragment {
                     ChatItem item = new ChatItem(chatId,chatName, chatType, chatPhoto);
                     chatItems.add(item);
                 }
+                for (Group g : groups) {
+                    final String chatId = g.getGroupId();
+                    final String chatType = "group";
+                    final String chatName = g.getGroupName();
+                    final String chatPhoto = g.getGroupPhoto();
+                    ChatItem item = new ChatItem(chatId, chatName, chatType, chatPhoto);
+                    chatItems.add(item);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -230,10 +258,20 @@ public class InboxFragment extends Fragment {
         queryGroup.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatItems.clear();
                 groups.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Group g = dataSnapshot.getValue(Group.class);
                     for(ChatList chatList:chatsList) if(g.getGroupId().equals(chatList.getId())) groups.add(g);
+                }
+                for(User u : users)
+                {
+                    final String chatId = u.getUserId();
+                    final String chatName = u.getName();
+                    final String chatPhoto = u.getPhoto();
+                    final String chatType = "user";
+                    ChatItem item = new ChatItem(chatId,chatName, chatType, chatPhoto);
+                    chatItems.add(item);
                 }
                 for(Group g : groups)
                 {
@@ -271,14 +309,45 @@ public class InboxFragment extends Fragment {
                 String chatId = item.getChatId();
 
                 if(item.getChatType().equals("user")){
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("chats").child(userId);
-                    ref.child((chatId)).removeValue();
+                    FirebaseDatabase.getInstance().getReference("chats").child(userId).child((chatId)).removeValue();
+                    FirebaseDatabase.getInstance().getReference("chats_list").child(userId).child(chatId).removeValue();
+                }
+                if(item.getChatType().equals("group")){
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("groups").child(chatId);
+                    ref.get().addOnCompleteListener(task -> {
+                        Group group = task.getResult().getValue(Group.class);
+                        if(group.getGroupAdmin().equals(userId)){
+                            FirebaseDatabase.getInstance().getReference("group_messages").child(chatId).removeValue();
+                            List<String> mem = group.getMembers();
+                            for(String id: mem)
+                                FirebaseDatabase.getInstance().getReference("chats_list").child(id).child(chatId).removeValue();
+                            //FirebaseDatabase.getInstance().getReference("groups").child(chatId).removeValue();
+                        }else{
+                            FirebaseDatabase.getInstance().getReference("users").child(userId)
+                                    .get().addOnCompleteListener(task1 -> {
+                                        User user = task1.getResult().getValue(User.class);
+                                        List<String> tokens = group.getTokens();
+                                        List<String> mem = group.getMembers();
+                                        int index = tokens.indexOf(user.getToken());
+                                        tokens.remove(index);
+                                        int index2 = mem.indexOf(user.getUserId());
+                                        mem.remove(index2);
+                                        HashMap<String, Object> map = new HashMap<>();
+                                        map.put("tokens", tokens);
+                                        map.put("members", mem);
+                                        ref.updateChildren(map);
+                                        FirebaseDatabase.getInstance().getReference("chats_list").child(userId).child(chatId).removeValue();
+                                    });
+                        }
+                    });
                 }
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats_list").child(userId);
-                reference.child(chatId).removeValue().addOnCompleteListener(task-> { if(task.isSuccessful()) Toast.makeText(getContext(), "Uspešno obrisan čet", Toast.LENGTH_SHORT).show(); });
+                /*DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats_list").child(userId);
+                reference.child(chatId).removeValue().addOnCompleteListener(task-> {
+                    if(task.isSuccessful())
+                        Toast.makeText(getContext(), "Uspešno obrisan čet", Toast.LENGTH_SHORT).show();
+                });*/
 
-                Toast.makeText(getContext(), "Uspešno obrisana konverzacija!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

@@ -44,7 +44,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonPageNewPost"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/button_default"

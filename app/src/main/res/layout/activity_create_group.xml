@@ -56,7 +56,6 @@
         android:id="@+id/text1CreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:fontFamily="@font/poppins"
         android:text="@string/CreateGroupText1"
@@ -66,12 +65,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCreateGroup" />
 
-
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         android:background="@drawable/custom_border"
@@ -99,7 +97,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/pagePhotoCreateGroup"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_create_profile_vectors_photo"
@@ -118,17 +116,17 @@
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pagePhotoCreateGroup"/>
+        app:layout_constraintTop_toBottomOf="@+id/pagePhotoCreateGroup" />
 
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_335sdp"
-        android:layout_marginBottom="@dimen/_80sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_310sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_75sdp"
         android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@+id/buttonCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,19 +141,21 @@
             android:layout_marginRight="@dimen/_10sdp" />
     </androidx.core.widget.NestedScrollView>
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCreateGroup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:fontFamily="@font/poppins_title"
         android:text="@string/NewPageButton"
+        android:textSize="@dimen/_13sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text2ViewCreateGroup"
+        app:layout_constraintVertical_bias="1" />
 
     <ProgressBar
         android:id="@+id/progressBarCreateGroup"

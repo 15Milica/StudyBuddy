@@ -9,15 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -37,6 +34,8 @@ import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.ReplyMessage;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
+import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -117,6 +116,7 @@ public class ChatActivity extends AppCompatActivity {
         buttonSend.setOnClickListener(view -> {
             String text = editTextMessage.getText().toString().trim();
             onClickSend(text, "text");
+            Notification.SendToUser(text, user);
             editTextMessage.setText("");
         });
 
@@ -153,6 +153,12 @@ public class ChatActivity extends AppCompatActivity {
         buttonCancel.setOnClickListener(view -> {
             linearLayoutReply.setVisibility(View.GONE);
             editTextMessage.setMaxLines(3);
+        });
+        user_photo.setOnClickListener(view -> {
+            Intent intent1 = new Intent(this, UserProfileActivity.class);
+            intent1.putExtra("userId", userId);
+            intent1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            this.startActivity(intent1);
         });
     }
     private void setProfileDetails(){
@@ -267,6 +273,7 @@ public class ChatActivity extends AppCompatActivity {
                 if(task1.isSuccessful()){
                     Uri uri1 = task1.getResult();
                     String audioUrl = uri1.toString();
+                    Notification.SendToUser("Glasovna poruka", user);
                     onClickSend(audioUrl, "audio");
                 }
             });
@@ -391,6 +398,7 @@ public class ChatActivity extends AppCompatActivity {
                         if(task1.isSuccessful()){
                             Uri uri1 = task1.getResult();
                             String imageUrl  = uri1.toString();
+                            Notification.SendToUser("Slikovna poruka", user);
                             onClickSend(imageUrl, "image");
                         }
                     });

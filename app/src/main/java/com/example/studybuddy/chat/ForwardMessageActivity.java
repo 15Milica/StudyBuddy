@@ -22,6 +22,7 @@ import com.example.studybuddy.model.ChatList;
 import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.MessageTime;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -144,6 +145,15 @@ public class ForwardMessageActivity extends AppCompatActivity {
                     ChatItem chatItem = new ChatItem(id, name, type, photo);
                     chatItems.add(chatItem);
                 }
+                for(Group g : groups){
+                    final String id = g.getGroupId();
+                    final String name = g.getGroupName();
+                    final String type = "group";
+                    final String photo = g.getGroupPhoto();
+
+                    ChatItem chatItem = new ChatItem(id, name, type, photo);
+                    chatItems.add(chatItem);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -152,12 +162,22 @@ public class ForwardMessageActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
                 groups.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Group group = dataSnapshot.getValue(Group.class);
                     for(ChatList chatList:chatsList){
                         if(chatList.getId().equals(group.getGroupId())) groups.add(group);
                     }
+                }
+                for(User u : users) {
+                    final String id = u.getUserId();
+                    final String name = u.getName();
+                    final String type = "user";
+                    final String photo = u.getPhoto();
+
+                    ChatItem chatItem = new ChatItem(id, name, type, photo);
+                    chatItems.add(chatItem);
                 }
                 for(Group g : groups){
                     final String id = g.getGroupId();
@@ -185,12 +205,28 @@ public class ForwardMessageActivity extends AppCompatActivity {
 
             if(chatType.equals("user")){
                 sendMessageToUser(firebaseUser.getUid(), id);
-            }else sendMessageToGroup(firebaseUser.getUid(), id);
+                FirebaseDatabase.getInstance().getReference("users").child(id).get().addOnCompleteListener(task -> {
+                    User user = task.getResult().getValue(User.class);
+                    if(message_type.equals("text")) { Notification.SendToUser(message, user); }
+                    else if(message_type.equals("image")) { Notification.SendToUser("Slikovna poruka", user); }
+                    else if(message_type.equals("audio")) { Notification.SendToUser("Glasovna poruka", user); }
+                    else { Notification.SendToUser("Objava", user); }
+                });
+            }else {
+                sendMessageToGroup(firebaseUser.getUid(), id);
+                FirebaseDatabase.getInstance().getReference("groups").child(id).get().addOnCompleteListener(task->{
+                   Group group = task.getResult().getValue(Group.class);
+                    if(message_type.equals("text")) { Notification.SendToGroup(message, group); }
+                    else if(message_type.equals("image")) { Notification.SendToGroup("Slikovna poruka", group); }
+                    else if(message_type.equals("audio")) { Notification.SendToGroup("Glasovna poruka", group); }
+                    else { Notification.SendToGroup("Objava", group); }
+                });
+            }
         }
         if(!message_type.equals("post_home") && !message_type.equals("post_page")) {
             Toast.makeText(ForwardMessageActivity.this, "Uspešno prosleđena objava", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(ForwardMessageActivity.this, "Uspešno podeljana objava", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ForwardMessageActivity.this, "Uspešno prosleđena poruka", Toast.LENGTH_SHORT).show();
         }
         finish();
     }

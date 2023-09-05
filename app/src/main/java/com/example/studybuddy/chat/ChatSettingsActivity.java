@@ -204,6 +204,8 @@ public class ChatSettingsActivity extends AppCompatActivity {
         buttonConfirm.setText("Obriši");
 
         buttonConfirm.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("channel_messages");
+            ref.child(channel.getChannelId()).removeValue();
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("channels");
             reference.child(channel.getChannelId()).removeValue();
             dialog.dismiss();

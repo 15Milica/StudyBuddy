@@ -110,6 +110,8 @@
 
     <!-- UserProfile strings -->
     <string name="UserProfile">PROFIL</string>
+    <string name="UserProfileFollow">Prati</string>
+    <string name="UserProfileUnFollow">Ne prati više</string>
 
     <!-- Invite strings -->
     <string name="InviteFriends">Pozovi prijatelje</string>

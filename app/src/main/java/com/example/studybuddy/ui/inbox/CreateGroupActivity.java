@@ -23,6 +23,7 @@ import com.example.studybuddy.R;
 import com.example.studybuddy.adapter.GroupAdapter;
 import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -224,11 +225,11 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         final String name = textNameGroup.getText().toString();
         if(!Check.validFirstName(name)){
-            Toast.makeText(this, "Unesite ime!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Unesite ime!", Toast.LENGTH_SHORT).show();
             return;
         }
         if(!Check.networkConnect(this)){
-            Toast.makeText(this, "Greška: nema mreže!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Greška: nema mreže!", Toast.LENGTH_SHORT).show();
             return;
         }
         final String search = name.toLowerCase();
@@ -249,9 +250,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                 }).addOnSuccessListener(aVoid->{
                     progressDialog.dismiss();
 
-                    List<String> userId = group.getMembers();
+                    List<String> userIds = group.getMembers();
 
-                    for(String id : userId) {
+                    for(String id : userIds) {
                         DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("chats_list")
                                 .child(id)
                                 .child(groupId);
@@ -263,7 +264,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                             public void onCancelled(@NonNull DatabaseError error) { }
                         });
                     }
-
+                    Notification.SendToGroup("Dobrodošli u grupu!", group);
 
                     if(imageUri != null) { uploadImageGroup(groupId); }
                     else {
