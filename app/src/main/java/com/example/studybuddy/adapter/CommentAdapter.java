@@ -20,6 +20,7 @@ import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Page;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -106,6 +107,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }else {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
                 ref.child(comment.getId()).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
+                sendNotification(comment.getUser());
             }
         });
 
@@ -166,6 +168,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             return true;
         });
     }
+    private void sendNotification(String commentUser){
+        if(!commentUser.equals(firebaseUser.getUid())){
+            FirebaseDatabase.getInstance().getReference("users").child(commentUser)
+                    .get().addOnCompleteListener(task -> {
+                        User user = task.getResult().getValue(User.class);
+                        if(pageId == null)
+                            Notification.sendNotificationPost(postId, "Like komentar", user.getToken(), "post_home");
+                        else
+                            Notification.sendNotificationPost(postId, "Like komentar", user.getToken(), pageId);
+                    });
+
+        }
+    }
+
     @Override
     public int getItemCount() { return comments.size(); }
 

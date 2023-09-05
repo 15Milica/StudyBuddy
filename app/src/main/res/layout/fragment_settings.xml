@@ -27,24 +27,20 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayoutSettingsNotifications"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/ic_settings_vectors_notifications"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Settings">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-            <Switch
-                android:id="@+id/switchNotificationSettings"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppins"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
                 android:text="@string/SettingsSwitchNotification"
                 android:textColor="@color/primary_color"
                 android:textSize="@dimen/_16sdp" />
@@ -57,7 +53,9 @@
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/ic_settings_vectors_notifications"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Settings">
 
             <Switch
                 android:id="@+id/switchActivitySettings"
@@ -66,11 +64,10 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins"
                 android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_3sdp"
                 android:text="@string/SettingsSwitchActivity"
                 android:textColor="@color/primary_color"
                 android:textSize="@dimen/_16sdp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -80,7 +77,7 @@
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/custom_border"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutSettingsNotifications">
 
             <TextView
                 android:id="@+id/textViewSettingsPinnedMessage"

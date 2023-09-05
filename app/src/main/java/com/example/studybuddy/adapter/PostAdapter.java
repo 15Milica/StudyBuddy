@@ -32,6 +32,7 @@ import com.example.studybuddy.R;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -60,12 +61,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Map<String, ViewHolder> mHolders;
     private SimpleExoPlayer player;
     private FirebaseUser firebaseUser;
+    private Map<String, String> tokens;
     public PostAdapter(Context context, Activity activity, List<Post> posts) {
         this.context = context;
         this.activity = activity;
         this.posts = posts;
         mHolders = new HashMap<>();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        tokens = new HashMap<>();
     }
     @NonNull
     @Override
@@ -154,7 +157,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
     }
-    private void setLike(ViewHolder holder, String postId, String usrId, List<String> hashtags){
+    private void setLike(ViewHolder holder, String postId, String userId, List<String> hashtags){
         DatabaseReference refLikes = FirebaseDatabase.getInstance().getReference("likes");
         refLikes.child(postId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -186,7 +189,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
                 ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
 
-                //notifikacija
+                if(!firebaseUser.getUid().equals(userId)){
+                    if(tokens.containsKey(userId))
+                        Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), "post_home");
+                }
                 //algoritam
             }
         });
@@ -255,7 +261,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final String commentId = ref.child(postId).push().getKey();
         Comment comment = new Comment(commentId, firebaseUser.getUid(), text);
         ref.child(postId).child(commentId).setValue(comment).addOnCompleteListener(view->{
-            //notifikacija
+            if(!firebaseUser.getUid().equals(userId)){
+                if(tokens.containsKey(userId))
+                    Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(userId), "post_home");
+            }
         });
         //algoritam
     }
@@ -266,6 +275,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
            holder.userName.setText(user.getName());
            if(user.getPhoto().equals("default")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
            else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
+           tokens.put(user.getUserId(), user.getToken());
         });
     }
 

@@ -30,7 +30,7 @@ public class SessionManager {
     }
 
     public void createSession() {
-        editor.putBoolean(NOTIFICATION, true);
+        editor.putBoolean(NOTIFICATION, false);
         editor.putBoolean(ACTIVITY_STATUS, true);
         editor.apply();
     }

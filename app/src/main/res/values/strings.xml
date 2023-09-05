@@ -59,7 +59,7 @@
 
     <!-- Settings strings -->
     <string name="Settings">PODEŠAVANJA</string>
-    <string name="SettingsSwitchNotification">Obaveštenje</string>
+    <string name="SettingsSwitchNotification">Obaveštenja</string>
     <string name="SettingsSwitchActivity">Aktivnost</string>
     <string name="SettingsPinnedMessage">Sačuvane poruke</string>
 

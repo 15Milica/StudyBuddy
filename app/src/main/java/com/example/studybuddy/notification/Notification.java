@@ -89,4 +89,24 @@ public class Notification {
                     }
                 });
     }
+    public static void sendNotificationPost(String postId, String message, String token, String pageId) {
+        FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .get().addOnCompleteListener(task -> {
+                    User user = task.getResult().getValue(User.class);
+                    final String name =user.getName();
+
+                    String body = name + ": " + message;
+                    Data data = new Data(pageId, R.mipmap.ic_launcher, body, "Obaveštenje", postId, "post");
+                    Sender sender = new Sender(data, token);
+                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
+                        @Override
+                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                        }
+                        @Override
+                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                        }
+                    });
+
+                });
+    }
 }

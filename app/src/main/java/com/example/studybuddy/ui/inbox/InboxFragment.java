@@ -341,13 +341,6 @@ public class InboxFragment extends Fragment {
                         }
                     });
                 }
-
-                /*DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats_list").child(userId);
-                reference.child(chatId).removeValue().addOnCompleteListener(task-> {
-                    if(task.isSuccessful())
-                        Toast.makeText(getContext(), "Uspešno obrisan čet", Toast.LENGTH_SHORT).show();
-                });*/
-
                 dialog.dismiss();
             }
         });

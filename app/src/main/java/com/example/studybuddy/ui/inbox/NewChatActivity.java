@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.UserAdapter;
 import com.example.studybuddy.model.InviteItem;
 import com.example.studybuddy.model.User;
@@ -52,9 +53,10 @@ public class NewChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private FirebaseUser firebaseUser;
-    private DatabaseReference refStatus;
-
+    private DatabaseReference user_status;
     private List<String> mFollowers;
+    private boolean status;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,9 @@ public class NewChatActivity extends AppCompatActivity {
         users = new ArrayList<>();
         mFollowers = new ArrayList<>();
 
+        sessionManager = new SessionManager(getApplicationContext());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        refStatus = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
 
         progressBar = (ProgressBar) findViewById(R.id.progressBarNewChat);
 
@@ -98,18 +101,6 @@ public class NewChatActivity extends AppCompatActivity {
         imageButtonInvite.setEnabled(false);
         Intent intent = new Intent(this, InviteActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        imageButtonInvite.setEnabled(true);
-        refStatus.setValue("Online");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        refStatus.setValue("Offline");
     }
 
     private void searchUser(String u) {
@@ -180,5 +171,25 @@ public class NewChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) { progressBar.setVisibility(View.GONE); }
         });
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status = sessionManager.getActivityStatus();
 
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(status) { user_status.setValue("Online"); }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(status) { user_status.setValue("Offline"); }
+    }
 }

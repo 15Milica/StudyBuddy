@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.MessageAdapter;
 import com.example.studybuddy.model.Message;
 import com.example.studybuddy.model.MessageTime;
@@ -66,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
     private static int PERMISSION_CODE_AUDIO = 21;
     private CircleImageView user_photo;
     private TextView user_name;
-    private TextView user_status;
+    private TextView text_status;
     private EditText editTextMessage;
     private ImageButton buttonOptions;
     private ImageButton buttonCamera;
@@ -84,7 +85,9 @@ public class ChatActivity extends AppCompatActivity {
     private boolean isRecording;
     private MediaRecorder mediaRecorder;
     private String soundFile;
-
+    private DatabaseReference user_status;
+    private boolean status;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,14 +95,16 @@ public class ChatActivity extends AppCompatActivity {
         isRecording = false;
         messages = new ArrayList<>();
         soundFile = null;
+        sessionManager = new SessionManager(getApplicationContext());
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
         intent = getIntent();
         userId = intent.getStringExtra("userId");
 
         user_photo = (CircleImageView) findViewById(R.id.profilePhotoChat);
         user_name = (TextView) findViewById(R.id.textViewChatName);
-        user_status = (TextView) findViewById(R.id.textViewChatUserStatus);
+        text_status = (TextView) findViewById(R.id.textViewChatUserStatus);
 
         setProfileDetails();
 
@@ -176,13 +181,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-        DatabaseReference refStatus = FirebaseDatabase.getInstance().getReference("user_status");
-        refStatus.child(userId).addValueEventListener(new ValueEventListener() {
+        DatabaseReference refStatus = FirebaseDatabase.getInstance().getReference("user_status").child(userId);
+        refStatus.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String status = snapshot.getValue(String.class);
-                user_status.setText(status);
+                text_status.setText(status);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -411,6 +415,24 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         buttonOptions.setEnabled(true);
+
+        if(status) { user_status.setValue("Online"); }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status = sessionManager.getActivityStatus();
+
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(status) { user_status.setValue("Offline"); }
     }
     private boolean checkPermission() {
         if(ActivityCompat.checkSelfPermission(getApplicationContext(), recordPermission) == PackageManager.PERMISSION_GRANTED) {

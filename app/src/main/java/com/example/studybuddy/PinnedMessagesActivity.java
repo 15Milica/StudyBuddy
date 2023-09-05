@@ -30,16 +30,21 @@ public class PinnedMessagesActivity extends AppCompatActivity {
     private List<PinnedMessage> pinnedMessageList;
     private FirebaseUser firebaseUser;
     private Activity activity;
+    private boolean status;
+    private SessionManager sessionManager;
+    private DatabaseReference user_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pinned_messages);
         activity = this;
+        sessionManager = new SessionManager(getApplicationContext());
 
         final String chatId = getIntent().getStringExtra("chatId");
         pinnedMessageList = new ArrayList<>();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
 
         imageButtonBack = (ImageButton) findViewById(R.id.imageButtonBackPinnedMessage);
         imageButtonBack.setOnClickListener(view -> onBackPressed());
@@ -86,5 +91,26 @@ public class PinnedMessagesActivity extends AppCompatActivity {
             });
         }
 
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status = sessionManager.getActivityStatus();
+
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(status) { user_status.setValue("Online"); }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(status) { user_status.setValue("Offline"); }
     }
 }

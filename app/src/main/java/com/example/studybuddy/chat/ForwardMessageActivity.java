@@ -223,7 +223,7 @@ public class ForwardMessageActivity extends AppCompatActivity {
                 });
             }
         }
-        if(!message_type.equals("post_home") && !message_type.equals("post_page")) {
+        if(!message_type.equals("post_home") || !message_type.equals("post_page")) {
             Toast.makeText(ForwardMessageActivity.this, "Uspešno prosleđena objava", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(ForwardMessageActivity.this, "Uspešno prosleđena poruka", Toast.LENGTH_SHORT).show();

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.GroupAdapter;
 import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.User;
@@ -55,22 +56,24 @@ public class CreateGroupActivity extends AppCompatActivity {
     private List<User> users;
     private FirebaseUser userCreator;
     private DatabaseReference refDatabase;
-    private DatabaseReference refStatus;
+    private DatabaseReference user_status;
     private StorageReference refStorage;
     private ProgressDialog progressDialog;
     private List<String> mFollowers;
     private GroupAdapter groupAdapter;
     private ProgressBar progressBar;
-
     private List<String> members;
     private List<String> tokens;
     private String userToken = null;
+    private boolean status;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         progressDialog = new ProgressDialog(this);
+        sessionManager = new SessionManager(getApplicationContext());
 
         users = new ArrayList<>();
         mFollowers = new ArrayList<>();
@@ -82,7 +85,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         userCreator = FirebaseAuth.getInstance().getCurrentUser();
         refDatabase = FirebaseDatabase.getInstance().getReference("groups");
-        refStatus = FirebaseDatabase.getInstance().getReference("user_status").child(userCreator.getUid());
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(userCreator.getUid());
         refStorage = FirebaseStorage.getInstance().getReference();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBarCreateGroup);
@@ -115,17 +118,6 @@ public class CreateGroupActivity extends AppCompatActivity {
         showFollowers();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refStatus.setValue("Online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        refStatus.setValue("Offline");
-    }
     private void onClickImagePhoto(){
         ImagePicker.with(this)
                 .crop()
@@ -272,5 +264,26 @@ public class CreateGroupActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status = sessionManager.getActivityStatus();
+
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(status) { user_status.setValue("Online"); }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(status) { user_status.setValue("Offline"); }
     }
 }

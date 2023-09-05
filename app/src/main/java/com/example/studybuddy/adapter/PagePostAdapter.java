@@ -35,6 +35,7 @@ import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Page;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -64,6 +65,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
     private Map<String, ViewHolder> mHolders;
     private FirebaseUser firebaseUser;
     private SimpleExoPlayer player;
+    private Map<String, String> tokens;
 
     public PagePostAdapter(Context context, Activity activity, Page page, List<Post> posts) {
         this.context = context;
@@ -72,6 +74,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         this.posts = posts;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mHolders = new HashMap<>();
+        tokens = new HashMap<>();
     }
 
     @NonNull
@@ -119,15 +122,12 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         }
 
         Check.settingsPagePost(holder.textViewDescription, holder.linearLayoutHide, holder.coordinatorLayoutFullDescription, holder.coordinatorLayoutSettingPost, holder.constraintLayoutComments, holder.options);
-        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
+        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
 
-        holder.coordinatorLayoutSettingPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
-                holder.options.setActivated(false);
-                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
-            }
+        holder.coordinatorLayoutSettingPost.setOnClickListener(view -> {
+            holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
+            holder.options.setActivated(false);
+            Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
         });
 
         String isAdmin = page.getMembers().get(post.getUser());
@@ -174,13 +174,13 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             if(holder.options.isActivated()){
                 holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
                 holder.options.setActivated(false);
-                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
             }else {
                 holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
                 holder.constraintLayoutComments.setVisibility(View.GONE);
                 holder.coordinatorLayoutSettingPost.setVisibility(View.VISIBLE);
                 holder.options.setActivated(true);
-                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, false);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, false);
             }
         });
         holder.buttonHide.setOnClickListener(view -> {
@@ -197,7 +197,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                 context.startActivity(intent);
             }
         });
-        holder.save.setOnClickListener(view -> {
+        holder.send.setOnClickListener(view -> {
             Intent intent = new Intent(activity, ForwardMessageActivity.class);
             intent.putExtra("chatId", "");
             intent.putExtra("message", post.getId());
@@ -220,6 +220,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                 if(!firebaseUser.getUid().equals(user.getUserId())) {
                     setFollowUnfollow(holder, user.getUserId());
                 }
+                tokens.put(user.getUserId(), user.getToken());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -316,7 +317,10 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         final String commentId = refComments.child(postId).push().getKey();
         Comment comment = new Comment(commentId, firebaseUser.getUid(), textComment);
         refComments.child(postId).child(commentId).setValue(comment).addOnCompleteListener(task->{
-          //notifikacija
+          if(!firebaseUser.getUid().equals(postUser)){
+              if(tokens.containsKey(postUser))
+                  Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(postUser), page.getPageId());
+          }
         });
         //algoritam
     }
@@ -378,6 +382,11 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             } else {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
                 ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
+                if(!firebaseUser.getUid().equals(userId)){
+                    if(tokens.containsKey(userId))
+                        Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), page.getPageId());
+                }
+                //algoritam
             }
         });
     }
@@ -513,7 +522,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         public Button buttonHide;
         public LinearLayout linearLayoutShare;
         public Button share;
-        public Button save;
+        public Button send;
         public SimpleExoPlayer simpleExoPlayer;
 
         public ViewHolder(@NonNull View itemView) {
@@ -562,7 +571,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
 
             linearLayoutShare = itemView.findViewById(R.id.lin_share_page_post);
             share = itemView.findViewById(R.id.buttonSharePagePost);
-            save = itemView.findViewById(R.id.buttonSendPagePost);
+            send = itemView.findViewById(R.id.buttonSendPagePost);
         }
     }
     RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {

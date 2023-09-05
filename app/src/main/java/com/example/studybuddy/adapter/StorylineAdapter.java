@@ -28,8 +28,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
+import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -54,6 +57,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
     private SimpleExoPlayer player;
     private Map<String, ViewHolder> mHolders;
     private FirebaseUser firebaseUser;
+    private Map<String, String> tokens;
 
     public StorylineAdapter(Context context, Activity activity, List<Post> posts, int index) {
         this.context = context;
@@ -62,6 +66,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
         this.index = index;
         mHolders = new HashMap<>();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        tokens = new HashMap<>();
     }
 
     @NonNull
@@ -75,6 +80,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
     public void onBindViewHolder(@NonNull StorylineAdapter.ViewHolder holder, int position) {
         Post post = posts.get(position);
         mHolders.put(post.getId(), holder);
+        setUserToken(post.getUser());
 
         holder.constraintLayoutComments.setVisibility(View.GONE);
         holder.coordinatorLayoutDescription.setVisibility(View.GONE);
@@ -139,7 +145,25 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
 
         if(post.isOptionComments()) setComment(holder, post.getId(), post.getUser(), post.getHashtags());
         else holder.linearLayoutComment.setVisibility(View.GONE);
+
+        holder.buttonSend.setOnClickListener(view -> {
+            Intent intent = new Intent(context, ForwardMessageActivity.class);
+            intent.putExtra("chatId", "");
+            intent.putExtra("message", post.getId());
+            intent.putExtra("messageType", "post_home");
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activity.startActivity(intent);
+        });
     }
+    private void setUserToken(String userId){
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+
+        userRef.child(userId).get().addOnSuccessListener(dataSnapshot -> {
+            User user = dataSnapshot.getValue(User.class);
+            if(user != null) tokens.put(user.getUserId(), user.getToken());
+        });
+    }
+
     private void setLike(ViewHolder holder, String postId, String userId, List<String> hashtags){
         DatabaseReference refLike = FirebaseDatabase.getInstance().getReference("likes");
         refLike.child(postId).addValueEventListener(new ValueEventListener() {
@@ -171,8 +195,12 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
                 ref.child(postId).child(firebaseUser.getUid()).removeValue();
             }else {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
-                refLike.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
-                //notifikacija
+                ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
+
+                if(!firebaseUser.getUid().equals(userId)){
+                    if(tokens.containsKey(userId))
+                        Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), "post_home");
+                }
                 //algoritam
             }
         });
@@ -247,7 +275,10 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
         final String commentId = refComments.child(postId).push().getKey();
         Comment comment = new Comment(commentId, firebaseUser.getUid(), text);
         refComments.child(postId).child(commentId).setValue(comment).addOnCompleteListener(task->{
-            //notifikacija
+            if(!firebaseUser.getUid().equals(userId)){
+                if(tokens.containsKey(userId))
+                    Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(userId), "post_home");
+            }
         });
         //algoritam
     }

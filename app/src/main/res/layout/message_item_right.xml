@@ -7,7 +7,7 @@
     android:padding="@dimen/_5sdp">
 
     <RelativeLayout
-        android:layout_width="@dimen/_200sdp"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true">
@@ -21,11 +21,11 @@
 
             <LinearLayout
                 android:id="@+id/layout_message_reply"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_150sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/chat_message_left">
 
                 <ImageView
@@ -54,8 +54,8 @@
 
                 <ImageButton
                     android:id="@+id/audio_message_play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/white"
@@ -97,7 +97,7 @@
 
         <ImageView
             android:id="@+id/image_message"
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_150sdp"
             android:layout_below="@+id/layout_message"
             android:layout_alignParentEnd="true"
