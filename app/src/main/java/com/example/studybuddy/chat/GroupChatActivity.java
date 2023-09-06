@@ -3,6 +3,7 @@ package com.example.studybuddy.chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.MessageAdapter;
 import com.example.studybuddy.model.Group;
 import com.example.studybuddy.model.Message;
@@ -56,6 +58,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -80,16 +83,22 @@ public class GroupChatActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private String soundFile;
     private Group group;
+    private boolean status;
+    private DatabaseReference user_status;
+    private SessionManager sessionManager;
+    private boolean MUTE_UN_MUTE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
+        sessionManager = new SessionManager(getApplicationContext());
         messages = new ArrayList<>();
         isRecording = false;
         soundFile = null;
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
         groupId = getIntent().getStringExtra("groupId");
 
         groupPhoto = (CircleImageView) findViewById(R.id.groupChatPhoto);
@@ -136,7 +145,9 @@ public class GroupChatActivity extends AppCompatActivity {
         });
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewChat);
-        recyclerView.setLayoutManager(new LinearLayoutManager(GroupChatActivity.this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(GroupChatActivity.this);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         linearLayoutReplyMessage = (LinearLayout) findViewById(R.id.group_chat_reply);
         buttonCancel = (ImageButton) findViewById(R.id.group_imageButtonCancelReply);
@@ -343,10 +354,80 @@ public class GroupChatActivity extends AppCompatActivity {
             return false;
         }
     }
+    private void muteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+
+        mutedChats.add(groupId);
+
+        sessionManager.setMutedChats(mutedChats);
+    }
+
+    private void unMuteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+
+        mutedChats.remove(groupId);
+
+        sessionManager.setMutedChats(mutedChats);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         buttonOptions.setEnabled(true);
+        if(status) { user_status.setValue("Online"); }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+        if(status) { user_status.setValue("Offline"); }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        MUTE_UN_MUTE = true;
+
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) {
+            mutedChats.addAll(mS);
+
+            for(String m : mutedChats) {
+                if(m.equals(groupId)) {
+                    MUTE_UN_MUTE = false;
+                    break;
+                }
+            }
+        }
+
+        if(MUTE_UN_MUTE) muteThisChat();
+        status = sessionManager.getActivityStatus();
+
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+
 }

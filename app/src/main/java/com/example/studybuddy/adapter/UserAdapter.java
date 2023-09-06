@@ -18,8 +18,11 @@ import com.bumptech.glide.Glide;
 import com.example.studybuddy.R;
 import com.example.studybuddy.chat.ChatActivity;
 import com.example.studybuddy.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -53,9 +56,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         int color2 = ContextCompat.getColor(context, R.color.secondary_color);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user_status").child(userId);
-        databaseReference.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                String status = task.getResult().getValue(String.class);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String status = snapshot.getValue(String.class);
 
                 if(status != null && status.equals("Online")) {
                     holder.user_border.setBackgroundColor(color1);
@@ -71,6 +75,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     holder.status.setTextColor(color2);
                 }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
         holder.itemView.setOnClickListener(v -> {

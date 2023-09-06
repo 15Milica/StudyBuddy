@@ -3,6 +3,7 @@ package com.example.studybuddy.chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.MessageAdapter;
 import com.example.studybuddy.model.Channel;
 import com.example.studybuddy.model.Group;
@@ -56,6 +58,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ChannelChatActivity extends AppCompatActivity {
     private static String recordPermission = Manifest.permission.RECORD_AUDIO;
@@ -73,22 +76,30 @@ public class ChannelChatActivity extends AppCompatActivity {
     private List<Message> messages;
     private FirebaseUser firebaseUser;
     private String channelId;
+    private String groupId;
     private MediaRecorder mediaRecorder;
     private boolean isRecording;
     private String soundFile;
     private Channel channel;
     private Group group;
+    private SessionManager sessionManager;
+    private boolean status;
+    private DatabaseReference user_status;
+    private boolean MUTE_UN_MUTE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_chat);
 
+        sessionManager = new SessionManager(getApplicationContext());
         messages = new ArrayList<>();
         isRecording = false;
         soundFile = null;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
 
         channelId = getIntent().getStringExtra("channelId");
+        groupId = getIntent().getStringExtra("groupId");
 
         nameGroup = (TextView) findViewById(R.id.channelChatGroupName);
         nameChannel = (TextView) findViewById(R.id.channelChatName);
@@ -130,7 +141,9 @@ public class ChannelChatActivity extends AppCompatActivity {
         });
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewChannelChat);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ChannelChatActivity.this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChannelChatActivity.this);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         linearLayoutChatReplyMessage = (LinearLayout) findViewById(R.id.channel_chat_reply);
         buttonCancel = (ImageButton) findViewById(R.id.channel_imageButtonCancelReply);
@@ -342,6 +355,78 @@ public class ChannelChatActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(ChannelChatActivity.this, new String[]{recordPermission}, PERMISSION_CODE_AUDIO);
             return false;
+        }
+    }
+    private void muteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+        mutedChats.add(groupId);
+
+        sessionManager.setMutedChats(mutedChats);
+    }
+
+    private void unMuteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+
+        mutedChats.remove(groupId);
+
+        sessionManager.setMutedChats(mutedChats);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(status) { user_status.setValue("Online"); }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+        if(status) { user_status.setValue("Offline"); }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        MUTE_UN_MUTE = true;
+
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) {
+            mutedChats.addAll(mS);
+
+            for(String m : mutedChats) {
+                if(m.equals(groupId)) {
+                    MUTE_UN_MUTE = false;
+                    break;
+                }
+            }
+        }
+
+        if(MUTE_UN_MUTE) muteThisChat();
+        status = sessionManager.getActivityStatus();
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
         }
     }
 }

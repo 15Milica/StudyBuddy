@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.ArraySet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +17,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studybuddy.Check;
 import com.example.studybuddy.PinnedMessagesActivity;
 import com.example.studybuddy.R;
+import com.example.studybuddy.SessionManager;
 import com.example.studybuddy.adapter.ChannelAdapter;
 import com.example.studybuddy.model.Channel;
 import com.example.studybuddy.model.Group;
@@ -37,6 +40,7 @@ import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ChatSettingsActivity extends AppCompatActivity {
 
@@ -52,19 +56,28 @@ public class ChatSettingsActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private String userId;
     private String groupId;
+    private String chatId;
     private List<Channel> channels;
     private ChannelAdapter channelAdapter;
     private FirebaseUser firebaseUser;
-
+    private Switch mute;
+    private boolean checked = false;
+    private SessionManager sessionManager;
+    private boolean status;
+    private DatabaseReference user_status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_settings);
+        sessionManager = new SessionManager(getApplicationContext());
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_status = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
 
         channels = new ArrayList<>();
         userId = getIntent().getStringExtra("user");
         groupId = getIntent().getStringExtra("group");
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(userId != null) chatId = userId;
+        if(groupId != null) chatId = groupId;
 
         progressBar = (ProgressBar) findViewById(R.id.progressBarChatSettings);
         linearLayoutChannels = (LinearLayout) findViewById(R.id.linearLayoutChannelsSettings);
@@ -75,6 +88,8 @@ public class ChatSettingsActivity extends AppCompatActivity {
         buttonCreate = (ImageButton) findViewById(R.id.imageButtonChatSettingsAddChannel);
         swipeableRecyclerView = (SwipeableRecyclerView) findViewById(R.id.recyclerViewChannels);
         swipeableRecyclerView.setLayoutManager(new LinearLayoutManager(ChatSettingsActivity.this));
+        mute = (Switch) findViewById(R.id.switchNotification);
+        MutedChats();
 
         if(groupId != null) {
             ChannelSettings();
@@ -110,6 +125,28 @@ public class ChatSettingsActivity extends AppCompatActivity {
         linearLayoutPinnedMessages.setOnClickListener(view -> onClickPinnedMessages());
     }
 
+    private void MutedChats(){
+        Set<String> mutedChats = new ArraySet<>();
+        if(sessionManager.getMutedChats() != null) mutedChats.addAll(sessionManager.getMutedChats());
+        for(String m : mutedChats){
+            if(m.equals(chatId)){
+                checked = true;
+                break;
+            }
+        }
+        mute.setChecked(checked);
+        mute.setOnClickListener(view -> {
+            if(!checked){
+                checked = true;
+                mutedChats.add(chatId);
+                sessionManager.setMutedChats(mutedChats);
+            }else {
+                checked = false;
+                mutedChats.remove(chatId);
+                sessionManager.setMutedChats(mutedChats);
+            }
+        });
+    }
     private void onClickPinnedMessages(){
         if(userId != null) {
             Intent intent = new Intent(ChatSettingsActivity.this, PinnedMessagesActivity.class);
@@ -215,5 +252,27 @@ public class ChatSettingsActivity extends AppCompatActivity {
             dialog.dismiss();
         });
         dialog.show();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status = sessionManager.getActivityStatus();
+        if(status) { user_status.onDisconnect().setValue("Offline"); }
+        else {
+            user_status.setValue("");
+            user_status.onDisconnect().setValue("");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(status) { user_status.setValue("Online"); }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(status) { user_status.setValue("Offline"); }
     }
 }

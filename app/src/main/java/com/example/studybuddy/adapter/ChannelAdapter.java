@@ -42,6 +42,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
         holder.buttonView.setOnClickListener(view -> {
             Intent intent = new Intent(context, ChannelChatActivity.class);
             intent.putExtra("channelId", channel.getChannelId());
+            intent.putExtra("groupId", channel.getGroupId());
             ((Activity) context).startActivity(intent);
         });
     }

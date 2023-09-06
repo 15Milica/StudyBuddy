@@ -516,10 +516,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextCommentsPagePost"
+            app:layout_constraintBottom_toTopOf="@+id/editTextCommentsPost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentsTitlePagePost"/>
+            app:layout_constraintTop_toBottomOf="@+id/commentsTitlePost"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageViewPost"
@@ -543,7 +543,7 @@
             android:textColor="@color/text_color"
             android:textColorHint="@color/primary_color"
             android:textSize="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatImageViewPagePost"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatImageViewPost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="TouchTargetSizeCheck" />
@@ -560,8 +560,8 @@
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
             android:translationZ="100dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextCommentsPagePost"
-            app:layout_constraintStart_toEndOf="@+id/editTextCommentsPagePost" />
+            app:layout_constraintBottom_toBottomOf="@+id/editTextCommentsPost"
+            app:layout_constraintStart_toEndOf="@+id/editTextCommentsPost" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

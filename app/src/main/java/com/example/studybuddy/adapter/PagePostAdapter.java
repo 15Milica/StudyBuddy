@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.algorithm.Algorithm;
 import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Page;
@@ -66,6 +67,9 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
     private FirebaseUser firebaseUser;
     private SimpleExoPlayer player;
     private Map<String, String> tokens;
+    private static final String LIKE = "likes";
+    private static final String COMMENT = "comments";
+    private static final String SHARE = "shares";
 
     public PagePostAdapter(Context context, Activity activity, Page page, List<Post> posts) {
         this.context = context;
@@ -322,7 +326,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                   Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(postUser), page.getPageId());
           }
         });
-        //algoritam
+        Algorithm.setAlgorithm(postId, COMMENT, "commented", hashtags);
     }
     private void setVisibilityLike(boolean visibility, String postId, ViewHolder holder){
         if(visibility){
@@ -386,7 +390,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                     if(tokens.containsKey(userId))
                         Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), page.getPageId());
                 }
-                //algoritam
+                Algorithm.setAlgorithm(postId, LIKE, "liked", hashtags);
             }
         });
     }

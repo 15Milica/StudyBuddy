@@ -79,11 +79,13 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_65sdp"
         android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_93sdp"
+        android:layout_marginBottom="@dimen/_92sdp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLine" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLine"
+        app:layout_constraintVertical_bias="1.0"/>
 
     <LinearLayout
         android:id="@+id/linearLayout5"

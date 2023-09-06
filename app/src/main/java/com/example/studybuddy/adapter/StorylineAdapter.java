@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.algorithm.Algorithm;
 import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
@@ -58,6 +59,9 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
     private Map<String, ViewHolder> mHolders;
     private FirebaseUser firebaseUser;
     private Map<String, String> tokens;
+    private static final String LIKE = "likes";
+    private static final String COMMENT = "comments";
+    private static final String SHARE = "shares";
 
     public StorylineAdapter(Context context, Activity activity, List<Post> posts, int index) {
         this.context = context;
@@ -201,7 +205,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
                     if(tokens.containsKey(userId))
                         Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), "post_home");
                 }
-                //algoritam
+                Algorithm.setAlgorithm(postId, LIKE, "liked", hashtags);
             }
         });
     }
@@ -280,7 +284,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
                     Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(userId), "post_home");
             }
         });
-        //algoritam
+        Algorithm.setAlgorithm(postId, COMMENT, "commented", hashtags);
     }
 
     @Override

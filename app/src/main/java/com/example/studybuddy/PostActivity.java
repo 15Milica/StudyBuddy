@@ -27,10 +27,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.adapter.CommentAdapter;
+import com.example.studybuddy.algorithm.Algorithm;
 import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
+import com.example.studybuddy.notification.Notification;
 import com.example.studybuddy.ui.profile.UserProfileActivity;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -86,6 +88,10 @@ public class PostActivity extends AppCompatActivity {
     private String type;
     private Post post;
     private SimpleExoPlayer simpleExoPlayer;
+    private static final String LIKE = "likes";
+    private static final String COMMENT = "comments";
+    private static final String SHARE = "shares";
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,7 +276,11 @@ public class PostActivity extends AppCompatActivity {
             }else {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("likes");
                 ref.child(postId).child(firebaseUser.getUid()).setValue(firebaseUser.getUid());
-                //notifikacije i algoritam
+
+                if(!firebaseUser.getUid().equals(post.getUser()))
+                    Notification.sendNotificationPost(postId, "Like post", token, type);
+
+                Algorithm.setAlgorithm(postId, LIKE, "liked", post.getHashtags());
             }
         });
     }
@@ -342,9 +352,11 @@ public class PostActivity extends AppCompatActivity {
         final String commentId = refComments.child(postId).push().getKey();
         Comment comment = new Comment(commentId, firebaseUser.getUid(), textComment);
         refComments.child(post.getId()).child(commentId).setValue(comment).addOnCompleteListener(task->{
-            //notifikacija
+            if(!firebaseUser.getUid().equals(post.getUser())){
+                Notification.sendNotificationPost(postId, "Novi komentar!", token, type);
+            }
         });
-        //algoritam
+        Algorithm.setAlgorithm(postId, COMMENT, "commented", post.getHashtags());
     }
     private void onClickFullDescription(){
         if(!post.getDescription().isEmpty()){
@@ -364,6 +376,7 @@ public class PostActivity extends AppCompatActivity {
            if(!firebaseUser.getUid().equals(u.getUserId())){
                setFollowUnfollow(u.getUserId());
            }else buttonOptions.setVisibility(View.GONE);
+           token = u.getToken();
         });
     }
     private void setFollowUnfollow(String userId){

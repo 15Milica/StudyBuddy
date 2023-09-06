@@ -39,6 +39,7 @@ public class SettingsFragment extends Fragment {
     private LinearLayout linearLayoutAbout;
     private LinearLayout linearLayoutPrivacyTerms;
     private SessionManager sessionManager;
+    private FirebaseUser firebaseUser;
     private String[] permission= new String[] {Manifest.permission.POST_NOTIFICATIONS};
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +52,9 @@ public class SettingsFragment extends Fragment {
         status.setChecked(s);
         sessionManager.setNotification(false);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_status").child(firebaseUser.getUid());
+
         notification.setOnClickListener(view -> {
             if(!sessionManager.getNotification()){
                 requestPermissionNotification();
@@ -61,6 +65,12 @@ public class SettingsFragment extends Fragment {
 
         status.setOnClickListener(view -> {
             boolean b = sessionManager.getActivityStatus();
+            if(b){
+                ref.onDisconnect().setValue("");
+                ref.setValue("");
+            }else {
+                ref.setValue("Online");
+            }
             sessionManager.setActivityStatus(!b);
         });
 
@@ -135,6 +145,6 @@ public class SettingsFragment extends Fragment {
         super.onResume();
         linearLayoutAbout.setEnabled(true);
         linearLayoutPrivacyTerms.setEnabled(true);
+        linearLayoutPrivacyTerms.setEnabled(true);
     }
-
 }

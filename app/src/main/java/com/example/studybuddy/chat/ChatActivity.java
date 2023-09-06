@@ -3,6 +3,7 @@ package com.example.studybuddy.chat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +60,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -88,6 +90,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference user_status;
     private boolean status;
     private SessionManager sessionManager;
+    private boolean MUTE_UN_MUTE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -410,6 +413,23 @@ public class ChatActivity extends AppCompatActivity {
             }else Toast.makeText(this, "Nema mreže!", Toast.LENGTH_SHORT).show();
         }
     }
+    private void muteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+        mutedChats.add(userId);
+        sessionManager.setMutedChats(mutedChats);
+    }
+
+    private void unMuteThisChat() {
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) mutedChats.addAll(mS);
+        mutedChats.remove(userId);
+        sessionManager.setMutedChats(mutedChats);
+    }
 
     @Override
     protected void onResume() {
@@ -422,6 +442,23 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         status = sessionManager.getActivityStatus();
+        MUTE_UN_MUTE = true;
+
+        Set<String> mutedChats = new ArraySet<>();
+        Set<String> mS = sessionManager.getMutedChats();
+
+        if(mS != null) {
+            mutedChats.addAll(mS);
+
+            for(String m : mutedChats) {
+                if(m.equals(userId)) {
+                    MUTE_UN_MUTE = false;
+                    break;
+                }
+            }
+        }
+
+        if(MUTE_UN_MUTE) muteThisChat();
 
         if(status) { user_status.onDisconnect().setValue("Offline"); }
         else {
@@ -432,8 +469,22 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if(MUTE_UN_MUTE) unMuteThisChat();
         if(status) { user_status.setValue("Offline"); }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(MUTE_UN_MUTE) unMuteThisChat();
+    }
+
     private boolean checkPermission() {
         if(ActivityCompat.checkSelfPermission(getApplicationContext(), recordPermission) == PackageManager.PERMISSION_GRANTED) {
             return true;

@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
+import com.example.studybuddy.algorithm.Algorithm;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
@@ -62,6 +63,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private SimpleExoPlayer player;
     private FirebaseUser firebaseUser;
     private Map<String, String> tokens;
+    private static final String LIKE = "likes";
+    private static final String COMMENT = "comments";
+    private static final String SHARE = "shares";
     public PostAdapter(Context context, Activity activity, List<Post> posts) {
         this.context = context;
         this.activity = activity;
@@ -193,7 +197,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     if(tokens.containsKey(userId))
                         Notification.sendNotificationPost(postId, "Like post", tokens.get(userId), "post_home");
                 }
-                //algoritam
+                Algorithm.setAlgorithm(postId, LIKE, "liked", hashtags);
             }
         });
     }
@@ -209,6 +213,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 boolean b = false;
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Comment comment = dataSnapshot.getValue(Comment.class);
+                    comments.add(comment);
                     if(comment.getUser().equals(firebaseUser.getUid())) b=true;
                 }
                 holder.textViewComment.setText(String.valueOf(comments.size()));
@@ -266,7 +271,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     Notification.sendNotificationPost(postId, "Novi komentar!", tokens.get(userId), "post_home");
             }
         });
-        //algoritam
+        Algorithm.setAlgorithm(postId, COMMENT, "commented", hashtags);
     }
     private void setUserDetails(String userId, ViewHolder holder){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");

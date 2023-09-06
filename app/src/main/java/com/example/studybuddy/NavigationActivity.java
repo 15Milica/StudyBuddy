@@ -69,7 +69,6 @@ public class NavigationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         status = sessionManager.getActivityStatus();
 
         if(status) { user_status.onDisconnect().setValue("Offline"); }
@@ -88,4 +87,5 @@ public class NavigationActivity extends AppCompatActivity {
         super.onPause();
         if(status) { user_status.setValue("Offline"); }
     }
+
 }
