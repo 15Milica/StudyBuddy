@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.studybuddy.Check;
 import com.example.studybuddy.R;
 import com.example.studybuddy.algorithm.Algorithm;
+import com.example.studybuddy.chat.ForwardMessageActivity;
 import com.example.studybuddy.model.Comment;
 import com.example.studybuddy.model.Post;
 import com.example.studybuddy.model.User;
@@ -89,7 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         setUserDetails(post.getUser(), holder);
 
         Check.settingsPagePost(holder.textViewDescription, holder.linearLayoutHide, holder.coordinatorLayoutFullDescription, holder.coordinatorLayoutSettingPost, holder.constraintLayoutComments, holder.options);
-        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.save, holder.textViewDescription, true);
+        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, true);
 
         if(post.getType().equals(Post.POST_TYPE_TEXT)){
             holder.linearLayoutTextPost.setVisibility(View.VISIBLE);
@@ -159,7 +160,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
-
+        holder.share.setOnClickListener(view -> {
+            Intent intent = new Intent(context, ForwardMessageActivity.class);
+            intent.putExtra("chatId", "");
+            intent.putExtra("message", post.getId());
+            intent.putExtra("messageType", "post_home");
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activity.startActivity(intent);
+        });
     }
     private void setLike(ViewHolder holder, String postId, String userId, List<String> hashtags){
         DatabaseReference refLikes = FirebaseDatabase.getInstance().getReference("likes");
@@ -366,7 +374,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public Button buttonHide;
         public LinearLayout linearLayoutShare;
         public Button share;
-        public Button save;
         public SimpleExoPlayer simpleExoPlayer;
 
         public ViewHolder(@NonNull View itemView) {
@@ -414,7 +421,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             linearLayoutShare = itemView.findViewById(R.id.lin_share_post);
             share = itemView.findViewById(R.id.buttonSharePost);
-            save = itemView.findViewById(R.id.buttonSendPost);
         }
     }
     RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {

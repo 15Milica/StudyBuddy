@@ -126,12 +126,12 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         }
 
         Check.settingsPagePost(holder.textViewDescription, holder.linearLayoutHide, holder.coordinatorLayoutFullDescription, holder.coordinatorLayoutSettingPost, holder.constraintLayoutComments, holder.options);
-        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
+        Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, true);
 
         holder.coordinatorLayoutSettingPost.setOnClickListener(view -> {
             holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
             holder.options.setActivated(false);
-            Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
+            Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, true);
         });
 
         String isAdmin = page.getMembers().get(post.getUser());
@@ -178,13 +178,13 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             if(holder.options.isActivated()){
                 holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
                 holder.options.setActivated(false);
-                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, true);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, true);
             }else {
                 holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
                 holder.constraintLayoutComments.setVisibility(View.GONE);
                 holder.coordinatorLayoutSettingPost.setVisibility(View.VISIBLE);
                 holder.options.setActivated(true);
-                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.send, holder.textViewDescription, false);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, false);
             }
         });
         holder.buttonHide.setOnClickListener(view -> {
@@ -201,7 +201,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
                 context.startActivity(intent);
             }
         });
-        holder.send.setOnClickListener(view -> {
+        holder.share.setOnClickListener(view -> {
             Intent intent = new Intent(activity, ForwardMessageActivity.class);
             intent.putExtra("chatId", "");
             intent.putExtra("message", post.getId());
@@ -526,7 +526,6 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
         public Button buttonHide;
         public LinearLayout linearLayoutShare;
         public Button share;
-        public Button send;
         public SimpleExoPlayer simpleExoPlayer;
 
         public ViewHolder(@NonNull View itemView) {
@@ -575,7 +574,6 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
 
             linearLayoutShare = itemView.findViewById(R.id.lin_share_page_post);
             share = itemView.findViewById(R.id.buttonSharePagePost);
-            send = itemView.findViewById(R.id.buttonSendPagePost);
         }
     }
     RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {

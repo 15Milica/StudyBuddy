@@ -72,7 +72,6 @@ public class PostActivity extends AppCompatActivity {
     private Button buttonHide;
     private LinearLayout linearLayoutShare;
     private Button buttonShare;
-    private Button buttonSend;
     private CoordinatorLayout coordinatorLayoutDescription;
     private TextView fullDescription;
     private CoordinatorLayout coordinatorLayoutSettings;
@@ -124,7 +123,6 @@ public class PostActivity extends AppCompatActivity {
         buttonHide = (Button) findViewById(R.id.buttonHidePA);
         linearLayoutShare = (LinearLayout) findViewById(R.id.lin_share_pa);
         buttonShare = (Button) findViewById(R.id.buttonSharePA);
-        buttonSend = (Button) findViewById(R.id.buttonSendPA);
 
         coordinatorLayoutDescription = (CoordinatorLayout) findViewById(R.id.coordinatorLayout_pa_description);
         fullDescription = (TextView) findViewById(R.id.pa_full_description);
@@ -162,7 +160,7 @@ public class PostActivity extends AppCompatActivity {
         setUserInfo(userId);
         if(!firebaseUser.getUid().equals(userId)) {
             Check.settingsPagePost(textDescription, linearLayoutHide, coordinatorLayoutDescription, coordinatorLayoutSettings, constraintLayoutComment, buttonOptions);
-            Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, buttonSend, textDescription, true);
+            Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, textDescription, true);
         }
         if(post.getLocation() != null) postLocation.setText(post.getLocation());
 
@@ -216,7 +214,7 @@ public class PostActivity extends AppCompatActivity {
             linearLayoutHide.setVisibility(View.GONE);
             textDescription.setVisibility(View.VISIBLE);
         });
-        buttonSend.setOnClickListener(view -> {
+        buttonShare.setOnClickListener(view -> {
             Intent intent = new Intent(this, ForwardMessageActivity.class);
             intent.putExtra("chatId", "");
             intent.putExtra("message", post.getId());
@@ -229,7 +227,7 @@ public class PostActivity extends AppCompatActivity {
             if(buttonOptions.isActivated()){
                 buttonOptions.setActivated(false);
                 coordinatorLayoutSettings.setVisibility(View.GONE);
-                Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, buttonSend, textDescription, true);
+                Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, textDescription, true);
             }else {
                 coordinatorLayoutDescription.setVisibility(View.GONE);
                 constraintLayoutComment.setVisibility(View.GONE);
@@ -237,13 +235,13 @@ public class PostActivity extends AppCompatActivity {
                 textDescription.setVisibility(View.VISIBLE);
                 coordinatorLayoutSettings.setVisibility(View.VISIBLE);
                 buttonOptions.setActivated(true);
-                Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, buttonSend, textDescription, false);
+                Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, textDescription, false);
             }
         });
         coordinatorLayoutSettings.setOnClickListener(view -> {
             coordinatorLayoutSettings.setVisibility(View.GONE);
             buttonOptions.setActivated(false);
-            Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, buttonSend, textDescription, true);
+            Check.enableButtonPagePost(buttonLike, buttonComment, buttonShare, textDescription, true);
         });
     }
     private void setLike(){

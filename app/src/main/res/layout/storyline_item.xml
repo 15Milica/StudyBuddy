@@ -158,7 +158,6 @@
             <LinearLayout
                 android:id="@+id/storyline_share"
                 android:layout_width="@dimen/_25sdp"
-                android:layout_marginRight="@dimen/_8sdp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -178,30 +177,6 @@
                     android:textSize="@dimen/_7sdp"
                     android:fontFamily="@font/poppins"
                     android:textColor="@color/text_color"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/storyline_send"
-                android:layout_width="@dimen/_32sdp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonSendStoryline"
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_vector_save" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewSendStoryline"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color"
-                    android:fontFamily="@font/poppins"
-                    android:textSize="@dimen/_7sdp"
-                    android:text="Sačuvaj"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

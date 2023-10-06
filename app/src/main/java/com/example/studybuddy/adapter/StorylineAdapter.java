@@ -150,7 +150,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
         if(post.isOptionComments()) setComment(holder, post.getId(), post.getUser(), post.getHashtags());
         else holder.linearLayoutComment.setVisibility(View.GONE);
 
-        holder.buttonSend.setOnClickListener(view -> {
+        holder.buttonShare.setOnClickListener(view -> {
             Intent intent = new Intent(context, ForwardMessageActivity.class);
             intent.putExtra("chatId", "");
             intent.putExtra("message", post.getId());
@@ -352,7 +352,6 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
         public Button buttonHide;
         public LinearLayout linearLayoutShare;
         public Button buttonShare;
-        public Button buttonSend;
         public CoordinatorLayout coordinatorLayoutDescription;
         public TextView textViewFullDescription;
         public ConstraintLayout constraintLayoutComments;
@@ -381,7 +380,6 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
             buttonHide = itemView.findViewById(R.id.buttonHideStoryline);
             linearLayoutShare = itemView.findViewById(R.id.lin_share_storyline);
             buttonShare = itemView.findViewById(R.id.buttonShareStoryline);
-            buttonSend = itemView.findViewById(R.id.buttonSendStoryline);
 
             coordinatorLayoutDescription = itemView.findViewById(R.id.coordinatorLayout_storyline_description);
             textViewFullDescription = itemView.findViewById(R.id.storyline_full_description);

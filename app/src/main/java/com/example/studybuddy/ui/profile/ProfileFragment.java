@@ -122,6 +122,18 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+        textDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(textDescription.getText().toString().length() <= 10) {
+                    buttonSave.setVisibility(View.GONE);
+                }else buttonSave.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
         setUserDetails();
         textBirthday.setOnClickListener(view -> onClickBirthday());
         updatePhoto.setOnClickListener(view -> onClickUpdateImage());

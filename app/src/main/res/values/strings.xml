@@ -131,4 +131,11 @@
     <string name="ForwardMessageText">Prosledi poruku ostalim četovima!</string>
     <string name="ForwardMessageButton">Prosledi</string>
 
+    <!-- ImagePicker strings -->
+    <string name="ucrop_label_edit_photo">Uredi sliku</string>
+    <string name="title_choose_image_provider">Odaberi</string>
+    <string name="action_cancel">Nazad</string>
+    <string name="title_gallery">Galerija</string>
+    <string name="title_camera">Kamera</string>
+
 </resources>

@@ -118,7 +118,7 @@ public class ForwardMessageActivity extends AppCompatActivity {
         }else {
             title.setText("Prosledi objavu");
             sub_title.setText("Prosledi objavu ostalim četovima");
-            textMessage.setText("Post");
+            textMessage.setText("Objava");
             textMessage.setVisibility(View.VISIBLE);
         }
     }

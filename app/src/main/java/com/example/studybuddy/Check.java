@@ -59,11 +59,10 @@ public class Check {
         image.setEnabled(b);
     }
     public static boolean isFollower(String followerId, List<String> listFollowers){ return  listFollowers.contains(followerId); }
-    public static void enableButtonPagePost(Button like, Button comment, Button share, Button send, TextView description, boolean b) {
+    public static void enableButtonPagePost(Button like, Button comment, Button share, TextView description, boolean b) {
         like.setEnabled(b);
         comment.setEnabled(b);
         share.setEnabled(b);
-        send.setEnabled(b);
         description.setEnabled(b);
     }
     public static void settingsPagePost(TextView description, LinearLayout hide, CoordinatorLayout coordinatorLayoutFullDescription, CoordinatorLayout coordinatorLayoutSettings, ConstraintLayout constraintLayoutComments, ImageButton option){

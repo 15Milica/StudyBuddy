@@ -21,10 +21,8 @@
         <item name="android:windowFullscreen">true</item>-->
 
         <!-- ButtonStyle -->
-
         <item name="buttonStyle">@style/ButtonStyle</item>
     </style>
-
 
     <style name="Theme.StudyBuddy" parent="Base.Theme.StudyBuddy" />
 
@@ -40,5 +38,4 @@
         <item name="android:layout_marginTop">@dimen/_10sdp</item>
         <item name="android:layout_marginStart">@dimen/_20sdp</item>
     </style>
-
 </resources>

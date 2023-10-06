@@ -7,4 +7,9 @@
     <color name="primary_color">#F9AA33</color>
     <color name="secondary_color">#344955</color>
     <color name="text_color">#1C262B</color>
+
+    <color name="ucrop_color_toolbar">#344955</color>
+    <color name="ucrop_color_statusbar">#344955</color>
+    <color name="ucrop_color_widget_active">#F9AA33</color>
+
 </resources>
