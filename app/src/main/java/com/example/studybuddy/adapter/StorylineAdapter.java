@@ -157,6 +157,7 @@ public class StorylineAdapter extends RecyclerView.Adapter<StorylineAdapter.View
             intent.putExtra("messageType", "post_home");
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
+            Algorithm.setAlgorithm(post.getId(), SHARE, "shared", post.getHashtags());
         });
     }
     private void setUserToken(String userId){

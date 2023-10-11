@@ -221,6 +221,7 @@ public class PostActivity extends AppCompatActivity {
             intent.putExtra("messageType", type);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             this.startActivity(intent);
+            Algorithm.setAlgorithm(post.getId(), SHARE, "shared", post.getHashtags());
         });
 
         buttonOptions.setOnClickListener(view -> {

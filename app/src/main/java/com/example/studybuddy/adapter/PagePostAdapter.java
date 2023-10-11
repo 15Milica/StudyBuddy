@@ -208,6 +208,7 @@ public class PagePostAdapter extends RecyclerView.Adapter<PagePostAdapter.ViewHo
             intent.putExtra("messageType", page.getPageId());
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
+            Algorithm.setAlgorithm(post.getId(), SHARE, "shared", post.getHashtags());
         });
     }
 

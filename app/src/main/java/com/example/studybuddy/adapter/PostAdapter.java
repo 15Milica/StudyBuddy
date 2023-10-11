@@ -167,6 +167,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             intent.putExtra("messageType", "post_home");
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
+            Algorithm.setAlgorithm(post.getId(), SHARE, "shared", post.getHashtags());
+        });
+        holder.options.setOnClickListener(view -> {
+            if(holder.options.isActivated()){
+                holder.coordinatorLayoutSettingPost.setVisibility(View.GONE);
+                holder.options.setActivated(false);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, true);
+            }else {
+                holder.coordinatorLayoutFullDescription.setVisibility(View.GONE);
+                holder.constraintLayoutComments.setVisibility(View.GONE);
+                holder.coordinatorLayoutSettingPost.setVisibility(View.VISIBLE);
+                holder.options.setActivated(true);
+                Check.enableButtonPagePost(holder.like, holder.comment, holder.share, holder.textViewDescription, false);
+            }
+        });
+        holder.linearLayoutFollow.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("followers");
+            ref.child(firebaseUser.getUid()).child(post.getUser()).setValue("following");
+        });
+        holder.linearLayoutNoFollow.setOnClickListener(view -> {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("followers");
+            ref.child(firebaseUser.getUid()).child(post.getUser()).removeValue();
         });
     }
     private void setLike(ViewHolder holder, String postId, String userId, List<String> hashtags){
@@ -289,6 +311,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
            if(user.getPhoto().equals("default")) holder.userPhoto.setImageResource(R.drawable.ic_create_profile_vectors_photo);
            else Glide.with(context).load(user.getPhoto()).into(holder.userPhoto);
            tokens.put(user.getUserId(), user.getToken());
+           setFollowUnfollow(holder, user.getUserId());
+        });
+    }
+    private void setFollowUnfollow(ViewHolder holder, String userId){
+        DatabaseReference refFollow = FirebaseDatabase.getInstance().getReference("followers");
+        refFollow.child(firebaseUser.getUid()).child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String s = snapshot.getValue(String.class);
+                if(s != null) {
+                    holder.linearLayoutNoFollow.setVisibility(View.VISIBLE);
+                    holder.linearLayoutFollow.setVisibility(View.GONE);
+                } else {
+                    holder.linearLayoutFollow.setVisibility(View.VISIBLE);
+                    holder.linearLayoutNoFollow.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
